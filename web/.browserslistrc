@@ -1,0 +1,15 @@
+# This file is used by the build system to adjust CSS and JS output to support the specified browsers below.
+# For additional information regarding the format and rule options, please see:
+# https://github.com/browserslist/browserslist#queries
+
+# For the following line, set `true` to `false` if you want to exclude IE11 from the build
+# For additional information, see: https://angular.io/guide/browser-support
+
+# You can see what browsers were selected by your configuration by running:
+#   npx browserslist
+
+> 0.5%
+last 2 versions
+Firefox ESR
+not dead
+not IE 9-11

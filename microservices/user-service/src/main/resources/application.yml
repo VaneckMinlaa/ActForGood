@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/actforgood_users
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+jwt:
+  secret: actforgood-secret-key-change-in-production-minimum-256-bits
+  expiration: 3600000
+
+logging:
+  level:
+    com.actforgood: DEBUG

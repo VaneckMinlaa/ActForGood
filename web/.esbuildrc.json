@@ -1,0 +1,7 @@
+{
+  "plugins": {
+    "angular-css-inline-fonts-plugin": {
+      "inlineFonts": false
+    }
+  }
+}
