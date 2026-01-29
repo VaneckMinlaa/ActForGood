@@ -1,0 +1,77 @@
+<div class="projets-page">
+  <!-- Hero section -->
+  <section class="hero">
+    <h1 class="hero-title">Découvrez nos projets</h1>
+    <p class="hero-subtitle">
+      Explorez les initiatives qui transforment des vies au Cameroun. Votre soutien est la clé de leur succès.
+    </p>
+  </section>
+
+  <!-- Filtres -->
+  <section class="filters-section">
+    <div class="filter-group">
+      <span class="filter-label">Cause:</span>
+      <div class="filter-tags">
+        <button
+          *ngFor="let cause of causes"
+          type="button"
+          class="filter-tag"
+          [class.active]="selectedCause === cause.value"
+          (click)="selectCause(cause.value)">
+          {{ cause.label }}
+        </button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Région:</span>
+      <div class="filter-tags">
+        <button
+          *ngFor="let region of regions"
+          type="button"
+          class="filter-tag"
+          [class.active]="selectedRegion === region.value"
+          (click)="selectRegion(region.value)">
+          {{ region.label }}
+        </button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Urgence:</span>
+      <div class="filter-tags">
+        <button
+          *ngFor="let urgency of urgencies"
+          type="button"
+          class="filter-tag"
+          [class.active]="selectedUrgency === urgency.value"
+          (click)="selectUrgency(urgency.value)">
+          {{ urgency.label }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grille de cartes -->
+  <section class="cards-section">
+    <p *ngIf="filteredCampaigns.length === 0" class="no-results">Aucun projet ne correspond à vos critères.</p>
+    <div class="campaigns-grid" *ngIf="filteredCampaigns.length > 0">
+      <article
+        *ngFor="let campaign of filteredCampaigns"
+        class="campaign-card"
+        [routerLink]="['/campaigns', campaign.id]">
+        <div class="card-image" [style.backgroundImage]="getCardImage(campaign)"></div>
+        <div class="card-body">
+          <h2 class="card-title">{{ campaign.title }}</h2>
+          <p class="card-description">{{ campaign.description }}</p>
+          <div class="card-badges">
+            <span class="badge">ONG vérifiée</span>
+            <span class="badge">Dons traçables</span>
+          </div>
+          <div class="card-stats">
+            <span class="collected">Collecté: <strong>{{ (campaign.currentAmount ?? 0) | number }} XAF</strong></span>
+            <span class="objective">Objectif: {{ campaign.targetAmount | number }} XAF</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>

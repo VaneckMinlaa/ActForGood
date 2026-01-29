@@ -1,0 +1,119 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <span class="logo-actfor">ActFor</span><span class="logo-good">Good</span>
+    </div>
+
+    <!-- Étape 1 : Choix du type de compte -->
+    <ng-container *ngIf="step === 1">
+      <h1 class="auth-title">Créer votre compte ActForGood</h1>
+      <p class="auth-subtitle">Qui êtes-vous ?</p>
+
+      <div class="user-types-grid">
+        <button
+          type="button"
+          *ngFor="let type of userTypes"
+          class="user-type-card"
+          [class.selected]="selectedType === type.value"
+          (click)="selectType(type.value)">
+          <mat-icon class="user-type-icon" [fontIcon]="type.icon" aria-hidden="true"></mat-icon>
+          <span class="user-type-title">{{ type.label }}</span>
+          <span class="user-type-desc">{{ type.description }}</span>
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="btn-next"
+        [disabled]="!selectedType"
+        (click)="goToStep2()">
+        Suivant
+      </button>
+    </ng-container>
+
+    <!-- Étape 2 : Formulaire d'inscription (design maquette) -->
+    <ng-container *ngIf="step === 2">
+      <h1 class="auth-title">{{ getInscriptionTitle() }}</h1>
+      <p class="auth-subtitle">{{ getSubtitle() }}</p>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form auth-form-step2">
+        <div class="form-field">
+          <label class="form-label">Nom (optionnel)</label>
+          <input
+            type="text"
+            class="form-input"
+            formControlName="lastName"
+            placeholder="Votre nom ou pseudonyme">
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Email <span class="required">*</span></label>
+          <input
+            type="email"
+            class="form-input"
+            formControlName="email"
+            placeholder="votre.email@exemple.com">
+          <span class="error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            Email invalide
+          </span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Mot de passe <span class="required">*</span></label>
+          <span class="form-hint">Minimum 8 caractères</span>
+          <input
+            type="password"
+            class="form-input"
+            formControlName="password"
+            placeholder="Votre mot de passe">
+          <span class="password-strength">Force du mot de passe : {{ getPasswordStrength() }}</span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Confirmer le mot de passe <span class="required">*</span></label>
+          <input
+            type="password"
+            class="form-input"
+            formControlName="passwordConfirm"
+            placeholder="Confirmez votre mot de passe">
+          <span class="error" *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('passwordConfirm')?.touched">
+            Les mots de passe ne correspondent pas
+          </span>
+        </div>
+
+        <div class="form-checkbox" *ngIf="selectedType === 'DONOR'">
+          <mat-checkbox formControlName="anonymousDonation" color="primary">
+            Je souhaite que mes dons soient affichés publiquement de manière anonyme (sans mon nom)
+            <mat-icon class="info-icon" fontIcon="info" title="Vos dons seront visibles mais sans afficher votre identité"></mat-icon>
+          </mat-checkbox>
+        </div>
+
+        <div class="form-checkbox">
+          <mat-checkbox formControlName="acceptTerms" color="primary">
+            J'accepte les
+            <a href="#" class="form-link" (click)="$event.preventDefault(); $event.stopPropagation()">conditions d'utilisation</a>
+            et la
+            <a href="#" class="form-link" (click)="$event.preventDefault(); $event.stopPropagation()">politique de confidentialité d'ActForGood</a>
+            <span class="required">*</span>
+          </mat-checkbox>
+          <span class="error" *ngIf="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched">
+            Vous devez accepter les conditions
+          </span>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="registerForm.invalid">
+          Créer mon compte
+        </button>
+      </form>
+
+      <p class="auth-back-link">
+        <button type="button" class="btn-back" (click)="step = 1">Retour</button>
+      </p>
+    </ng-container>
+
+    <p class="auth-footer">
+      Déjà un compte ? <a routerLink="/auth/login" class="auth-link">Se connecter</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.logo {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: baseline;
+}
+
+.logo-actfor {
+  color: #000;
+}
+
+.logo-good {
+  color: #e89b2c;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-link {
+  color: #000;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+
+  &.active {
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 2px;
+      background: #e89b2c;
+    }
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btn-text {
+  padding: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-donate {
+  background: #e89b2c;
+  color: #fff !important;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #d48a24;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .header-actions {
+    order: 2;
+    margin-left: auto;
+  }
+}

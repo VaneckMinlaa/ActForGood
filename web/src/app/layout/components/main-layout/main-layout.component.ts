@@ -16,10 +16,11 @@ import { Component } from '@angular/core';
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      background: #fff;
     }
     .content {
       flex: 1;
-      padding: 20px;
+      padding: 0;
     }
   `]
 })

@@ -1,94 +1,137 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 
+type UserTypeValue = 'DONOR' | 'NGO' | 'ORPHANAGE' | 'ASSOCIATION';
+
+interface UserTypeOption {
+  value: UserTypeValue;
+  label: string;
+  shortLabel: string;
+  description: string;
+  icon: string;
+  subtitle: string;
+}
+
+function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.get('password')?.value;
+  const confirm = control.get('passwordConfirm')?.value;
+  if (!password || !confirm) return null;
+  return password === confirm ? null : { passwordMismatch: true };
+}
+
 @Component({
   selector: 'app-register',
-  template: `
-    <div class="register-container">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Inscription</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <mat-form-field>
-              <mat-label>Prénom</mat-label>
-              <input matInput formControlName="firstName" required>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Nom</mat-label>
-              <input matInput formControlName="lastName" required>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email" type="email" required>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Mot de passe</mat-label>
-              <input matInput formControlName="password" type="password" required>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Type de compte</mat-label>
-              <mat-select formControlName="userType" required>
-                <mat-option value="DONOR">Bienfaiteur</mat-option>
-                <mat-option value="NGO">ONG</mat-option>
-                <mat-option value="ORPHANAGE">Orphelinat</mat-option>
-                <mat-option value="ASSOCIATION">Association</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">
-              S'inscrire
-            </button>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  `,
-  styles: [`
-    .register-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 80vh;
-    }
-    mat-card {
-      width: 400px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-    mat-form-field {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  `]
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
+  step = 1;
+  selectedType: UserTypeValue | null = null;
   registerForm: FormGroup;
+
+  userTypes: UserTypeOption[] = [
+    {
+      value: 'DONOR',
+      label: 'Personne Anonyme / Donateur',
+      shortLabel: 'Donateur',
+      description: 'Contribuez avec ou sans reconnaissance publique, suivez votre impact.',
+      icon: 'favorite',
+      subtitle: 'Créez votre compte pour suivre votre impact.'
+    },
+    {
+      value: 'NGO',
+      label: 'ONG / Organisation Sociale',
+      shortLabel: 'ONG',
+      description: 'Enregistrez votre organisation, publiez vos projets et recevez des dons.',
+      icon: 'people',
+      subtitle: 'Créez votre compte pour publier vos projets et recevoir des dons.'
+    },
+    {
+      value: 'ORPHANAGE',
+      label: 'Orphelinat',
+      shortLabel: 'Orphelinat',
+      description: 'Inscrivez votre orphelinat pour solliciter du soutien et gérer vos besoins.',
+      icon: 'home',
+      subtitle: 'Créez votre compte pour solliciter du soutien et gérer vos besoins.'
+    },
+    {
+      value: 'ASSOCIATION',
+      label: 'Entreprise / Partenaire',
+      shortLabel: 'Partenaire',
+      description: 'Collaborez avec des projets sociaux, engagez votre RSE et mesurez votre impact.',
+      icon: 'work',
+      subtitle: 'Créez votre compte pour collaborer et mesurer votre impact.'
+    }
+  ];
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
-    this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      userType: ['DONOR', Validators.required]
-    });
+    this.registerForm = this.fb.group(
+      {
+        lastName: [''],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        passwordConfirm: ['', [Validators.required]],
+        anonymousDonation: [false],
+        acceptTerms: [false, [Validators.requiredTrue]]
+      },
+      { validators: passwordMatchValidator }
+    );
+  }
+
+  selectType(value: UserTypeValue): void {
+    this.selectedType = value;
+  }
+
+  goToStep2(): void {
+    if (!this.selectedType) return;
+    this.registerForm.patchValue({ userType: this.selectedType });
+    this.step = 2;
+  }
+
+  getInscriptionTitle(): string {
+    const opt = this.userTypes.find((t) => t.value === this.selectedType);
+    return opt ? `Inscription : ${opt.shortLabel}` : 'Inscription';
+  }
+
+  getSubtitle(): string {
+    const opt = this.userTypes.find((t) => t.value === this.selectedType);
+    return opt ? opt.subtitle : 'Créez votre compte.';
+  }
+
+  getSelectedTypeLabel(): string {
+    const opt = this.userTypes.find((t) => t.value === this.selectedType);
+    return opt ? opt.label : '';
+  }
+
+  getPasswordStrength(): 'Faible' | 'Moyen' | 'Fort' {
+    const p = this.registerForm.get('password')?.value || '';
+    if (p.length < 8) return 'Faible';
+    if (p.length < 12 && !/[A-Z]/.test(p) && !/[0-9]/.test(p)) return 'Faible';
+    if (p.length >= 12 && /[A-Z]/.test(p) && /[0-9]/.test(p)) return 'Fort';
+    return 'Moyen';
   }
 
   onSubmit(): void {
-    if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
-        next: () => this.router.navigate(['/dashboard']),
-        error: (err) => console.error('Register error', err)
-      });
-    }
+    if (this.registerForm.invalid) return;
+    const v = this.registerForm.value;
+    const nom = (v.lastName || '').trim();
+    const payload = {
+      email: v.email,
+      password: v.password,
+      firstName: nom ? nom.split(/\s+/)[0] : '',
+      lastName: nom,
+      userType: this.selectedType!,
+      anonymousDonation: v.anonymousDonation
+    };
+    this.authService.register(payload).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: (err) => console.error('Register error', err)
+    });
   }
 }

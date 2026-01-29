@@ -9,11 +9,12 @@ import { Component } from '@angular/core';
   `,
   styles: [`
     footer {
-      background-color: #3f51b5;
-      color: white;
+      background-color: #1a1a1a;
+      color: #fff;
       text-align: center;
-      padding: 20px;
+      padding: 24px;
       margin-top: auto;
+      font-size: 0.9rem;
     }
   `]
 })

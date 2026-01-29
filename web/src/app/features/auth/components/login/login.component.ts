@@ -5,49 +5,8 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
-  template: `
-    <div class="login-container">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Connexion</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email" type="email" required>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Mot de passe</mat-label>
-              <input matInput formControlName="password" type="password" required>
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
-              Se connecter
-            </button>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  `,
-  styles: [`
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 80vh;
-    }
-    mat-card {
-      width: 400px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-    mat-form-field {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  `]
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   loginForm: FormGroup;
