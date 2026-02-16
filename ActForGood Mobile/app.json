@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "ActForGood",
+    "displayName": "ActForGood",
+    "slug": "actforgood",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.actforgood.app"
+    },
+    "android": {
+      "package": "com.actforgood.app"
+    },
+    "scheme": "actforgood",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  }
+}

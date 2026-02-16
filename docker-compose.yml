@@ -1,15 +1,23 @@
 version: '3.8'
 
 services:
-  mongodb:
-    image: mongo:7.0
-    container_name: actforgood-mongodb
+  postgres:
+    image: postgres:16-alpine
+    container_name: actforgood-postgres
     ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
+      - "5432:5432"
     environment:
-      MONGO_INITDB_DATABASE: actforgood
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: actforgood
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/01-init-databases.sql:/docker-entrypoint-initdb.d/01-init-databases.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
@@ -20,5 +28,5 @@ services:
       - redis_data:/data
 
 volumes:
-  mongodb_data:
+  postgres_data:
   redis_data:
