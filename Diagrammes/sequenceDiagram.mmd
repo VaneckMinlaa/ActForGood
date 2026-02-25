@@ -1,0 +1,80 @@
+sequenceDiagram
+    participant ONG as 🏢 ONG
+    participant APP as 📱 Web ONG<br/>(Angular)
+    participant GATEWAY as 🌐 API Gateway
+    participant CAMPAIGN as 🎯 Campaign Service
+    participant AUTH as 👤 User/Auth Service
+    participant NOTIF as 🔔 Notification
+    participant ADMIN as ⚙️ Admin Portal
+    participant DB as 🗄️ PostgreSQL
+    
+    Note over ONG,DB: 1️⃣ INSCRIPTION ONG
+    ONG->>APP: Cliquer "S'inscrire"
+    APP->>APP: Formulaire: nom, email, docs
+    ONG->>APP: Upload: Statuts juridiques, RCCM
+    APP->>GATEWAY: POST /auth/register-ong<br/>{name, email, docs}
+    GATEWAY->>AUTH: Créer profil ONG<br/>status = "PENDING"
+    AUTH->>DB: INSERT users (type='ONG')<br/>verification_status='PENDING'
+    AUTH->>AUTH: Générer verification_token
+    AUTH-->>GATEWAY: ONG_ID, token
+    GATEWAY->>AUTH: Injecter docs dans bucket storage
+    GATEWAY-->>APP: "Inscription soumise"
+    APP-->>ONG: "En attente validation admin"
+    
+    Note over ONG,DB: 2️⃣ ADMIN VALIDE PROFIL ONG
+    ADMIN->>ADMIN: Dashboard: Lister ONG PENDING
+    ADMIN->>GATEWAY: GET /admin/ong/pending
+    GATEWAY->>AUTH: Fetch ONG en attente
+    AUTH->>DB: SELECT * FROM users<br/>WHERE type='ONG' AND status='PENDING'
+    DB-->>AUTH: Liste ONG + docs
+    AUTH-->>GATEWAY: {ong_list}
+    GATEWAY-->>ADMIN: Affiche: Nom, docs, email
+    ADMIN->>GATEWAY: POST /admin/ong/validate/{ong_id}<br/>{action: 'APPROVE', comment: 'OK'}
+    GATEWAY->>AUTH: Mettre à jour profil ONG
+    AUTH->>DB: UPDATE users SET<br/>verification_status='VERIFIED'
+    NOTIF->>NOTIF: Queue event: "ong_verified"
+    NOTIF-->>ONG: Email: "Profil validé!"
+    
+    Note over ONG,DB: 3️⃣ ONG CRÉE UN PROJET
+    ONG->>APP: Cliquer "Créer Projet"
+    APP->>APP: Formulaire: Titre, description,<br/>budget, bénéficiaires, urgence
+    ONG->>APP: Upload: Photos, vidéos, docs proof
+    APP->>GATEWAY: POST /campaigns/create<br/>{title, description, budget,<br/>beneficiary_count, files}
+    GATEWAY->>CAMPAIGN: Créer campagne<br/>status='DRAFT'
+    CAMPAIGN->>CAMPAIGN: Valider champs requis
+    CAMPAIGN->>DB: INSERT campaigns<br/>status='SUBMITTED_FOR_REVIEW'
+    CAMPAIGN-->>GATEWAY: campaign_id
+    GATEWAY-->>APP: "Projet soumis"
+    APP-->>ONG: "En attente validation"
+    
+    Note over ONG,DB: 4️⃣ ADMIN VALIDE PROJET
+    ADMIN->>ADMIN: Dashboard: Lister projets PENDING
+    ADMIN->>GATEWAY: GET /admin/campaigns/pending
+    GATEWAY->>CAMPAIGN: Fetch campaigns<br/>status='SUBMITTED_FOR_REVIEW'
+    CAMPAIGN->>DB: SELECT * FROM campaigns<br/>WHERE status='SUBMITTED_FOR_REVIEW'
+    DB-->>CAMPAIGN: Projets + bénéficiaires
+    CAMPAIGN-->>GATEWAY: {campaign_list}
+    GATEWAY-->>ADMIN: Affiche détails + impact potentiel
+    
+    ADMIN->>GATEWAY: POST /admin/campaigns/validate/{campaign_id}<br/>{action: 'APPROVE',<br/>impact_score: 8.5}
+    GATEWAY->>CAMPAIGN: Valider campagne
+    CAMPAIGN->>DB: UPDATE campaigns<br/>SET status='ACTIVE'
+    CAMPAIGN->>DB: Calc: eligible_donors<br/>= géolocalisation + préférences IA
+    CAMPAIGN->>GATEWAY: {campaign_id, active}
+    GATEWAY->>NOTIF: Queue: "campaign_activated"<br/>{campaign_data, eligible_donors_count}
+    NOTIF->>NOTIF: Tâche async: Notifier donateurs<br/>push + email targeting
+    NOTIF-->>ONG: Email: "Projet activé!"<br/>Eligible donors: 250+
+    
+    Note over ONG,DB: 5️⃣ REJET (Alternative)
+    ADMIN->>GATEWAY: POST /admin/campaigns/validate/{campaign_id}<br/>{action: 'REJECT',<br/>reason: 'Docs insuffisants'}
+    GATEWAY->>CAMPAIGN: Rejeter campagne
+    CAMPAIGN->>DB: UPDATE campaigns<br/>SET status='REJECTED',<br/>rejection_reason='...'
+    CAMPAIGN->>GATEWAY: {status}
+    GATEWAY->>NOTIF: Queue: "campaign_rejected"
+    NOTIF-->>ONG: Email: "Projet rejeté"<br/>Raison: Docs insuffisants<br/>Action: Résubmit with more docs
+    
+    Note over ONG,DB: 6️⃣ SUIVI EN TEMPS RÉEL (Admin Dashboard)
+    ADMIN->>GATEWAY: GET /admin/dashboard<br/>{view: 'real-time'}
+    GATEWAY->>DB: SELECT COUNT(*)<br/>projects_active, donations_today,<br/>ong_verified
+    DB-->>GATEWAY: {metrics}
+    GATEWAY-->>ADMIN: Affiche: 45 projets actifs,<br/>250M FCFA récoltés,<br/>120 ONG vérifiés

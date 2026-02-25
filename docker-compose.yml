@@ -1,11 +1,12 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
   postgres:
-    image: postgres:16-alpine
+    image: postgres:15-alpine
     container_name: actforgood-postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
@@ -14,19 +15,246 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/01-init-databases.sql:/docker-entrypoint-initdb.d/01-init-databases.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - actforgood-network
 
+  # Redis Cache
   redis:
     image: redis:7-alpine
     container_name: actforgood-redis
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - actforgood-network
+
+  # RabbitMQ Message Queue
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: actforgood-rabbitmq
+    ports:
+      - '5672:5672' # AMQP port
+      - '15672:15672' # Management UI (http://localhost:15672)
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ['CMD', 'rabbitmq-diagnostics', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - actforgood-network
+
+  # MongoDB (pour logs d'IA et cache ML)
+  mongodb:
+    image: mongo:7.0
+    container_name: actforgood-mongodb
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: actforgood
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 3s
+    networks:
+      - actforgood-network
+
+  # Spring Cloud Config Server
+  config-server:
+    build:
+      context: './ActForGood Microservices/config-server'
+    container_name: actforgood-config-server
+    ports:
+      - '8888:8888'
+    networks:
+      - actforgood-network
+    depends_on:
+      - rabbitmq
+
+  # Service Discovery (Eureka)
+  service-discovery:
+    build:
+      context: './ActForGood Microservices/service-discovery'
+    container_name: actforgood-service-discovery
+    ports:
+      - '8761:8761'
+    networks:
+      - actforgood-network
+    depends_on:
+      - config-server
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: './ActForGood Microservices/api-gateway'
+    container_name: actforgood-api-gateway
+    ports:
+      - '8080:8080'
+    networks:
+      - actforgood-network
+    depends_on:
+      - service-discovery
+
+  # User Service
+  user-service:
+    build:
+      context: './ActForGood Microservices/user-service'
+    container_name: actforgood-user-service
+    ports:
+      - '8081:8081'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - service-discovery
+
+  # Campaign Service
+  campaign-service:
+    build:
+      context: './ActForGood Microservices/campaign-service'
+    container_name: actforgood-campaign-service
+    ports:
+      - '8082:8082'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - service-discovery
+
+  # Matching Service
+  matching-service:
+    build:
+      context: './ActForGood Microservices/matching-service'
+    container_name: actforgood-matching-service
+    ports:
+      - '8083:8083'
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:root@mongodb:27017/actforgood?authSource=admin
+    networks:
+      - actforgood-network
+    depends_on:
+      - mongodb
+      - service-discovery
+
+  # Donation Service
+  donation-service:
+    build:
+      context: './ActForGood Microservices/donation-service'
+    container_name: actforgood-donation-service
+    ports:
+      - '8084:8084'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - service-discovery
+
+  # Wallet Service
+  wallet-service:
+    build:
+      context: './ActForGood Microservices/wallet-service'
+    container_name: actforgood-wallet-service
+    ports:
+      - '8085:8085'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - service-discovery
+
+  # Transaction Service
+  transaction-service:
+    build:
+      context: './ActForGood Microservices/transaction-service'
+    container_name: actforgood-transaction-service
+    ports:
+      - '8086:8086'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - service-discovery
+
+  # Notification Service
+  notification-service:
+    build:
+      context: './ActForGood Microservices/notification-service'
+    container_name: actforgood-notification-service
+    ports:
+      - '8087:8087'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - rabbitmq
+      - service-discovery
+
+  # Payment Service
+  payment-service:
+    build:
+      context: './ActForGood Microservices/payment-service'
+    container_name: actforgood-payment-service
+    ports:
+      - '8088:8088'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - service-discovery
+
+  # Blockchain Service
+  blockchain-service:
+    build:
+      context: './ActForGood Microservices/blockchain-service'
+    container_name: actforgood-blockchain-service
+    ports:
+      - '8089:8089'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/actforgood
+    networks:
+      - actforgood-network
+    depends_on:
+      - postgres
+      - service-discovery
 
 volumes:
   postgres_data:
   redis_data:
+  rabbitmq_data:
+  mongo_data:
+
+networks:
+  actforgood-network:
+    driver: bridge

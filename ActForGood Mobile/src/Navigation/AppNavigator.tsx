@@ -1,22 +1,20 @@
-import React, {useEffect} from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {useSelector, useDispatch} from 'react-redux';
-import {RootState} from '../Store/store';
-import {setUser} from '../Store/Slices/authSlice';
-import authService from '../Services/auth.service';
-import {RootStackParamList, MainTabParamList} from '../Types/navigation';
+import {createStackNavigator} from '@react-navigation/stack';
+import React, {useEffect} from 'react';
+import authRepository from '../Repository/auth.repository';
+import {MainTabParamList, RootStackParamList} from '../Types/navigation';
+import {useAuthViewModel} from '../ViewModel/useAuthViewModel';
 
 // Screens
-import WelcomeScreen from '../Screens/Welcome/WelcomeScreen';
-import LoginScreen from '../Screens/Auth/LoginScreen';
-import RegisterScreen from '../Screens/Auth/RegisterScreen';
-import RegisterFormScreen from '../Screens/Auth/RegisterFormScreen';
-import HomeScreen from '../Screens/Home/HomeScreen';
-import CampaignsScreen from '../Screens/Campaigns/CampaignsScreen';
-import CampaignDetailScreen from '../Screens/Campaigns/CampaignDetailScreen';
-import ProfileScreen from '../Screens/Profile/ProfileScreen';
-import DashboardScreen from '../Screens/Dashboard/DashboardScreen';
+import LoginScreen from '../Presentation/Screens/Auth/LoginScreen';
+import RegisterFormScreen from '../Presentation/Screens/Auth/RegisterFormScreen';
+import RegisterScreen from '../Presentation/Screens/Auth/RegisterScreen';
+import CampaignDetailScreen from '../Presentation/Screens/Campaigns/CampaignDetailScreen';
+import CampaignsScreen from '../Presentation/Screens/Campaigns/CampaignsScreen';
+import DashboardScreen from '../Presentation/Screens/Dashboard/DashboardScreen';
+import HomeScreen from '../Presentation/Screens/Home/HomeScreen';
+import ProfileScreen from '../Presentation/Screens/Profile/ProfileScreen';
+import WelcomeScreen from '../Presentation/Screens/Welcome/WelcomeScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -31,19 +29,18 @@ const MainTabs = () => (
 );
 
 const AppNavigator: React.FC = () => {
-  const dispatch = useDispatch();
-  const {user, isGuest} = useSelector((state: RootState) => state.auth);
+  const {user, isGuest, setUser} = useAuthViewModel();
   const isAuthenticated = Boolean(user || isGuest);
 
   useEffect(() => {
     const checkAuth = async () => {
-      const storedUser = await authService.getUser();
+      const storedUser = await authRepository.getUser();
       if (storedUser) {
-        dispatch(setUser(storedUser));
+        setUser(storedUser);
       }
     };
     checkAuth();
-  }, [dispatch]);
+  }, [setUser]);
 
   return (
     <Stack.Navigator
@@ -52,7 +49,10 @@ const AppNavigator: React.FC = () => {
       {isAuthenticated ? (
         <>
           <Stack.Screen name="MainTabs" component={MainTabs} />
-          <Stack.Screen name="CampaignDetail" component={CampaignDetailScreen} />
+          <Stack.Screen
+            name="CampaignDetail"
+            component={CampaignDetailScreen}
+          />
         </>
       ) : (
         <>

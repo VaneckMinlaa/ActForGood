@@ -1,0 +1,22 @@
+server:
+  port: ${SERVER_PORT:8761}
+
+spring:
+  application:
+    name: service-discovery
+
+eureka:
+  instance:
+    hostname: ${EUREKA_HOSTNAME:localhost}
+    prefer-ip-address: ${EUREKA_PREFER_IP:false}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+    com.netflix.eureka: INFO
+    com.netflix.discovery: INFO

@@ -1,13 +1,11 @@
-import React from 'react';
-import {View, ActivityIndicator, StyleSheet} from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {Provider} from 'react-redux';
-import {NavigationContainer} from '@react-navigation/native';
-import {PaperProvider} from 'react-native-paper';
-import {useFonts} from 'expo-font';
-import {store} from './Application/Store';
-import AppNavigator from './Presentation/Navigation/AppNavigator';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import {NavigationContainer} from '@react-navigation/native';
+import {useFonts} from 'expo-font';
+import React from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {PaperProvider} from 'react-native-paper';
+import AppNavigator from './Presentation/Navigation/AppNavigator';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -24,13 +22,11 @@ const App: React.FC = () => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <Provider store={store}>
-        <PaperProvider>
-          <NavigationContainer>
-            <AppNavigator />
-          </NavigationContainer>
-        </PaperProvider>
-      </Provider>
+      <PaperProvider>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </PaperProvider>
     </GestureHandlerRootView>
   );
 };

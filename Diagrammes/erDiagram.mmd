@@ -1,0 +1,167 @@
+erDiagram
+    USERS ||--o{ WALLETS : owns
+    USERS ||--o{ DONATIONS : makes
+    USERS ||--o{ NOTIFICATIONS : receives
+    USERS ||--o{ CHAT_MESSAGES : sends
+    ONG ||--o{ CAMPAIGNS : creates
+    ONG ||--o{ REPORTS : submits
+    ONG ||--o{ DOCUMENTS : uploads
+    CAMPAIGNS ||--o{ DONATIONS : receives
+    CAMPAIGNS ||--o{ IMPACT_METRICS : tracks
+    CAMPAIGNS ||--o{ CHAT_MESSAGES : discussed_in
+    DONATIONS ||--o{ TRANSACTIONS : creates
+    DONATIONS ||--o{ BLOCKCHAIN_TX : records
+    TRANSACTIONS ||--o{ NOTIFICATIONS : triggers
+    TRANSACTIONS ||--o{ AUDIT_LOG : audits
+    NOTIFICATIONS ||--o{ NOTIFICATION_LOG : logs
+    
+    USERS {
+        string user_id PK
+        string email UK
+        string phone
+        string role
+        string status
+        string password_hash
+        timestamp created_at
+        string location
+        float latitude
+        float longitude
+    }
+    
+    WALLETS {
+        string wallet_id PK
+        string user_id FK
+        decimal balance
+        decimal total_donated
+        timestamp last_deposit
+        string currency
+    }
+    
+    ONG {
+        string ong_id PK
+        string user_id FK
+        string name
+        string rccm
+        string verification_status
+        text description
+        string website
+        decimal total_received
+        int projects_count
+        float rating
+    }
+    
+    CAMPAIGNS {
+        string campaign_id PK
+        string ong_id FK
+        string title
+        text description
+        decimal target_amount
+        decimal collected_amount
+        string status
+        int beneficiary_count
+        string urgency
+        string category
+        float latitude
+        float longitude
+        date deadline
+        float impact_score
+    }
+    
+    DONATIONS {
+        string donation_id PK
+        string user_id FK
+        string campaign_id FK
+        decimal amount
+        decimal commission_15_percent
+        decimal ong_receives_85_percent
+        string status
+        timestamp created_at
+        string blockchain_tx_id
+    }
+    
+    TRANSACTIONS {
+        string transaction_id PK
+        string donation_id FK
+        string from_user_id FK
+        string to_ong_id FK
+        decimal amount
+        decimal commission
+        string payment_method
+        string status
+        timestamp created_at
+        timestamp completed_at
+    }
+    
+    BLOCKCHAIN_TX {
+        string blockchain_tx_id PK
+        string transaction_id FK
+        string tx_hash
+        string block_number
+        string blockchain
+        timestamp recorded_at
+    }
+    
+    IMPACT_METRICS {
+        string metric_id PK
+        string campaign_id FK
+        int students_helped
+        int children_fed
+        int medical_cases_treated
+        float achievement_percent
+        timestamp last_update
+    }
+    
+    REPORTS {
+        string report_id PK
+        string ong_id FK
+        string campaign_id FK
+        text content
+        timestamp created_at
+        string status
+    }
+    
+    DOCUMENTS {
+        string document_id PK
+        string ong_id FK
+        string file_path
+        string doc_type
+        timestamp uploaded_at
+        string verification_status
+    }
+    
+    CHAT_MESSAGES {
+        string message_id PK
+        string campaign_id FK
+        string sender_id FK
+        string receiver_id FK
+        text content
+        string message_type
+        timestamp created_at
+        boolean read
+    }
+    
+    NOTIFICATIONS {
+        string notification_id PK
+        string user_id FK
+        string title
+        text content
+        string type
+        string channel
+        boolean read
+        timestamp created_at
+    }
+    
+    NOTIFICATION_LOG {
+        string log_id PK
+        string notification_id FK
+        string delivery_status
+        timestamp sent_at
+    }
+    
+    AUDIT_LOG {
+        string audit_id PK
+        string transaction_id FK
+        string action
+        string actor_user_id FK
+        timestamp action_at
+    }

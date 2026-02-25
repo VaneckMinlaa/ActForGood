@@ -1,0 +1,85 @@
+graph TB
+    subgraph Lifecycle["🔄 LIFECYCLE OF A TRANSACTION"]
+        T1["1️⃣ Donation Created<br/>Amount: 100,000 FCFA<br/>From: Donor_123<br/>To: ONG_Orphelinat<br/>For: Campaign_Edu_2026"]
+        T2["2️⃣ Payment Processing<br/>- Debit wallet: -100k<br/>- Calculate: Commission 15%<br/>- ONG gets: 85,000 FCFA<br/>- ActForGood keeps: 15,000"]
+        T3["3️⃣ Record on Blockchain<br/>Immutable record<br/>Hash = SHA256(transaction)"]
+        T4["4️⃣ Block Confirmation<br/>Block #18950<br/>Timestamp: 2026-02-25 14:30:00<br/>Nonce: 0x123a..."]
+        T5["5️⃣ Web3 Receipt<br/>Transaction Hash:<br/>0xAbc123Def456..."]
+        T6["6️⃣ Real-Time Visibility<br/>Donor & ONG see receipt<br/>Can verify on blockchain explorer"]
+    end
+    
+    subgraph SmartContract["📝 SMART CONTRACT"]
+        SC1["Contract: DonationEscrow.sol<br/>Network: Ethereum/Stellar"]
+        SC2["Functions:<br/>- transferDonation(donor, ong,<br/>  amount, commission)<br/>- recordTransaction(tx_hash)<br/>- verifyTransaction(tx_hash)"]
+        SC3["Storage:<br/>- transactions[]: All tx<br/>- balances{}: Per-user balance<br/>- projects{}: Campaign status"]
+    end
+    
+    subgraph Data["💾 DUAL STORAGE"]
+        DB["PostgreSQL (Centralized)<br/>- Transaction records<br/>- User accounts<br/>- Campaign details<br/>- Audit logs"]
+        BC["Blockchain (Decentralized)<br/>- Tx hash proof<br/>- Immutable record<br/>- Smart contract state<br/>- Timestamp lock"]
+    end
+    
+    subgraph VerifyFlow["✅ VERIFICATION FLOW"]
+        DonorView["Donor sees in app:<br/>- Don confirmé ✅<br/>- Transaction ID: TX_123<br/>- ONG a reçu: 85k FCFA<br/>- Blockchain proof: 0xAbc..."]
+        ONGView["ONG sees in dashboard:<br/>- Don reçu: 85k FCFA<br/>- Commission: 15k<br/>- Donor: Anonymous/Named<br/>- Proof: Blockchain hash"]
+        AdminAudit["Admin audit trail:<br/>- All transactions immutable<br/>- Real-time monitoring<br/>- Dispute resolution<br/>- Report generation"]
+    end
+    
+    subgraph RealTimeUpdate["⚡ REAL-TIME UPDATES"]
+        WebSocket["WebSocket Connection<br/>Live notification push"]
+        Event1["Event: DonationConfirmed<br/>-> Push to Donor<br/>-> Email ONG<br/>-> Update dashboard"]
+    end
+    
+    subgraph Transparency["🔍 TRANSPARENCY LAYERS"]
+        Layer1["Layer 1: Transaction Hash<br/>Donor/ONG can see hash<br/>Blockchain explorer link"]
+        Layer2["Layer 2: Block Details<br/>Block number, timestamp<br/>Merkle tree proof"]
+        Layer3["Layer 3: Smart Contract<br/>Verify: Amount, recipient<br/>Gas spent, block confirmation"]
+        Layer4["Layer 4: Impact Tracking<br/>Campaign progress<br/>Funds allocated<br/>Beneficiary metrics"]
+    end
+    
+    subgraph InteractionExample["📲 EXAMPLE INTERACTION"]
+        Ex1["Donor deposits 500k FCFA<br/>Orange Money → ActForGood Wallet"]
+        Ex2["Donor gives 100k to Project X<br/>85k → ONG, 15k → ActForGood"]
+        Ex3["Blockchain record:<br/>tx: 0xAbc... | block: 18950<br/>timestamp: 2026-02-25 14:30:00"]
+        Ex4["Donor clicks 'View Receipt'<br/>→ Shows Etherscan/Stellar link<br/>→ Verify amount, recipient, proof"]
+        Ex5["ONG reports 50 kids received<br/>supplies via project blockchain<br/>Donor sees impact in real-time"]
+    end
+    
+    T1 --> T2
+    T2 --> T3
+    T3 --> T4
+    T4 --> T5
+    T5 --> T6
+    
+    T3 --> SmartContract
+    SC2 --> SC3
+    
+    T2 --> DB
+    T3 --> BC
+    
+    T6 --> VerifyFlow
+    DonorView --> VerifyFlow
+    ONGView --> VerifyFlow
+    AdminAudit --> VerifyFlow
+    
+    T5 --> WebSocket
+    WebSocket --> Event1
+    
+    Layer1 --> Transparency
+    Layer2 --> Transparency
+    Layer3 --> Transparency
+    Layer4 --> Transparency
+    
+    Ex1 --> InteractionExample
+    Ex2 --> InteractionExample
+    Ex3 --> InteractionExample
+    Ex4 --> InteractionExample
+    Ex5 --> InteractionExample
+    
+    style Lifecycle fill:#fff9c4
+    style SmartContract fill:#f3e5f5
+    style Data fill:#e8f5e9
+    style VerifyFlow fill:#c8e6c9
+    style RealTimeUpdate fill:#ffccbc
+    style Transparency fill:#e1f5ff
+    style InteractionExample fill:#fce4ec

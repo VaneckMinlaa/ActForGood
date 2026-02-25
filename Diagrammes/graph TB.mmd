@@ -1,0 +1,94 @@
+graph TB
+    subgraph Client["🖥️ CLIENT LAYER"]
+        Web["<b>Web Admin/ONG</b><br/>Angular + TypeScript<br/>Vercel Deployment"]
+        Mobile["<b>Mobile Donateur</b><br/>React Native<br/>EAS Deployment"]
+    end
+    
+    subgraph API["🌐 API GATEWAY LAYER"]
+        Gateway["API Gateway<br/>(Load Balancing<br/>Auth/Validation<br/>Rate Limiting)"]
+    end
+    
+    subgraph Micro["🔧 MICROSERVICES LAYER<br/>(Java Spring Boot)"]
+        UserMS["👤 User Service<br/>- Auth<br/>- Profils"]
+        CampaignMS["🎯 Campaign Service<br/>- Créer projets<br/>- Validation"]
+        MatchingMS["🤖 Matching Service<br/>- IA Recommandations<br/>- ML Engine"]
+        DonationMS["💰 Donation Service<br/>- Gestion dons<br/>- Portefeuille"]
+        TransactionMS["💳 Transaction Service<br/>- Paiements<br/>- Mobile Money"]
+        PaymentMS["🏦 Payment Service<br/>- Orange Money<br/>- MTN MoMo"]
+        BlockchainMS["⛓️ Blockchain Service<br/>- Traçabilité<br/>- Smart Contracts"]
+        NotificationMS["🔔 Notification Service<br/>- Email/SMS<br/>- Push Notifs"]
+        ReportMS["📊 Report Service<br/>- Analytics<br/>- Impact Metrics"]
+    end
+    
+    subgraph Data["💾 DATA LAYER"]
+        PostgreSQL["🗄️ PostgreSQL<br/>- Utilisateurs<br/>- Projets<br/>- Transactions<br/>- Historique"]
+        MongoDB["🗄️ MongoDB<br/>- Cache<br/>- Logs d'IA<br/>- Données temps réel"]
+    end
+    
+    subgraph External["🔗 EXTERNAL SERVICES"]
+        OrangeMoney["📱 Orange Money API"]
+        MTNMoMo["📱 MTN MoMo API"]
+        Brevo["📧 Brevo SMS/Email"]
+        Blockchain["⛓️ Ethereum/Stellar<br/>RPC Node"]
+        Geoloc["📍 Google Maps API"]
+    end
+    
+    subgraph Infrastructure["☁️ INFRASTRUCTURE"]
+        VPS["VPS Server<br/>- Backend deployment<br/>- Microservices<br/>- Databases"]
+        Redis["Redis Cache<br/>- Sessions<br/>- Real-time updates"]
+        Queue["Message Queue<br/>RabbitMQ/Kafka<br/>- Async jobs"]
+    end
+    
+    Client --> Gateway
+    Gateway --> UserMS
+    Gateway --> CampaignMS
+    Gateway --> MatchingMS
+    Gateway --> DonationMS
+    Gateway --> TransactionMS
+    Gateway --> PaymentMS
+    Gateway --> BlockchainMS
+    Gateway --> NotificationMS
+    Gateway --> ReportMS
+    
+    UserMS --> PostgreSQL
+    CampaignMS --> PostgreSQL
+    MatchingMS --> MongoDB
+    MatchingMS --> PostgreSQL
+    DonationMS --> PostgreSQL
+    TransactionMS --> PostgreSQL
+    PaymentMS --> PostgreSQL
+    BlockchainMS --> PostgreSQL
+    ReportMS --> PostgreSQL
+    
+    PaymentMS --> OrangeMoney
+    PaymentMS --> MTNMoMo
+    NotificationMS --> Brevo
+    BlockchainMS --> Blockchain
+    CampaignMS --> Geoloc
+    MatchingMS --> Geoloc
+    
+    UserMS -.interacts.-> Redis
+    DonationMS -.interacts.-> Redis
+    NotificationMS --> Queue
+    TransactionMS --> Queue
+    
+    VPS -.contains.-> UserMS
+    VPS -.contains.-> CampaignMS
+    VPS -.contains.-> MatchingMS
+    VPS -.contains.-> DonationMS
+    VPS -.contains.-> TransactionMS
+    VPS -.contains.-> PaymentMS
+    VPS -.contains.-> BlockchainMS
+    VPS -.contains.-> NotificationMS
+    VPS -.contains.-> ReportMS
+    VPS -.contains.-> PostgreSQL
+    VPS -.contains.-> MongoDB
+    VPS -.contains.-> Redis
+    VPS -.contains.-> Queue
+    
+    style Client fill:#e3f2fd
+    style API fill:#f3e5f5
+    style Micro fill:#fff3e0
+    style Data fill:#e8f5e9
+    style External fill:#fce4ec
+    style Infrastructure fill:#f1f8e9

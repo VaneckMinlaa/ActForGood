@@ -1,39 +1,91 @@
-# IDEs
+# ============================================================
+# IDE & Editor
+# ============================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
 .idea/
 *.iml
-.vscode/
-*.swp
-*.swo
-*~
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+.directory
+
+# Windows
+Thumbs.db
+
+# ============================================================
+# Build Artifacts
+# ============================================================
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
 
 # Java
 *.class
-*.log
 *.jar
 *.war
 *.ear
-target/
+*.zip
 .mvn/
 mvnw
 mvnw.cmd
 
-# Node
+# ============================================================
+# Node.js / JavaScript
+# ============================================================
+
+# Dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
-.npm
-.eslintcache
+lerna-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# Angular
+# Testing
+coverage/
+.nyc_output/
+junit.xml
+
+# Distribution
 dist/
-tmp/
-.angular/
+build/
+*.js.map
+*.css.map
 
-# React Native
+# React Native / Expo
 .expo/
 .expo-shared/
+dist/
+npm-debug.*
 *.jks
 *.p8
 *.p12
@@ -42,35 +94,103 @@ tmp/
 *.orig.*
 web-build/
 
-# OS
-.DS_Store
-Thumbs.db
+# Angular
+dist/
+out-tsc/
+bazel-out/
+.angular/
 
-# Environment
+# ============================================================
+# Environment Variables & Secrets
+# ============================================================
+
 .env
 .env.local
 .env.*.local
+.local.env
+secrets/
+*.key
+*.pem
+*.p12
 
-# Logs
-logs/
-*.log
+# ============================================================
+# Database & Data
+# ============================================================
 
-# Build
-build/
-out/
-
-# Docker
-docker-compose.override.yml
-
-# Database
 *.db
 *.sqlite
+*.sqlite3
+postgres_data/
+mongo_data/
+redis_data/
+data/
 
-# Coverage
-coverage/
-.nyc_output/
+# Database backups
+!*/01-init-databases.sql
 
+# ============================================================
+# Docker
+# ============================================================
+
+docker-compose.override.yml
+docker-volumes/
+
+# ============================================================
+# Logs & Cache
+# ============================================================
+
+logs/
+*.log
+*.log.gz
+.cache/
+.eslintcache
+
+# ============================================================
+# OS Specific
+# ============================================================
+
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+$RECYCLE.BIN/
+
+# ============================================================
+# Temporary & Backup Files
+# ============================================================
+
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+~*
+
+# ============================================================
+# Generated Files
+# ============================================================
+
+generated/
+generated-sources/
+generated-test-sources/
+.apt_generated/
+
+# ============================================================
+# Test & Coverage
+# ============================================================
+
+test-results/
+surefire-reports/
+failsafe-reports/
+jacoco.exec
+
+# ============================================================
 # Misc
+# ============================================================
+
 *.pid
 *.seed
 *.pid.lock
+.DS_Store
+*.swp
+*.swo
+*~
