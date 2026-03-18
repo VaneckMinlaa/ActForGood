@@ -1,119 +1,183 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <!-- Logo -->
-    <div class="auth-logo">
-      <span class="logo-actfor">ActFor</span><span class="logo-good">Good</span>
+<div class="register-page">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <a routerLink="/" class="top-logo">ActForGood</a>
+    <div class="top-help">
+      Besoin d'aide ? <a href="#contact" class="top-help-link">Contactez le support</a>
     </div>
+  </div>
 
-    <!-- Étape 1 : Choix du type de compte -->
-    <ng-container *ngIf="step === 1">
-      <h1 class="auth-title">Créer votre compte ActForGood</h1>
-      <p class="auth-subtitle">Qui êtes-vous ?</p>
+  <div class="register-layout">
 
-      <div class="user-types-grid">
-        <button
-          type="button"
-          *ngFor="let type of userTypes"
-          class="user-type-card"
-          [class.selected]="selectedType === type.value"
-          (click)="selectType(type.value)">
-          <mat-icon class="user-type-icon" [fontIcon]="type.icon" aria-hidden="true"></mat-icon>
-          <span class="user-type-title">{{ type.label }}</span>
-          <span class="user-type-desc">{{ type.description }}</span>
+    <!-- LEFT PANEL -->
+    <aside class="left-panel">
+      <div class="step-badge">ÉTAPE {{ currentStep }} SUR {{ totalSteps }}</div>
+      <h1 class="panel-title">Inscrire mon<br>Institution</h1>
+      <p class="panel-desc">
+        Rejoignez notre réseau de confiance. Chaque demande fait l'objet d'une vérification rigoureuse sous 48h par nos experts pour garantir l'intégrité de l'Archive Humaine.
+      </p>
+
+      <div class="steps-list">
+        <div class="step-item" [class.active]="currentStep === 1" [class.done]="currentStep > 1">
+          <div class="step-num">{{ currentStep > 1 ? '✓' : '1' }}</div>
+          <span>Informations de base</span>
+        </div>
+        <div class="step-item" [class.active]="currentStep === 2" [class.done]="currentStep > 2">
+          <div class="step-num">{{ currentStep > 2 ? '✓' : '2' }}</div>
+          <span>Documents légaux</span>
+        </div>
+        <div class="step-item" [class.active]="currentStep === 3">
+          <div class="step-num">3</div>
+          <span>Validation finale</span>
+        </div>
+      </div>
+
+      <div class="privacy-card">
+        <mat-icon class="privacy-icon">shield</mat-icon>
+        <div>
+          <p class="privacy-title">Confidentialité garantie</p>
+          <p class="privacy-desc">Vos données sont chiffrées et ne seront jamais partagées avec des tiers sans votre consentement.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL -->
+    <main class="right-panel">
+
+      <!-- STEP 1 -->
+      <div *ngIf="currentStep === 1" class="form-card">
+        <div class="form-group">
+          <label class="form-label">NOM DE L'ORGANISATION</label>
+          <input type="text" class="form-input" placeholder="ex: Les Orphelins de l'Espoir" [(ngModel)]="step1.name" name="orgName" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">TYPE D'INSTITUTION</label>
+            <select class="form-select" [(ngModel)]="step1.type" name="orgType">
+              <option value="" disabled selected>Sélectionnez un type</option>
+              <option value="ONG">ONG</option>
+              <option value="Entreprise">Entreprise</option>
+              <option value="Association">Association</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ANNÉE DE CRÉATION</label>
+            <input type="number" class="form-input" placeholder="ex: 2012" [(ngModel)]="step1.year" name="orgYear" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">SECTEURS D'ACTIVITÉ</label>
+          <div class="sectors-list">
+            <button *ngFor="let sector of sectors" type="button" class="sector-chip"
+              [class.selected]="isSectorSelected(sector)" (click)="toggleSector(sector)">
+              {{ sector }}<span *ngIf="isSectorSelected(sector)"> ×</span>
+            </button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">VILLE / LOCALITÉ</label>
+            <input type="text" class="form-input" placeholder="ex: Douala" [(ngModel)]="step1.city" name="orgCity" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">SITE WEB (OPTIONNEL)</label>
+            <input type="url" class="form-input" placeholder="https://" [(ngModel)]="step1.website" name="orgWebsite" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ADRESSE COMPLÈTE</label>
+          <input type="text" class="form-input" placeholder="Quartier, Rue, Précisions géographiques" [(ngModel)]="step1.address" name="orgAddress" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">DESCRIPTION DE LA MISSION</label>
+          <textarea class="form-textarea" rows="5" placeholder="Décrivez l'impact que vous souhaitez créer..."
+            [(ngModel)]="step1.mission" name="orgMission" maxlength="500" (input)="onMissionInput($event)"></textarea>
+          <p class="char-count">{{ missionLength }} / 500 caractères</p>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div *ngIf="currentStep === 2" class="form-card">
+        <div class="form-group">
+          <label class="form-label">NUMÉRO RCCM / RÉCÉPISSÉ</label>
+          <input type="text" class="form-input" placeholder="ex: RC/DLA/2015/B/1234" [(ngModel)]="step2.rccm" name="rccm" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">NUMÉRO CONTRIBUABLE (NIU)</label>
+          <input type="text" class="form-input" placeholder="ex: M012345678901A" [(ngModel)]="step2.taxId" name="taxId" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">DOCUMENT LÉGAL (PDF)</label>
+          <div class="file-upload" (click)="legalInput.click()">
+            <mat-icon>upload_file</mat-icon>
+            <span>{{ step2.legalDoc ? step2.legalDoc.name : 'Cliquez pour uploader (PDF, max 5MB)' }}</span>
+            <input #legalInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'legalDoc')" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">STATUTS DE L'ORGANISATION (PDF)</label>
+          <div class="file-upload" (click)="statutesInput.click()">
+            <mat-icon>upload_file</mat-icon>
+            <span>{{ step2.statutes ? step2.statutes.name : 'Cliquez pour uploader (PDF, max 5MB)' }}</span>
+            <input #statutesInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'statutes')" />
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div *ngIf="currentStep === 3" class="form-card">
+        <p class="step3-intro">Créez le compte administrateur de votre institution.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">PRÉNOM</label>
+            <input type="text" class="form-input" placeholder="Jean" [(ngModel)]="step3.firstName" name="firstName" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">NOM</label>
+            <input type="text" class="form-input" placeholder="Dupont" [(ngModel)]="step3.lastName" name="lastName" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">EMAIL PROFESSIONNEL</label>
+          <input type="email" class="form-input" placeholder="vous&#64;institution.cm" [(ngModel)]="step3.email" name="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">TÉLÉPHONE</label>
+          <input type="tel" class="form-input" placeholder="+237 6XX XXX XXX" [(ngModel)]="step3.phone" name="phone" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">MOT DE PASSE</label>
+            <input type="password" class="form-input" placeholder="••••••••" [(ngModel)]="step3.password" name="password" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">CONFIRMER</label>
+            <input type="password" class="form-input" placeholder="••••••••" [(ngModel)]="step3.confirmPassword" name="confirmPassword" />
+          </div>
+        </div>
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="step3.acceptTerms" name="terms" />
+          J'accepte les <a href="#" class="link-green">conditions d'utilisation</a> et la <a href="#" class="link-green">politique de confidentialité</a>
+        </label>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="form-nav">
+        <a routerLink="/" class="btn-back" *ngIf="currentStep === 1">
+          <mat-icon>arrow_back</mat-icon> Retour à l'accueil
+        </a>
+        <button type="button" class="btn-back" *ngIf="currentStep > 1" (click)="prevStep()">
+          <mat-icon>arrow_back</mat-icon> Étape précédente
+        </button>
+        <button type="button" class="btn-next" *ngIf="currentStep < totalSteps" (click)="nextStep()">
+          Continuer vers l'étape {{ currentStep + 1 }} <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button type="button" class="btn-next btn-submit" *ngIf="currentStep === totalSteps" (click)="submit()" [disabled]="!step3.acceptTerms">
+          Soumettre ma demande <mat-icon>check_circle</mat-icon>
         </button>
       </div>
 
-      <button
-        type="button"
-        class="btn-next"
-        [disabled]="!selectedType"
-        (click)="goToStep2()">
-        Suivant
-      </button>
-    </ng-container>
-
-    <!-- Étape 2 : Formulaire d'inscription (design maquette) -->
-    <ng-container *ngIf="step === 2">
-      <h1 class="auth-title">{{ getInscriptionTitle() }}</h1>
-      <p class="auth-subtitle">{{ getSubtitle() }}</p>
-
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form auth-form-step2">
-        <div class="form-field">
-          <label class="form-label">Nom (optionnel)</label>
-          <input
-            type="text"
-            class="form-input"
-            formControlName="lastName"
-            placeholder="Votre nom ou pseudonyme">
-        </div>
-
-        <div class="form-field">
-          <label class="form-label">Email <span class="required">*</span></label>
-          <input
-            type="email"
-            class="form-input"
-            formControlName="email"
-            placeholder="votre.email@exemple.com">
-          <span class="error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-            Email invalide
-          </span>
-        </div>
-
-        <div class="form-field">
-          <label class="form-label">Mot de passe <span class="required">*</span></label>
-          <span class="form-hint">Minimum 8 caractères</span>
-          <input
-            type="password"
-            class="form-input"
-            formControlName="password"
-            placeholder="Votre mot de passe">
-          <span class="password-strength">Force du mot de passe : {{ getPasswordStrength() }}</span>
-        </div>
-
-        <div class="form-field">
-          <label class="form-label">Confirmer le mot de passe <span class="required">*</span></label>
-          <input
-            type="password"
-            class="form-input"
-            formControlName="passwordConfirm"
-            placeholder="Confirmez votre mot de passe">
-          <span class="error" *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('passwordConfirm')?.touched">
-            Les mots de passe ne correspondent pas
-          </span>
-        </div>
-
-        <div class="form-checkbox" *ngIf="selectedType === 'DONOR'">
-          <mat-checkbox formControlName="anonymousDonation" color="primary">
-            Je souhaite que mes dons soient affichés publiquement de manière anonyme (sans mon nom)
-            <mat-icon class="info-icon" fontIcon="info" title="Vos dons seront visibles mais sans afficher votre identité"></mat-icon>
-          </mat-checkbox>
-        </div>
-
-        <div class="form-checkbox">
-          <mat-checkbox formControlName="acceptTerms" color="primary">
-            J'accepte les
-            <a href="#" class="form-link" (click)="$event.preventDefault(); $event.stopPropagation()">conditions d'utilisation</a>
-            et la
-            <a href="#" class="form-link" (click)="$event.preventDefault(); $event.stopPropagation()">politique de confidentialité d'ActForGood</a>
-            <span class="required">*</span>
-          </mat-checkbox>
-          <span class="error" *ngIf="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched">
-            Vous devez accepter les conditions
-          </span>
-        </div>
-
-        <button type="submit" class="btn-submit" [disabled]="registerForm.invalid">
-          Créer mon compte
-        </button>
-      </form>
-
-      <p class="auth-back-link">
-        <button type="button" class="btn-back" (click)="step = 1">Retour</button>
-      </p>
-    </ng-container>
-
-    <p class="auth-footer">
-      Déjà un compte ? <a routerLink="/auth/login" class="auth-link">Se connecter</a>
-    </p>
+    </main>
   </div>
 </div>

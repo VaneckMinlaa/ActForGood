@@ -1,42 +1,309 @@
 <div class="home-page">
-  <!-- Section Hero -->
+
+  <!-- HERO -->
   <section class="hero">
-    <img src="assets/images/acceuil.jpg" alt="Classe d'école - enfants à Douala" class="hero-image" />
-  </section>
-
-  <!-- Contenu principal : deux colonnes -->
-  <section class="main-content">
-    <div class="content-grid">
-      <!-- Colonne gauche : informations projet -->
-      <div class="column-left">
-        <h1 class="project-title">Scolarisation de 500 enfants défavorisés à Douala</h1>
-        <div class="meta">
-          <span class="meta-item">
-            <span class="icon" aria-hidden="true">📍</span>
-            Douala, Cameroun
-          </span>
-          <span class="separator">|</span>
-          <span class="meta-item">
-            <span class="icon" aria-hidden="true">🎓</span>
-            Éducation
-          </span>
-        </div>
-        <h2 class="section-title">Notre Mission</h2>
-        <p class="description">
-          Dans les quartiers défavorisés de Douala, de nombreux enfants n'ont pas accès à une éducation de qualité, ou même à l'école du tout. Ce projet vise à offrir une opportunité de scolarisation complète à 500 enfants, en couvrant les frais de scolarité, les fournitures scolaires et les repas. Nous travaillons avec les écoles locales et les familles pour garantir une intégration durable et un suivi personnalisé de chaque enfant.
+    <div class="hero-content">
+      <div class="hero-left">
+        <span class="hero-badge">L'IMPACT EN TEMPS RÉEL</span>
+        <h1 class="hero-title">
+          Chaque don,<br>
+          tracé.<br>
+          Chaque vie,<br>
+          comptée.
+        </h1>
+        <p class="hero-subtitle">
+          Révolutionnez votre générosité. Suivez l'impact de vos contributions via la blockchain et soutenez les communautés camerounaises instantanément par Mobile Money.
         </p>
+        <div class="hero-actions">
+          <a routerLink="/auth/register" class="btn-primary">Faire un don</a>
+          <a routerLink="/auth/register" class="btn-outline-dark">Inscrire mon ONG</a>
+        </div>
       </div>
-
-      <!-- Colonne droite : CTA et organisation -->
-      <div class="column-right">
-        <a routerLink="/campaigns" class="btn-donate">Faire un don maintenant</a>
-        <div class="org-card">
-          <div class="org-logo" aria-hidden="true">
-            <span class="logo-icon">🌱</span>
+      <div class="hero-right">
+        <div class="hero-image-wrapper">
+          <img src="assets/images/acceuil.jpg" alt="Impact Social" class="hero-image" />
+          <div class="hero-badge-card">
+            <div class="badge-shield"><mat-icon>verified_user</mat-icon></div>
+            <div>
+              <p class="badge-label">BLOCKCHAIN VERIFY</p>
+              <p class="badge-value">100% Transparence</p>
+            </div>
           </div>
-          <p class="org-name">Association Lumière d'Avenir</p>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- STATS -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <p class="stat-value">450M+</p>
+        <p class="stat-label">FCFA distribués</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-value">128</p>
+        <p class="stat-label">Projets actifs</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-value">15k+</p>
+        <p class="stat-label">Donateurs</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-value">42</p>
+        <p class="stat-label">ONG certifiées</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARCOURS -->
+  <section class="parcours-section">
+    <div class="section-container">
+      <h2 class="section-title">Le parcours de votre impact</h2>
+      <p class="section-eyebrow">Trois étapes pour une transformation réelle.</p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-icon step-icon-green"><mat-icon>search</mat-icon></div>
+          <h3 class="step-title">Choisir</h3>
+          <p class="step-desc">Parcourez les initiatives locales vérifiées et choisissez la cause qui vous tient à cœur.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon step-icon-gold"><mat-icon>phone_iphone</mat-icon></div>
+          <h3 class="step-title">Donner via MoMo</h3>
+          <p class="step-desc">Contribuez instantanément avec Orange Money ou MTN Mobile Money en toute sécurité.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon step-icon-teal"><mat-icon>hub</mat-icon></div>
+          <h3 class="step-title">Suivre sur Blockchain</h3>
+          <p class="step-desc">Recevez une preuve immuable et voyez chaque franc arriver à sa destination finale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETS EN VEDETTE -->
+  <section class="projects-section">
+    <div class="section-container">
+      <div class="projects-header">
+        <div>
+          <h2 class="section-title-left">Projets en vedette</h2>
+          <p class="section-sub">Soutenez les actions les plus urgentes aujourd'hui.</p>
+        </div>
+        <a routerLink="/campaigns" class="view-all-link">Voir tous les projets →</a>
+      </div>
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-image project-img-1">
+            <span class="project-tag tag-urgent">URGENT</span>
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-category">Éducation &amp; Avenir</span>
+              <span class="project-location">📍 Douala</span>
+            </div>
+            <h3 class="project-title">Bibliothèques Mobiles</h3>
+            <p class="project-desc">Équiper 5 vans solaires pour apporter des livres et des ordinateurs dans les zones rurales du...</p>
+            <div class="project-progress">
+              <div class="progress-info">
+                <span class="progress-pct">75% récoltés</span>
+                <span class="progress-goal">Objectif: 5M FCFA</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+              </div>
+            </div>
+            <a routerLink="/campaigns" class="btn-support">Soutenir ce projet</a>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-image project-img-2">
+            <span class="project-tag tag-sante">SANTÉ</span>
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-category">Soins &amp; Communauté</span>
+              <span class="project-location">📍 Garoua</span>
+            </div>
+            <h3 class="project-title">Clinique Mobile du Nord</h3>
+            <p class="project-desc">Fournir des soins pédiatriques essentiels et des vaccinations dans les villages isolés du Nord.</p>
+            <div class="project-progress">
+              <div class="progress-info">
+                <span class="progress-pct">40% récoltés</span>
+                <span class="progress-goal">Objectif: 12M FCFA</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 40%"></div>
+              </div>
+            </div>
+            <a routerLink="/campaigns" class="btn-support">Soutenir ce projet</a>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-image project-img-3">
+            <span class="project-tag tag-impact">IMPACT</span>
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-category">Autonomie &amp; Agri</span>
+              <span class="project-location">📍 Bafoussam</span>
+            </div>
+            <h3 class="project-title">Coopérative Féminine</h3>
+            <p class="project-desc">Achat de broyeuses de manioc pour 50 femmes agricultrices pour booster leur revenus de...</p>
+            <div class="project-progress">
+              <div class="progress-info">
+                <span class="progress-pct">92% récoltés</span>
+                <span class="progress-goal">Objectif: 2.5M FCFA</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 92%"></div>
+              </div>
+            </div>
+            <a routerLink="/campaigns" class="btn-support">Soutenir ce projet</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI NOUS -->
+  <section class="why-section" id="about">
+    <div class="section-container why-grid">
+      <div class="why-left">
+        <h2 class="why-title">Pourquoi nous confier votre impact ?</h2>
+        <div class="why-items">
+          <div class="why-item">
+            <div class="why-icon"><mat-icon>link</mat-icon></div>
+            <div>
+              <h4 class="why-item-title">Blockchain Stellar</h4>
+              <p class="why-item-desc">Chaque transaction est inscrite sur un registre public infalsifiable. Votre reçu est un certificat numérique unique.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><mat-icon>smartphone</mat-icon></div>
+            <div>
+              <h4 class="why-item-title">Mobile Money First</h4>
+              <p class="why-item-desc">Pas besoin de carte bancaire. Donnez et recevez des fonds via les réseaux locaux MTN et Orange en 30 secondes.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><mat-icon>psychology</mat-icon></div>
+            <div>
+              <h4 class="why-item-title">AI Matching</h4>
+              <p class="why-item-desc">Notre algorithme connecte vos valeurs avec les projets les plus pertinents et efficaces pour maximiser chaque FCFA.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-right">
+        <div class="why-image-wrapper">
+          <img src="assets/images/acceuil.jpg" alt="Impact" class="why-image" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ILS NOUS FONT CONFIANCE -->
+  <section class="trust-section">
+    <p class="trust-label">ILS NOUS FONT CONFIANCE</p>
+    <div class="trust-logos">
+      <!-- Remplacer chaque bloc par le logo du partenaire -->
+      <div class="trust-logo-item"><span class="trust-placeholder">ONG 1</span></div>
+      <div class="trust-logo-item"><span class="trust-placeholder">ONG 2</span></div>
+      <div class="trust-logo-item"><span class="trust-placeholder">ONG 3</span></div>
+      <div class="trust-logo-item"><span class="trust-placeholder">ONG 4</span></div>
+      <div class="trust-logo-item"><span class="trust-placeholder">ONG 5</span></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="section-container">
+      <div class="contact-grid">
+
+        <div class="contact-info">
+          <h2 class="contact-title">Contactez-nous</h2>
+          <p class="contact-subtitle">Une question, un partenariat ou une idée ? Écrivez-nous, nous répondons sous 48h.</p>
+          <div class="contact-details">
+            <div class="contact-detail-item">
+              <div class="contact-detail-icon"><mat-icon>location_on</mat-icon></div>
+              <div>
+                <p class="contact-detail-label">Adresse</p>
+                <p class="contact-detail-value">Yaoundé, Cameroun</p>
+              </div>
+            </div>
+            <div class="contact-detail-item">
+              <div class="contact-detail-icon"><mat-icon>email</mat-icon></div>
+              <div>
+                <p class="contact-detail-label">Email</p>
+                <p class="contact-detail-value">contact&#64;actforgood.cm</p>
+              </div>
+            </div>
+            <div class="contact-detail-item">
+              <div class="contact-detail-icon"><mat-icon>phone</mat-icon></div>
+              <div>
+                <p class="contact-detail-label">Téléphone</p>
+                <p class="contact-detail-value">+237 6XX XXX XXX</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" (ngSubmit)="sendMessage()" #contactForm="ngForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nom complet</label>
+              <input type="text" class="form-input" placeholder="Jean Dupont" name="name" [(ngModel)]="contactData.name" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" placeholder="vous&#64;email.com" name="email" [(ngModel)]="contactData.email" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sujet</label>
+            <input type="text" class="form-input" placeholder="Partenariat, question, suggestion..." name="subject" [(ngModel)]="contactData.subject" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" rows="5" placeholder="Votre message..." name="message" [(ngModel)]="contactData.message" required></textarea>
+          </div>
+          <button type="submit" class="btn-send" [disabled]="contactForm.invalid || messageSent">
+            {{ messageSent ? 'Message envoyé ✓' : 'Envoyer le message' }}
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <span class="footer-logo">ActForGood</span>
+        <nav class="footer-nav">
+          <a href="#">Confidentialité</a>
+          <a href="#">Conditions</a>
+          <a href="#">Contact</a>
+          <a href="#">FAQ</a>
+        </nav>
+        <div class="footer-social">
+          <a href="#" class="social-btn">↗</a>
+          <a href="#" class="social-btn">✉</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&#169; 2024 ActForGood. L'Archive Humaine du Cameroun.</span>
+        <span>Propulsé par la technologie Stellar Blockchain.</span>
+      </div>
+    </div>
+  </footer>
+
 </div>

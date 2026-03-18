@@ -1,0 +1,63 @@
+$green: #1a4a3a; $orange: #F59542; $bg: #f0f2f0; $white: #fff; $border: #e0e0e0; $text: #2d2d2d; $muted: #888;
+
+.module-content { padding: 20px 24px; }
+.page-header { margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 700; color: $text; margin: 0 0 4px; }
+.breadcrumb { font-size: 12px; color: $muted; }
+
+.stats-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-card { flex: 1; min-width: 160px; background: $white; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; border: 1px solid $border; }
+.si { font-size: 28px; width: 28px; height: 28px; &.green { color: $green; } &.teal { color: #00897b; } &.orange { color: $orange; } }
+.sv { font-size: 20px; font-weight: 700; color: $text; }
+.sl { font-size: 12px; color: $muted; }
+
+.filters-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-group { display: flex; align-items: center; gap: 8px; background: $white; border: 1px solid $border; border-radius: 8px; padding: 8px 14px; mat-icon { color: $muted; font-size: 18px; } input { border: none; outline: none; font-size: 13px; width: 200px; } }
+select { border: 1px solid $border; border-radius: 8px; padding: 9px 14px; font-size: 13px; background: $white; outline: none; cursor: pointer; }
+.btn-reset { display: flex; align-items: center; gap: 6px; background: none; border: 1px solid $border; border-radius: 8px; padding: 9px 14px; font-size: 13px; cursor: pointer; color: $muted; &:hover { background: $bg; } }
+
+.reports-list { display: flex; flex-direction: column; gap: 10px; }
+
+.report-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+}
+
+.report-icon-wrap {
+  width: 42px;
+  height: 42px;
+  background: #e8f5e9;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  mat-icon { color: $green; font-size: 22px; }
+}
+
+.report-body { flex: 1; }
+.report-title { font-weight: 600; font-size: 14px; color: $text; margin-bottom: 3px; }
+.report-meta { font-size: 12px; color: $muted; }
+
+.type-tag { background: #f0f0f0; color: #555; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;
+  &.badge-active { background: #e8f5e9; color: #2e7d32; }
+  &.badge-pending { background: #fff3e0; color: #e65100; }
+  &.badge-failed { background: #fdecea; color: #c62828; }
+}
+
+.report-actions { display: flex; gap: 6px; }
+
+.btn-icon { background: none; border: 1px solid $border; border-radius: 6px; padding: 6px; cursor: pointer; color: $muted; display: flex; align-items: center; &:hover { background: $bg; } mat-icon { font-size: 18px; width: 18px; height: 18px; } }
+.btn-validate { background: none; border: 1px solid #2e7d32; border-radius: 6px; padding: 6px; cursor: pointer; color: #2e7d32; display: flex; align-items: center; &:hover { background: #e8f5e9; } mat-icon { font-size: 18px; width: 18px; height: 18px; } }
+.btn-reject { background: none; border: 1px solid #c62828; border-radius: 6px; padding: 6px; cursor: pointer; color: #c62828; display: flex; align-items: center; &:hover { background: #fdecea; } mat-icon { font-size: 18px; width: 18px; height: 18px; } }
+
+.empty-state { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; color: $muted; mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.4; } p { font-size: 14px; } }

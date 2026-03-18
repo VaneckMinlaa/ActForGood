@@ -1,0 +1,75 @@
+$green: #1a4a3a; $orange: #F59542; $bg: #f0f2f0; $white: #fff; $border: #e0e0e0; $text: #2d2d2d; $muted: #888;
+
+.module-content { padding: 20px 24px; }
+.page-header { margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 700; color: $text; margin: 0 0 4px; }
+.breadcrumb { font-size: 12px; color: $muted; }
+
+.stats-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-card { flex: 1; min-width: 160px; background: $white; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; border: 1px solid $border; }
+.si { font-size: 28px; width: 28px; height: 28px; &.green { color: $green; } &.teal { color: #00897b; } &.orange { color: $orange; } }
+.sv { font-size: 20px; font-weight: 700; color: $text; }
+.sl { font-size: 12px; color: $muted; }
+
+.filters-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-group { display: flex; align-items: center; gap: 8px; background: $white; border: 1px solid $border; border-radius: 8px; padding: 8px 14px; mat-icon { color: $muted; font-size: 18px; } input { border: none; outline: none; font-size: 13px; width: 180px; } }
+select { border: 1px solid $border; border-radius: 8px; padding: 9px 14px; font-size: 13px; background: $white; outline: none; cursor: pointer; }
+.btn-reset { display: flex; align-items: center; gap: 6px; background: none; border: 1px solid $border; border-radius: 8px; padding: 9px 14px; font-size: 13px; cursor: pointer; color: $muted; &:hover { background: $bg; } }
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+.orphan-card {
+  background: $white; border-radius: 12px; border: 1px solid $border; padding: 18px; cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  &:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); transform: translateY(-2px); }
+}
+
+.oc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.oc-avatar { width: 40px; height: 40px; border-radius: 10px; background: $green; color: $white; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.oc-info { flex: 1; }
+.oc-name { font-weight: 700; font-size: 14px; color: $text; }
+.oc-sub { display: flex; align-items: center; gap: 4px; font-size: 12px; color: $muted; mat-icon { font-size: 14px; width: 14px; height: 14px; } }
+
+.oc-stats { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.oc-stat { display: flex; align-items: center; gap: 6px; font-size: 13px; color: $text; mat-icon { font-size: 16px; width: 16px; height: 16px; color: $muted; } }
+
+.occupancy-bar { height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+.occupancy-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+
+.oc-footer { display: flex; align-items: center; justify-content: space-between; }
+.occ-label { font-size: 12px; color: $muted; }
+
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;
+  &.badge-active { background: #e8f5e9; color: #2e7d32; }
+  &.badge-inactive { background: #f5f5f5; color: $muted; }
+  &.badge-review { background: #fff3e0; color: #e65100; }
+}
+
+.btn-view { display: flex; align-items: center; gap: 4px; background: none; border: 1px solid $green; color: $green; border-radius: 6px; padding: 5px 10px; font-size: 12px; cursor: pointer; &:hover { background: $green; color: $white; } mat-icon { font-size: 15px; width: 15px; height: 15px; } }
+.btn-back { display: flex; align-items: center; gap: 6px; background: none; border: 1px solid $border; border-radius: 8px; padding: 8px 16px; font-size: 13px; cursor: pointer; color: $muted; margin-bottom: 16px; &:hover { background: $bg; } }
+
+.detail-title-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.avatar-lg { width: 56px; height: 56px; border-radius: 12px; background: $green; color: $white; font-weight: 700; font-size: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.detail-title-row h2 { font-size: 22px; font-weight: 700; color: $text; margin: 0 0 6px; }
+.detail-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 4px; font-size: 13px; color: $muted; mat-icon { font-size: 16px; width: 16px; height: 16px; } }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.info-card { background: $white; border-radius: 12px; border: 1px solid $border; padding: 20px; h3 { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: $text; margin: 0 0 16px; mat-icon { color: $green; font-size: 20px; } } }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.info-item { display: flex; flex-direction: column; gap: 2px; }
+.info-label { font-size: 11px; color: $muted; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+
+.needs-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.need-tag { background: #e8f5e9; color: $green; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+.table-card { background: $white; border-radius: 12px; border: 1px solid $border; overflow: hidden; }
+.table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid $border; font-size: 14px; color: $muted; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { background: #f9f9f7; padding: 10px 14px; text-align: left; font-weight: 600; color: $muted; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid $border; }
+td { padding: 12px 14px; border-bottom: 1px solid #f0f0f0; color: $text; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+.amount { font-weight: 700; color: $green; }
+
+.empty-state { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; color: $muted; mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.4; } p { font-size: 14px; } &.small { padding: 16px; } }

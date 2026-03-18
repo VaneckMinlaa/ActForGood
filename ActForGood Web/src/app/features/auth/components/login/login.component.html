@@ -1,42 +1,58 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <!-- Logo -->
-    <div class="auth-logo">
-      <span class="logo-actfor">ActFor</span><span class="logo-good">Good</span>
+﻿<div class="login-bg">
+  <div class="login-card">
+
+    <!-- GAUCHE : image + overlay vert -->
+    <div class="card-left">
+      <a routerLink="/" class="card-logo">ActForGood</a>
     </div>
 
-    <h1 class="auth-title">Connexion</h1>
-    <p class="auth-subtitle">Accédez à votre compte ActForGood</p>
+    <!-- COURBE de séparation -->
+    <div class="card-curve">
+      <svg viewBox="0 0 80 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M80,0 C30,150 30,450 80,600 L0,600 L0,0 Z" fill="white"/>
+      </svg>
+    </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form auth-form-login">
-      <div class="form-field">
-        <label class="form-label">Email <span class="required">*</span></label>
-        <input
-          type="email"
-          class="form-input"
-          formControlName="email"
-          placeholder="votre.email@exemple.com">
-        <span class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-          Email invalide
-        </span>
+    <!-- DROITE : formulaire blanc -->
+    <div class="card-right">
+      <h1 class="form-title">Bienvenue</h1>
+      <p class="form-subtitle">Connectez-vous à votre compte pour continuer</p>
+
+      <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-body">
+        <div class="input-wrap">
+          <mat-icon class="input-icon">person_outline</mat-icon>
+          <input type="email" class="form-input" formControlName="email" placeholder="votre&#64;email.com" />
+        </div>
+        <div class="input-wrap">
+          <mat-icon class="input-icon">lock_outline</mat-icon>
+          <input type="password" class="form-input" formControlName="password" placeholder="••••••••••••••" />
+        </div>
+        <div class="forgot-row">
+          <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+        </div>
+        <button type="submit" class="btn-login" [disabled]="!loginForm.valid || isLoading">
+          {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+        </button>
+      </form>
+
+      <p class="signup-row">
+        Pas de compte ? <a routerLink="/auth/register" class="link-signup">S'inscrire</a>
+      </p>
+
+      <div class="social-row">
+        <a href="#" class="social-icon"><mat-icon>facebook</mat-icon></a>
+        <a href="#" class="social-icon"><mat-icon>share</mat-icon></a>
+        <a href="#" class="social-icon"><mat-icon>work_outline</mat-icon></a>
       </div>
 
-      <div class="form-field">
-        <label class="form-label">Mot de passe <span class="required">*</span></label>
-        <input
-          type="password"
-          class="form-input"
-          formControlName="password"
-          placeholder="Votre mot de passe">
+      <div class="dev-hint">
+        <span>admin&#64;actforgood.com / admin</span>
+        <span>org&#64;actforgood.com / org</span>
+        <span>donor&#64;actforgood.com / donor</span>
       </div>
+    </div>
 
-      <button type="submit" class="btn-submit" [disabled]="!loginForm.valid">
-        Se connecter
-      </button>
-    </form>
-
-    <p class="auth-footer">
-      Pas encore de compte ? <a routerLink="/auth/register" class="auth-link">Créer un compte</a>
-    </p>
   </div>
 </div>

@@ -1,24 +1,12 @@
 <header class="header">
-  <a routerLink="/" class="logo">
-    <span class="logo-actfor">ActFor</span><span class="logo-good">Good</span>
-  </a>
+  <a routerLink="/" class="logo">ActForGood</a>
   <nav class="nav">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">Accueil</a>
-    <a routerLink="/campaigns" routerLinkActive="active" class="nav-link">Projets</a>
-    <a routerLink="/campaigns" class="nav-link">Impact</a>
-    <a href="#" class="nav-link">À propos</a>
-    <a href="#" class="nav-link">Contact</a>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">Explorer</a>
+    <a href="#contact" class="nav-link">Contact</a>
+    <a href="#about" class="nav-link">À propos</a>
   </nav>
   <div class="header-actions">
-    <ng-container *ngIf="!isAuthenticated">
-      <a routerLink="/auth/login" class="nav-link">Connexion</a>
-      <a routerLink="/auth/register" class="nav-link">Inscription</a>
-    </ng-container>
-    <ng-container *ngIf="isAuthenticated">
-      <a routerLink="/dashboard" class="nav-link">Tableau de bord</a>
-      <a routerLink="/profile" class="nav-link">Profil</a>
-      <button type="button" class="nav-link btn-text" (click)="logout()">Déconnexion</button>
-    </ng-container>
-    <a routerLink="/campaigns" class="btn-donate">Donner maintenant</a>
+    <a routerLink="/auth/login" class="btn-login">Se connecter</a>
+    <a routerLink="/auth/register" class="btn-donate">Faire un don</a>
   </div>
 </header>

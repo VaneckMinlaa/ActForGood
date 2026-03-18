@@ -1,0 +1,353 @@
+<div class="inst-content">
+
+  <div class="page-header">
+    <h1 class="page-title">Gestion des Institutions</h1>
+    <span class="breadcrumb">Admin / Institutions</span>
+  </div>
+
+  <!-- ===== LIST VIEW ===== -->
+  <ng-container *ngIf="!selectedInstitution">
+
+    <div class="filters-bar">
+      <div class="filter-group">
+        <mat-icon>search</mat-icon>
+        <input type="text" placeholder="Nom de l'institution..." [(ngModel)]="searchQuery" />
+      </div>
+      <div class="filter-group">
+        <mat-icon>location_on</mat-icon>
+        <input type="text" placeholder="Ville..." [(ngModel)]="filterCity" />
+      </div>
+      <select [(ngModel)]="filterType">
+        <option value="">Tous les types</option>
+        <option value="ONG">ONG</option>
+        <option value="Entreprise">Entreprise</option>
+        <option value="Association">Association</option>
+      </select>
+      <select [(ngModel)]="filterStatus">
+        <option value="">Tous les statuts</option>
+        <option value="Validé">Validé</option>
+        <option value="En attente">En attente</option>
+        <option value="Rejeté">Rejeté</option>
+      </select>
+      <button class="btn-reset" (click)="searchQuery=''; filterType=''; filterCity=''; filterStatus=''">
+        <mat-icon>refresh</mat-icon> Réinitialiser
+      </button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <mat-icon class="stat-icon green">account_balance</mat-icon>
+        <div><div class="stat-value">{{ institutions.length }}</div><div class="stat-label">Total</div></div>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-icon orange">hourglass_empty</mat-icon>
+        <div><div class="stat-value">{{ pendingCount }}</div><div class="stat-label">En attente</div></div>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-icon teal">verified</mat-icon>
+        <div><div class="stat-value">{{ validatedCount }}</div><div class="stat-label">Validées</div></div>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-icon red">cancel</mat-icon>
+        <div><div class="stat-value">{{ rejectedCount }}</div><div class="stat-label">Rejetées</div></div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <span>{{ filteredInstitutions.length }} institution(s)</span>
+        <button class="btn-primary"><mat-icon>add</mat-icon> Ajouter</button>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Institution</th>
+              <th>Type</th>
+              <th>Ville</th>
+              <th>Secteur</th>
+              <th>Statut</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let inst of filteredInstitutions">
+              <td>
+                <div class="inst-name-cell">
+                  <div class="inst-avatar"
+                    [style.background]="inst.type === 'ONG' ? '#1a4a3a' : inst.type === 'Entreprise' ? '#F59542' : '#7b5ea7'">
+                    {{ inst.name.charAt(0) }}
+                  </div>
+                  <div>
+                    <div class="inst-name">{{ inst.name }}</div>
+                    <div class="inst-email">{{ inst.email }}</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="type-badge" [ngClass]="getTypeClass(inst.type)">{{ inst.type }}</span></td>
+              <td>{{ inst.city }}</td>
+              <td>{{ inst.sector }}</td>
+              <td><span class="status-badge" [ngClass]="getStatusClass(inst.status)">{{ inst.status }}</span></td>
+              <td>{{ inst.createdAt }}</td>
+              <td>
+                <button class="btn-view" (click)="openDetail(inst)">
+                  <mat-icon>visibility</mat-icon> Voir
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredInstitutions.length === 0">
+              <td colspan="7" class="empty-row">Aucune institution trouvée.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ===== DETAIL VIEW ===== -->
+  <ng-container *ngIf="selectedInstitution">
+
+    <button class="btn-back" (click)="closeDetail()">
+      <mat-icon>arrow_back</mat-icon> Retour à la liste
+    </button>
+
+    <div class="detail-title-row">
+      <div class="detail-avatar"
+        [style.background]="selectedInstitution.type === 'ONG' ? '#1a4a3a' : selectedInstitution.type === 'Entreprise' ? '#F59542' : '#7b5ea7'">
+        {{ selectedInstitution.name.charAt(0) }}
+      </div>
+      <div>
+        <h2>{{ selectedInstitution.name }}</h2>
+        <div class="detail-meta">
+          <span class="type-badge" [ngClass]="getTypeClass(selectedInstitution.type)">{{ selectedInstitution.type }}</span>
+          <span class="status-badge" [ngClass]="getStatusClass(selectedInstitution.status)">{{ selectedInstitution.status }}</span>
+          <span class="meta-item"><mat-icon>location_on</mat-icon>{{ selectedInstitution.city }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs-bar">
+      <button class="tab-btn" [class.active]="activeTab==='profil'" (click)="activeTab='profil'">
+        <mat-icon>person</mat-icon> Profil &amp; Validation
+      </button>
+      <button class="tab-btn" [class.active]="activeTab==='orphelinats'" (click)="activeTab='orphelinats'">
+        <mat-icon>home_work</mat-icon> Orphelinats liés
+      </button>
+      <button class="tab-btn" [class.active]="activeTab==='transactions'" (click)="activeTab='transactions'">
+        <mat-icon>swap_horiz</mat-icon> Transactions
+      </button>
+      <button class="tab-btn" [class.active]="activeTab==='rapports'" (click)="activeTab='rapports'">
+        <mat-icon>description</mat-icon> Rapports
+      </button>
+      <button class="tab-btn" [class.active]="activeTab==='contact'" (click)="activeTab='contact'">
+        <mat-icon>mail</mat-icon> Contact &amp; Suppression
+      </button>
+    </div>
+
+    <!-- TAB: PROFIL -->
+    <div class="tab-content" *ngIf="activeTab==='profil'">
+      <div class="two-col">
+        <div class="info-card">
+          <h3><mat-icon>info</mat-icon> Informations générales</h3>
+          <div class="info-grid">
+            <div class="info-item"><span class="info-label">Responsable</span><span>{{ selectedInstitution.responsable }}</span></div>
+            <div class="info-item"><span class="info-label">Email</span><span>{{ selectedInstitution.email }}</span></div>
+            <div class="info-item"><span class="info-label">Téléphone</span><span>{{ selectedInstitution.phone }}</span></div>
+            <div class="info-item"><span class="info-label">Site web</span><span>{{ selectedInstitution.website }}</span></div>
+            <div class="info-item"><span class="info-label">Adresse</span><span>{{ selectedInstitution.address }}</span></div>
+            <div class="info-item"><span class="info-label">Secteur</span><span>{{ selectedInstitution.sector }}</span></div>
+            <div class="info-item full"><span class="info-label">Mission</span><span>{{ selectedInstitution.mission }}</span></div>
+          </div>
+        </div>
+        <div class="info-card">
+          <h3><mat-icon>gavel</mat-icon> Documents légaux</h3>
+          <div class="doc-item">
+            <mat-icon class="doc-icon">article</mat-icon>
+            <div><div class="doc-name">RCCM</div><div class="doc-value">{{ selectedInstitution.rccm }}</div></div>
+            <button class="btn-doc"><mat-icon>download</mat-icon></button>
+          </div>
+          <div class="doc-item">
+            <mat-icon class="doc-icon">badge</mat-icon>
+            <div><div class="doc-name">NIU</div><div class="doc-value">{{ selectedInstitution.niu }}</div></div>
+            <button class="btn-doc"><mat-icon>download</mat-icon></button>
+          </div>
+          <div class="doc-item">
+            <mat-icon class="doc-icon">picture_as_pdf</mat-icon>
+            <div><div class="doc-name">Statuts</div><div class="doc-value">statuts.pdf</div></div>
+            <button class="btn-doc"><mat-icon>download</mat-icon></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="validation-card" *ngIf="selectedInstitution.status !== 'Validé'">
+        <h3><mat-icon>verified_user</mat-icon> Décision de validation</h3>
+        <div class="validation-success" *ngIf="showValidationSuccess">
+          <mat-icon>check_circle</mat-icon> Institution validée avec succès.
+        </div>
+        <div class="validation-actions" *ngIf="!showRejectForm">
+          <button class="btn-validate" (click)="validate()"><mat-icon>check_circle</mat-icon> Valider</button>
+          <button class="btn-reject-btn" (click)="showRejectForm=true"><mat-icon>cancel</mat-icon> Rejeter</button>
+        </div>
+        <div class="reject-form" *ngIf="showRejectForm">
+          <label>Motif du rejet *</label>
+          <textarea [(ngModel)]="rejectReason" placeholder="Précisez la raison..." rows="3"></textarea>
+          <div class="reject-actions">
+            <button class="btn-reject-btn" (click)="reject()" [disabled]="!rejectReason.trim()">Confirmer le rejet</button>
+            <button class="btn-cancel" (click)="showRejectForm=false">Annuler</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="validation-card validated" *ngIf="selectedInstitution.status === 'Validé'">
+        <mat-icon>verified</mat-icon> Ce compte est validé.
+      </div>
+    </div>
+
+    <!-- TAB: ORPHELINATS -->
+    <div class="tab-content" *ngIf="activeTab==='orphelinats'">
+      <div class="table-card">
+        <div class="table-header"><span>Orphelinats liés ({{ selectedInstitution.orphanages.length }})</span></div>
+        <div class="table-scroll" *ngIf="selectedInstitution.orphanages.length > 0">
+          <table>
+            <thead><tr><th>Nom</th><th>Ville</th><th>Enfants</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let o of selectedInstitution.orphanages">
+                <td>{{ o.name }}</td>
+                <td>{{ o.city }}</td>
+                <td>{{ o.children }}</td>
+                <td>
+                  <button class="btn-view" routerLink="/admin/orphanages">
+                    <mat-icon>open_in_new</mat-icon> Voir
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" *ngIf="selectedInstitution.orphanages.length === 0">
+          <mat-icon>home_work</mat-icon><p>Aucun orphelinat lié.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: TRANSACTIONS -->
+    <div class="tab-content" *ngIf="activeTab==='transactions'">
+      <div class="tx-summary">
+        <div class="tx-stat">
+          <span class="tx-stat-label">Total reçu</span>
+          <span class="tx-stat-value">{{ totalAmount | number }} FCFA</span>
+        </div>
+        <div class="tx-stat">
+          <span class="tx-stat-label">Transactions</span>
+          <span class="tx-stat-value">{{ selectedInstitution.transactions.length }}</span>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <span>Toutes les transactions</span>
+          <div class="tx-legend">
+            <span class="legend-dot platform"></span> Plateforme
+            <span class="legend-dot offplatform"></span> Hors plateforme
+          </div>
+        </div>
+        <div class="table-scroll" *ngIf="selectedInstitution.transactions.length > 0">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Date</th><th>Montant</th><th>Type</th><th>Donateur</th><th>Hash</th><th>Source</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tx of selectedInstitution.transactions">
+                <td class="tx-id">{{ tx.id }}</td>
+                <td>{{ tx.date }}</td>
+                <td class="tx-amount">{{ tx.amount | number }} FCFA</td>
+                <td>{{ tx.type }}</td>
+                <td>{{ tx.donor }}</td>
+                <td>
+                  <span class="hash" *ngIf="tx.hash">{{ tx.hash }}</span>
+                  <span *ngIf="!tx.hash">—</span>
+                </td>
+                <td>
+                  <span class="source-badge" [class.platform]="tx.platform" [class.offplatform]="!tx.platform">
+                    {{ tx.platform ? 'Plateforme' : 'Hors plateforme' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" *ngIf="selectedInstitution.transactions.length === 0">
+          <mat-icon>swap_horiz</mat-icon><p>Aucune transaction.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: RAPPORTS -->
+    <div class="tab-content" *ngIf="activeTab==='rapports'">
+      <div class="rapports-header">
+        <h3>Rapports publiés</h3>
+        <button class="btn-primary" (click)="generateReport()">
+          <mat-icon>auto_awesome</mat-icon> Générer un rapport
+        </button>
+      </div>
+      <div class="reports-grid" *ngIf="selectedInstitution.reports.length > 0">
+        <div class="report-card" *ngFor="let r of selectedInstitution.reports">
+          <div class="report-icon"><mat-icon>description</mat-icon></div>
+          <div class="report-info">
+            <div class="report-title">{{ r.title }}</div>
+            <div class="report-meta">{{ r.date }} · {{ r.type }}</div>
+          </div>
+          <a [href]="r.url" class="btn-doc"><mat-icon>download</mat-icon></a>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="selectedInstitution.reports.length === 0">
+        <mat-icon>description</mat-icon><p>Aucun rapport publié.</p>
+      </div>
+    </div>
+
+    <!-- TAB: CONTACT & SUPPRESSION -->
+    <div class="tab-content" *ngIf="activeTab==='contact'">
+      <div class="two-col">
+
+        <div class="info-card">
+          <h3><mat-icon>mail</mat-icon> Contacter le responsable</h3>
+          <div class="messages-history" *ngIf="selectedInstitution.messages.length > 0">
+            <div class="message-bubble" *ngFor="let msg of selectedInstitution.messages" [ngClass]="msg.direction">
+              <div class="msg-meta">{{ msg.from }} · {{ msg.date }}</div>
+              <div class="msg-content">{{ msg.content }}</div>
+            </div>
+          </div>
+          <p class="no-msg" *ngIf="selectedInstitution.messages.length === 0">Aucun échange pour le moment.</p>
+          <div class="contact-form">
+            <input type="text" placeholder="Sujet..." [(ngModel)]="contactSubject" />
+            <textarea placeholder="Votre message..." [(ngModel)]="contactMessage" rows="4"></textarea>
+            <button class="btn-primary" (click)="sendMessage()" [disabled]="!contactMessage.trim()">
+              <mat-icon>send</mat-icon> Envoyer
+            </button>
+          </div>
+        </div>
+
+        <div class="info-card danger-card">
+          <h3><mat-icon>warning</mat-icon> Zone de danger</h3>
+          <p class="danger-text">La suppression est irréversible. Toutes les données seront perdues.</p>
+          <button class="btn-danger" (click)="showDeleteConfirm=true" *ngIf="!showDeleteConfirm">
+            <mat-icon>delete_forever</mat-icon> Supprimer le compte
+          </button>
+          <div class="delete-confirm" *ngIf="showDeleteConfirm">
+            <p>Tapez <strong>SUPPRIMER</strong> pour confirmer :</p>
+            <input type="text" [(ngModel)]="deleteConfirmText" placeholder="SUPPRIMER" />
+            <div class="delete-actions">
+              <button class="btn-danger" (click)="confirmDelete()" [disabled]="deleteConfirmText !== 'SUPPRIMER'">
+                Confirmer
+              </button>
+              <button class="btn-cancel" (click)="showDeleteConfirm=false; deleteConfirmText=''">Annuler</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+</div>

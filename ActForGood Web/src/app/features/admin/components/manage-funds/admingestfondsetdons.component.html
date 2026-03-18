@@ -1,0 +1,61 @@
+<div class="module-content">
+  <div class="page-header">
+    <h1 class="page-title">Gestion des Transactions</h1>
+    <span class="breadcrumb">Admin / Transactions</span>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><mat-icon class="si green">payments</mat-icon><div><div class="sv">{{ totalVolume | number }} FCFA</div><div class="sl">Volume total (complétés)</div></div></div>
+    <div class="stat-card"><mat-icon class="si orange">hourglass_empty</mat-icon><div><div class="sv">{{ pendingCount }}</div><div class="sl">En attente</div></div></div>
+    <div class="stat-card"><mat-icon class="si teal">link</mat-icon><div><div class="sv">{{ platformCount }}</div><div class="sl">Via plateforme</div></div></div>
+    <div class="stat-card"><mat-icon class="si purple">swap_horiz</mat-icon><div><div class="sv">{{ transactions.length }}</div><div class="sl">Total transactions</div></div></div>
+  </div>
+
+  <div class="filters-bar">
+    <div class="filter-group"><mat-icon>search</mat-icon><input type="text" placeholder="ID, donateur, bénéficiaire..." [(ngModel)]="searchQuery" /></div>
+    <select [(ngModel)]="filterStatus">
+      <option value="">Tous les statuts</option>
+      <option value="Complété">Complété</option>
+      <option value="En attente">En attente</option>
+      <option value="Échoué">Échoué</option>
+    </select>
+    <select [(ngModel)]="filterType">
+      <option value="">Tous les types</option>
+      <option value="Don en espèces">Don en espèces</option>
+      <option value="Don en nature">Don en nature</option>
+      <option value="Subvention">Subvention</option>
+    </select>
+    <button class="btn-reset" (click)="searchQuery=''; filterStatus=''; filterType=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <span>{{ filtered.length }} transaction(s)</span>
+      <div class="legend">
+        <span class="legend-dot platform"></span> Plateforme
+        <span class="legend-dot offplatform"></span> Hors plateforme
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Date</th><th>Montant</th><th>Type</th><th>Donateur</th><th>Bénéficiaire</th><th>Hash Blockchain</th><th>Source</th><th>Statut</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tx of filtered">
+            <td class="tx-id">{{ tx.id }}</td>
+            <td>{{ tx.date }}</td>
+            <td class="amount">{{ tx.amount | number }} FCFA</td>
+            <td>{{ tx.type }}</td>
+            <td>{{ tx.donor }}</td>
+            <td>{{ tx.recipient }}</td>
+            <td><span class="hash" *ngIf="tx.hash">{{ tx.hash }}</span><span class="muted" *ngIf="!tx.hash">—</span></td>
+            <td><span class="source-badge" [class.platform]="tx.platform" [class.offplatform]="!tx.platform">{{ tx.platform ? 'Plateforme' : 'Hors plateforme' }}</span></td>
+            <td><span class="badge" [ngClass]="getStatusClass(tx.status)">{{ tx.status }}</span></td>
+          </tr>
+          <tr *ngIf="filtered.length === 0"><td colspan="9" class="empty-row">Aucune transaction trouvée.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

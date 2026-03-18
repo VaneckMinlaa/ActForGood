@@ -1,0 +1,110 @@
+<div class="module-content">
+  <div class="page-header">
+    <h1 class="page-title">Orphelinats &amp; Associations</h1>
+    <span class="breadcrumb">Admin / Orphelinats</span>
+  </div>
+
+  <!-- LIST -->
+  <ng-container *ngIf="!selected">
+    <div class="stats-row">
+      <div class="stat-card"><mat-icon class="si green">home_work</mat-icon><div><div class="sv">{{ orphanages.length }}</div><div class="sl">Total Orphelinats</div></div></div>
+      <div class="stat-card"><mat-icon class="si teal">child_care</mat-icon><div><div class="sv">{{ totalChildren }}</div><div class="sl">Enfants accueillis</div></div></div>
+      <div class="stat-card"><mat-icon class="si orange">check_circle</mat-icon><div><div class="sv">{{ activeCount }}</div><div class="sl">Actifs</div></div></div>
+    </div>
+
+    <div class="filters-bar">
+      <div class="filter-group"><mat-icon>search</mat-icon><input type="text" placeholder="Nom de l'orphelinat..." [(ngModel)]="searchQuery" /></div>
+      <div class="filter-group"><mat-icon>location_on</mat-icon><input type="text" placeholder="Ville..." [(ngModel)]="filterCity" /></div>
+      <select [(ngModel)]="filterStatus">
+        <option value="">Tous les statuts</option>
+        <option value="Actif">Actif</option>
+        <option value="Inactif">Inactif</option>
+        <option value="En révision">En révision</option>
+      </select>
+      <button class="btn-reset" (click)="searchQuery=''; filterCity=''; filterStatus=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
+    </div>
+
+    <div class="cards-grid">
+      <div class="orphan-card" *ngFor="let o of filtered" (click)="open(o)">
+        <div class="oc-header">
+          <div class="oc-avatar">{{ o.name.charAt(0) }}</div>
+          <div class="oc-info">
+            <div class="oc-name">{{ o.name }}</div>
+            <div class="oc-sub"><mat-icon>location_on</mat-icon>{{ o.city }}, {{ o.region }}</div>
+          </div>
+          <span class="badge" [ngClass]="getStatusClass(o.status)">{{ o.status }}</span>
+        </div>
+        <div class="oc-stats">
+          <div class="oc-stat"><mat-icon>child_care</mat-icon><span>{{ o.children }} / {{ o.capacity }} enfants</span></div>
+          <div class="oc-stat"><mat-icon>account_balance</mat-icon><span>{{ o.institution }}</span></div>
+        </div>
+        <div class="occupancy-bar">
+          <div class="occupancy-fill" [style.width.%]="getOccupancyPct(o)" [style.background]="getOccupancyPct(o) > 80 ? '#e53935' : '#1a4a3a'"></div>
+        </div>
+        <div class="oc-footer">
+          <span class="occ-label">Occupation : {{ getOccupancyPct(o) }}%</span>
+          <button class="btn-view" (click)="open(o); $event.stopPropagation()"><mat-icon>visibility</mat-icon> Voir</button>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="filtered.length === 0">
+        <mat-icon>home_work</mat-icon><p>Aucun orphelinat trouvé.</p>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- DETAIL -->
+  <ng-container *ngIf="selected">
+    <button class="btn-back" (click)="close()"><mat-icon>arrow_back</mat-icon> Retour</button>
+    <div class="detail-title-row">
+      <div class="avatar-lg">{{ selected.name.charAt(0) }}</div>
+      <div>
+        <h2>{{ selected.name }}</h2>
+        <div class="detail-meta">
+          <span class="badge" [ngClass]="getStatusClass(selected.status)">{{ selected.status }}</span>
+          <span class="meta-item"><mat-icon>location_on</mat-icon>{{ selected.city }}, {{ selected.region }}</span>
+          <span class="meta-item"><mat-icon>account_balance</mat-icon>{{ selected.institution }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-card">
+        <h3><mat-icon>info</mat-icon> Informations</h3>
+        <div class="info-grid">
+          <div class="info-item"><span class="info-label">Directeur</span><span>{{ selected.director }}</span></div>
+          <div class="info-item"><span class="info-label">Téléphone</span><span>{{ selected.phone }}</span></div>
+          <div class="info-item"><span class="info-label">Email</span><span>{{ selected.email }}</span></div>
+          <div class="info-item"><span class="info-label">Créé le</span><span>{{ selected.createdAt }}</span></div>
+          <div class="info-item"><span class="info-label">Enfants</span><span>{{ selected.children }} / {{ selected.capacity }}</span></div>
+          <div class="info-item"><span class="info-label">Occupation</span><span>{{ getOccupancyPct(selected) }}%</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3><mat-icon>favorite</mat-icon> Besoins déclarés</h3>
+        <div class="needs-list">
+          <span class="need-tag" *ngFor="let n of selected.needs">{{ n }}</span>
+        </div>
+        <div class="empty-state small" *ngIf="selected.needs.length === 0"><p>Aucun besoin déclaré.</p></div>
+      </div>
+    </div>
+
+    <div class="table-card" style="margin-top: 20px;">
+      <div class="table-header"><span>Dons reçus ({{ selected.donations.length }})</span></div>
+      <div class="table-scroll" *ngIf="selected.donations.length > 0">
+        <table>
+          <thead><tr><th>Date</th><th>Montant</th><th>Donateur</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let d of selected.donations">
+              <td>{{ d.date }}</td>
+              <td class="amount">{{ d.amount | number }} FCFA</td>
+              <td>{{ d.donor }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="empty-state" *ngIf="selected.donations.length === 0">
+        <mat-icon>volunteer_activism</mat-icon><p>Aucun don enregistré.</p>
+      </div>
+    </div>
+  </ng-container>
+</div>
