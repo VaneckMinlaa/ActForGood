@@ -1,0 +1,66 @@
+<div class="admin-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">A</div>
+      <div>
+        <p class="brand-name">ActForGood</p>
+        <p class="brand-role">Humanitarian Admin</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a *ngFor="let item of menuItems"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: !!item.exact }"
+        class="nav-item">
+        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a routerLink="/admin/settings" class="nav-item">
+        <mat-icon class="nav-icon">help_outline</mat-icon>
+        <span class="nav-label">Help Center</span>
+      </a>
+      <button class="btn-support">SUPPORT MISSION</button>
+    </div>
+  </aside>
+
+  <!-- RIGHT SIDE -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR (sticky) -->
+    <header class="topbar">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input type="text" placeholder="Rechercher dossiers, rapports..." />
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn notif-btn">
+          <mat-icon>notifications</mat-icon>
+          <span class="notif-dot"></span>
+        </button>
+        <button class="icon-btn"><mat-icon>settings</mat-icon></button>
+        <div class="admin-profile">
+          <div>
+            <p class="profile-name">Admin Profile</p>
+            <p class="profile-role">Super Administrateur</p>
+          </div>
+          <div class="profile-avatar">
+            <mat-icon>account_circle</mat-icon>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>

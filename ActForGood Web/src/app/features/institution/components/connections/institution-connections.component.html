@@ -1,0 +1,89 @@
+<div class="connections-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Mes Connexions</h1>
+      <p>Publications des orphelinats que vous suivez</p>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <mat-icon>home</mat-icon>
+      <div>
+        <p class="s-value">{{ connectedOrphanages.length }}</p>
+        <p class="s-label">Orphelinats suivis</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <mat-icon>campaign</mat-icon>
+      <div>
+        <p class="s-value">{{ publications.length }}</p>
+        <p class="s-label">Publications actives</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <mat-icon>volunteer_activism</mat-icon>
+      <div>
+        <p class="s-value">{{ formatAmount(totalMyDonations) }}</p>
+        <p class="s-label">Mes dons versés</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Publications feed -->
+  <div class="pub-feed">
+    <div class="pub-card" *ngFor="let pub of publications">
+
+      <!-- Orphanage source -->
+      <div class="pub-source">
+        <div class="source-avatar" [style.background]="pub.orphanageColor">
+          {{ getInitials(pub.orphanageName) }}
+        </div>
+        <div>
+          <p class="source-name">{{ pub.orphanageName }}</p>
+          <p class="source-city"><mat-icon>location_on</mat-icon> {{ pub.orphanageCity }}</p>
+        </div>
+        <span class="urgent-tag" *ngIf="pub.urgent">
+          <mat-icon>priority_high</mat-icon> Urgent
+        </span>
+      </div>
+
+      <!-- Content -->
+      <div class="pub-need">
+        <mat-icon>{{ needIcon(pub.need) }}</mat-icon>
+        {{ pub.need }}
+      </div>
+      <h3 class="pub-title">{{ pub.title }}</h3>
+      <p class="pub-desc">{{ pub.description }}</p>
+
+      <!-- Progress -->
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="getProgress(pub.raisedAmount, pub.goalAmount)"
+          [class.full]="getProgress(pub.raisedAmount, pub.goalAmount) === 100"></div>
+      </div>
+      <div class="progress-meta">
+        <span class="raised">{{ formatAmount(pub.raisedAmount) }} collectés</span>
+        <span class="pct">{{ getProgress(pub.raisedAmount, pub.goalAmount) }}% / {{ formatAmount(pub.goalAmount) }}</span>
+      </div>
+
+      <!-- Footer -->
+      <div class="pub-footer">
+        <div class="my-don" *ngIf="pub.myDonation">
+          <mat-icon>check_circle</mat-icon>
+          Vous avez donné {{ formatAmount(pub.myDonation) }}
+        </div>
+        <span class="pub-date" *ngIf="!pub.myDonation">
+          <mat-icon>schedule</mat-icon> {{ pub.date }}
+        </span>
+        <button class="btn-donate" [class.secondary]="pub.myDonation">
+          <mat-icon>volunteer_activism</mat-icon>
+          {{ pub.myDonation ? 'Donner à nouveau' : 'Faire un don' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

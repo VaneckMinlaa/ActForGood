@@ -1,0 +1,119 @@
+<div class="activity-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Mon Activité</h1>
+      <p>Suivi de vos dons, statistiques et rapports reçus</p>
+    </div>
+  </div>
+
+  <!-- KPI cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <mat-icon>volunteer_activism</mat-icon>
+      <div>
+        <p class="kpi-value">{{ formatAmount(totalDonated) }}</p>
+        <p class="kpi-label">Total des dons versés</p>
+      </div>
+    </div>
+    <div class="kpi-card orange">
+      <mat-icon>receipt_long</mat-icon>
+      <div>
+        <p class="kpi-value">{{ donCount }}</p>
+        <p class="kpi-label">Transactions effectuées</p>
+      </div>
+    </div>
+    <div class="kpi-card blue">
+      <mat-icon>home</mat-icon>
+      <div>
+        <p class="kpi-value">{{ orphanagesAided }}</p>
+        <p class="kpi-label">Orphelinats aidés</p>
+      </div>
+    </div>
+    <div class="kpi-card yellow">
+      <mat-icon>hourglass_top</mat-icon>
+      <div>
+        <p class="kpi-value">{{ pendingCount }}</p>
+        <p class="kpi-label">Dons en attente</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- Bar chart -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2><mat-icon>bar_chart</mat-icon> Dons par mois</h2>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-item" *ngFor="let m of monthlyDons">
+          <div class="bar-wrap">
+            <span class="bar-value">{{ (m.amount / 1000000).toFixed(1) }}M</span>
+            <div class="bar" [style.height.%]="getBarHeight(m.amount)"></div>
+          </div>
+          <span class="bar-label">{{ m.month }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2><mat-icon>description</mat-icon> Rapports reçus</h2>
+      </div>
+      <div class="report-list">
+        <div class="report-item" *ngFor="let r of reports">
+          <div class="report-icon">
+            <mat-icon>insert_drive_file</mat-icon>
+          </div>
+          <div class="report-info">
+            <p class="report-orph">{{ r.orphanage }}</p>
+            <p class="report-title">{{ r.title }}</p>
+            <p class="report-meta">{{ r.type }} · {{ r.date }}</p>
+          </div>
+          <button class="btn-dl" title="Télécharger">
+            <mat-icon>download</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Donation history table -->
+  <div class="panel mt">
+    <div class="panel-header">
+      <h2><mat-icon>history</mat-icon> Historique des dons</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Orphelinat</th>
+            <th>Projet</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of donHistory">
+            <td class="td-orph">{{ d.orphanage }}</td>
+            <td class="td-project">{{ d.project }}</td>
+            <td class="td-amount">{{ formatAmount(d.amount) }}</td>
+            <td class="td-date">{{ d.date }}</td>
+            <td>
+              <span class="status-badge"
+                [style.color]="statusColor(d.status)"
+                [style.background]="statusBg(d.status)">
+                {{ d.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

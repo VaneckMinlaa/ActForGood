@@ -1,0 +1,60 @@
+<div class="inst-shell">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <!-- Logo -->
+      <a routerLink="/institution" class="brand">
+        <div class="brand-icon">A</div>
+        <span class="brand-name">ActForGood</span>
+      </a>
+    </div>
+
+    <!-- Nav links — centre -->
+    <div class="nav-links">
+      <a routerLink="/institution"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="nav-link">
+        Exploration
+      </a>
+      <a routerLink="/institution/connections"
+         routerLinkActive="active"
+         class="nav-link">
+        Mes connexions
+      </a>
+    </div>
+
+    <div class="nav-right">
+      <!-- Activité -->
+      <a routerLink="/institution/activity"
+         routerLinkActive="active"
+         class="icon-link"
+         title="Mon activité">
+        <mat-icon>bar_chart</mat-icon>
+      </a>
+
+      <!-- Mon espace -->
+      <a routerLink="/institution/profile"
+         routerLinkActive="active"
+         class="nav-link profile-link">
+        <div class="avatar-sm">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        Mon espace
+      </a>
+
+      <!-- Déconnexion -->
+      <button class="btn-logout" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Se déconnecter
+      </button>
+    </div>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <main class="page-content">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

@@ -1,0 +1,53 @@
+<div class="module-content">
+  <div class="page-header">
+    <h1 class="page-title">Rapports &amp; Documents</h1>
+    <span class="breadcrumb">Admin / Rapports</span>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><mat-icon class="si green">description</mat-icon><div><div class="sv">{{ reports.length }}</div><div class="sl">Total Rapports</div></div></div>
+    <div class="stat-card"><mat-icon class="si orange">hourglass_empty</mat-icon><div><div class="sv">{{ pendingCount }}</div><div class="sl">En attente de revue</div></div></div>
+    <div class="stat-card"><mat-icon class="si teal">verified</mat-icon><div><div class="sv">{{ validatedCount }}</div><div class="sl">Validés</div></div></div>
+  </div>
+
+  <div class="filters-bar">
+    <div class="filter-group"><mat-icon>search</mat-icon><input type="text" placeholder="Titre ou institution..." [(ngModel)]="searchQuery" /></div>
+    <select [(ngModel)]="filterType">
+      <option value="">Tous les types</option>
+      <option value="Activité">Activité</option>
+      <option value="Financier">Financier</option>
+      <option value="Annuel">Annuel</option>
+      <option value="Audit">Audit</option>
+      <option value="Impact">Impact</option>
+    </select>
+    <select [(ngModel)]="filterStatus">
+      <option value="">Tous les statuts</option>
+      <option value="Validé">Validé</option>
+      <option value="En attente">En attente</option>
+      <option value="Rejeté">Rejeté</option>
+    </select>
+    <button class="btn-reset" (click)="searchQuery=''; filterType=''; filterStatus=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
+  </div>
+
+  <div class="reports-list">
+    <div class="report-row" *ngFor="let r of filtered">
+      <div class="report-icon-wrap">
+        <mat-icon>{{ getTypeIcon(r.type) }}</mat-icon>
+      </div>
+      <div class="report-body">
+        <div class="report-title">{{ r.title }}</div>
+        <div class="report-meta">{{ r.institution }} · {{ r.date }} · {{ r.size }}</div>
+      </div>
+      <span class="type-tag">{{ r.type }}</span>
+      <span class="badge" [ngClass]="getStatusClass(r.status)">{{ r.status }}</span>
+      <div class="report-actions">
+        <button class="btn-icon" title="Télécharger"><mat-icon>download</mat-icon></button>
+        <button class="btn-validate" (click)="validate(r)" *ngIf="r.status === 'En attente'" title="Valider"><mat-icon>check_circle</mat-icon></button>
+        <button class="btn-reject" (click)="reject(r)" *ngIf="r.status === 'En attente'" title="Rejeter"><mat-icon>cancel</mat-icon></button>
+      </div>
+    </div>
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <mat-icon>description</mat-icon><p>Aucun rapport trouvé.</p>
+    </div>
+  </div>
+</div>

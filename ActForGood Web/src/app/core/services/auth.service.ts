@@ -59,6 +59,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('expiresAt');
     this.currentUserSubject.next(null);
   }
 
@@ -67,15 +68,55 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    const expires = localStorage.getItem('expiresAt');
+    if (!token || !expires) {
+      return false;
+    }
+    // if current time passed expiration, clear data
+    if (Date.now() > Number(expires)) {
+      this.logout();
+      return false;
+    }
+    return true;
+  }
+
+  getUserRole(): string | null {
+    const user = this.getStoredUser();
+    return user ? user.userType : null;
+  }
+
+  getCurrentUser(): AuthResponse | null {
+    return this.getStoredUser();
+  }
+
+  getRedirectUrlByRole(role: string): string {
+    switch (role) {
+      case 'ADMIN':
+        return '/admin';
+      case 'ORGANIZATION':
+        return '/institution';
+      case 'DONOR':
+        return '/';
+      default:
+        return '/';
+    }
   }
 
   private storeUser(user: AuthResponse): void {
     localStorage.setItem('token', user.token);
     localStorage.setItem('user', JSON.stringify(user));
+    const expiresAt = Date.now() + user.expiresIn * 1000;
+    localStorage.setItem('expiresAt', expiresAt.toString());
   }
 
   private getStoredUser(): AuthResponse | null {
+    const expires = localStorage.getItem('expiresAt');
+    if (expires && Date.now() > Number(expires)) {
+      // session expired, clear stored data
+      this.logout();
+      return null;
+    }
     const userStr = localStorage.getItem('user');
     return userStr ? JSON.parse(userStr) : null;
   }

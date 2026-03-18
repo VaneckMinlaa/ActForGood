@@ -1,0 +1,202 @@
+<div class="inst-home">
+
+  <!-- HERO -->
+  <div class="hero-banner">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Plateforme de dons ActForGood</span>
+      <h1 class="hero-title">Soutenez les orphelinats<br>qui en ont besoin</h1>
+      <p class="hero-sub">Découvrez les publications des orphelinats vérifiés et contribuez directement à leurs projets</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>{{ totalVerified }}</strong><span>Orphelinats vérifiés</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><strong>24</strong><span>Publications actives</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><strong>12 M FCFA</strong><span>Collectés ce mois</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKEDIN LAYOUT -->
+  <div class="linkedin-layout">
+
+    <!-- LEFT — liste des orphelinats -->
+    <aside class="col-left">
+      <div class="panel">
+        <div class="panel-title">
+          <mat-icon>home</mat-icon>
+          Orphelinats
+          <span class="count-badge">{{ filteredOrphanages.length }}</span>
+        </div>
+
+        <!-- Search -->
+        <div class="side-search">
+          <mat-icon>search</mat-icon>
+          <input type="text" placeholder="Rechercher..." [(ngModel)]="searchQuery" />
+        </div>
+
+        <!-- City filter -->
+        <div class="city-filter">
+          <select [(ngModel)]="activeCity" (ngModelChange)="setCity($event)">
+            <option *ngFor="let c of cities" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
+        <!-- Orphanage list -->
+        <div class="orph-list">
+          <!-- All -->
+          <div class="orph-item" [class.active]="selectedId === 0" (click)="selectOrphanage(0)">
+            <div class="orph-avatar all-avatar">
+              <mat-icon>apps</mat-icon>
+            </div>
+            <div class="orph-item-info">
+              <p class="orph-item-name">Tous les orphelinats</p>
+              <p class="orph-item-meta">{{ filteredOrphanages.length }} établissements</p>
+            </div>
+          </div>
+
+          <div class="orph-item" *ngFor="let o of filteredOrphanages"
+            [class.active]="selectedId === o.id"
+            (click)="selectOrphanage(o.id)">
+            <div class="orph-avatar" [style.background]="o.color">
+              {{ getInitials(o.name) }}
+            </div>
+            <div class="orph-item-info">
+              <p class="orph-item-name">
+                {{ o.name }}
+                <mat-icon class="v-icon" *ngIf="o.verified">verified</mat-icon>
+              </p>
+              <p class="orph-item-meta">
+                <mat-icon>location_on</mat-icon>{{ o.city }}
+                &nbsp;·&nbsp;
+                <mat-icon>child_care</mat-icon>{{ o.children }}
+              </p>
+            </div>
+            <span class="pub-count">{{ o.publications.length }}</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER — fil de publications -->
+    <main class="col-center">
+
+      <!-- Feed header -->
+      <div class="feed-header">
+        <span class="feed-title">
+          {{ selectedId ? getSelectedName() : 'Toutes les publications' }}
+        </span>
+        <span class="feed-count">{{ feedPublications.length }} publication(s)</span>
+      </div>
+
+      <!-- Publication cards -->
+      <div class="pub-card" *ngFor="let pub of feedPublications">
+
+        <!-- Source -->
+        <div class="pub-source">
+          <div class="source-avatar" [style.background]="pub.orphanageColor">
+            {{ getInitials(pub.orphanageName) }}
+          </div>
+          <div class="source-info">
+            <p class="source-name">{{ pub.orphanageName }}</p>
+            <p class="source-meta">
+              <mat-icon>location_on</mat-icon>{{ pub.orphanageCity }}
+              &nbsp;·&nbsp;
+              <mat-icon>schedule</mat-icon>{{ pub.date }}
+            </p>
+          </div>
+          <span class="urgent-tag" *ngIf="pub.urgent">
+            <mat-icon>priority_high</mat-icon> Urgent
+          </span>
+        </div>
+
+        <!-- Need tag -->
+        <div class="need-tag">
+          <mat-icon>{{ needIcon(pub.need) }}</mat-icon>
+          {{ pub.need }}
+        </div>
+
+        <!-- Content -->
+        <h3 class="pub-title">{{ pub.title }}</h3>
+        <p class="pub-desc">{{ pub.description }}</p>
+
+        <!-- Progress -->
+        <div class="progress-wrap">
+          <div class="progress-bar">
+            <div class="progress-fill"
+              [style.width.%]="getProgress(pub.raisedAmount, pub.goalAmount)"
+              [class.full]="getProgress(pub.raisedAmount, pub.goalAmount) === 100">
+            </div>
+          </div>
+          <div class="progress-meta">
+            <span class="raised">{{ formatAmount(pub.raisedAmount) }} collectés</span>
+            <span class="pct">{{ getProgress(pub.raisedAmount, pub.goalAmount) }}% sur {{ formatAmount(pub.goalAmount) }}</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="pub-actions">
+          <button class="btn-secondary">
+            <mat-icon>info_outline</mat-icon> En savoir plus
+          </button>
+          <button class="btn-donate">
+            <mat-icon>volunteer_activism</mat-icon> Faire un don
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Empty -->
+      <div class="empty-state" *ngIf="feedPublications.length === 0">
+        <mat-icon>search_off</mat-icon>
+        <p>Aucune publication trouvée.</p>
+      </div>
+
+    </main>
+
+    <!-- RIGHT — stats & suggestions -->
+    <aside class="col-right">
+
+      <!-- Stats card -->
+      <div class="panel">
+        <div class="panel-title"><mat-icon>insights</mat-icon> Ce mois-ci</div>
+        <div class="stat-row">
+          <mat-icon class="stat-icon orange">volunteer_activism</mat-icon>
+          <div><p class="stat-val">12 M FCFA</p><p class="stat-lbl">Collectés</p></div>
+        </div>
+        <div class="stat-row">
+          <mat-icon class="stat-icon green">home</mat-icon>
+          <div><p class="stat-val">{{ totalVerified }}</p><p class="stat-lbl">Orphelinats actifs</p></div>
+        </div>
+        <div class="stat-row">
+          <mat-icon class="stat-icon red">priority_high</mat-icon>
+          <div><p class="stat-val">{{ urgentCount }}</p><p class="stat-lbl">Besoins urgents</p></div>
+        </div>
+      </div>
+
+      <!-- Suggestions -->
+      <div class="panel">
+        <div class="panel-title"><mat-icon>recommend</mat-icon> Suggestions</div>
+        <div class="suggest-item" *ngFor="let o of filteredOrphanages.slice(0, 3)">
+          <div class="orph-avatar sm" [style.background]="o.color">{{ getInitials(o.name) }}</div>
+          <div class="suggest-info">
+            <p class="suggest-name">{{ o.name }}</p>
+            <p class="suggest-meta">{{ o.city }} · {{ o.publications.length }} pub.</p>
+          </div>
+          <button class="btn-follow" (click)="selectOrphanage(o.id)">Voir</button>
+        </div>
+      </div>
+
+      <!-- Needs breakdown -->
+      <div class="panel">
+        <div class="panel-title"><mat-icon>category</mat-icon> Besoins</div>
+        <div class="need-row" *ngFor="let need of ['Éducation','Santé','Alimentation','Infrastructure','Eau & Hygiène']">
+          <mat-icon>{{ needIcon(need) }}</mat-icon>
+          <span>{{ need }}</span>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
