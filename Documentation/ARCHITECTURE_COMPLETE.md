@@ -1,10 +1,10 @@
-# 🚀 ActForGood - Architecture Complète & Meilleurs Choix Techniques
+#  ActForGood - Architecture Complète & Meilleurs Choix Techniques
 
 **Date** : 25 février 2026 | **Version** : 1.0
 
 ---
 
-## 📑 Table des Matières
+##  Table des Matières
 
 1. [Vue d'Ensemble](#vue-densemble)
 2. [Diagrammes Créés](#diagrammes-créés)
@@ -17,7 +17,7 @@
 
 ---
 
-## 🎯 Vue d'Ensemble
+##  Vue d'Ensemble
 
 ActForGood est une **plateforme de matching intelligent pour dons sociaux** au Cameroun, connectant :
 - **Donateurs** (diaspora + locaux) → Reçoivent recommandations IA personnalisées
@@ -34,7 +34,7 @@ ActForGood est une **plateforme de matching intelligent pour dons sociaux** au C
 
 ---
 
-## 📊 Diagrammes Créés
+##  Diagrammes Créés
 
 ### 1. **Cas d'Usage Global** 
 ```
@@ -103,9 +103,9 @@ WEB (Angular):
 
 ---
 
-## 🛠️ Stack Technique Recommandée
+##  Stack Technique Recommandée
 
-### 🌐 **Frontend**
+###  **Frontend**
 
 | Couche | Technologie | Raison |
 |--------|-------------|--------|
@@ -119,7 +119,7 @@ WEB (Angular):
 | **Charts/Analytics** | Recharts (Web) + react-native-chart-kit (Mobile) | Data visualization pour impact tracking |
 | **Forms** | React Hook Form (Mobile) + Reactive Forms (Web) | Validation, performance, accessibility |
 
-### 🔧 **Backend**
+###  **Backend**
 
 | Couche | Technologie | Justification |
 |--------|-------------|---------------|
@@ -136,7 +136,7 @@ WEB (Angular):
 | **Logging** | Logback + ELK Stack | Centralized logging, monitoring |
 | **Testing** | JUnit 5 + Mockito + TestContainers | Unit & integration tests with real DB |
 
-### 💾 **Databases**
+###  **Databases**
 
 | DB | Usage | Config |
 |----|-------|--------|
@@ -144,7 +144,7 @@ WEB (Angular):
 | **MongoDB** | Cache ML, logs d'IA, real-time metrics | TTL indexes pour expiration auto, Sharding pour scale |
 | **Redis 7+** | Sessions, distributed cache, pub/sub | Cluster mode, persistence (AOF), sentinel pour HA |
 
-### ⛓️ **Blockchain**
+###  **Blockchain**
 
 | Aspect | Recommandation | Raison |
 |--------|-----------------|--------|
@@ -154,7 +154,7 @@ WEB (Angular):
 | **Gas Strategy** | Layer 2 (Arbitrum, Optimism) ou Stellar | Reduce costs en production |
 | **RPC Provider** | Infura, Alchemy (Ethereum) ; Stellar pubnet | Reliable, rate-limited |
 
-### 🔐 **Security & Auth**
+###  **Security & Auth**
 
 | Aspect | Tech | Details |
 |--------|------|---------|
@@ -164,7 +164,7 @@ WEB (Angular):
 | **2FA** | TOTP (Google Authenticator) + SMS | Critical accounts (admin, ONG) |
 | **Secrets** | HashiCorp Vault ou AWS Secrets Manager | API keys, DB credentials centralized |
 
-### 📡 **DevOps & Deployment**
+###  **DevOps & Deployment**
 
 | Aspect | Technologie | Justification |
 |--------|-------------|----------------|
@@ -190,7 +190,7 @@ WEB (Angular):
 
 ---
 
-## 🔧 Architecture Microservices (Détaillée)
+##  Architecture Microservices (Détaillée)
 
 ### **Service Catalog** (9 Microservices)
 
@@ -283,7 +283,7 @@ report_service: (reads from all services)
 
 ---
 
-## 📋 Processus Clés (Détaillés)
+##  Processus Clés (Détaillés)
 
 ### **1. Processus de Don (9 étapes)**
 
@@ -367,7 +367,7 @@ report_service: (reads from all services)
    Admin: Can block ONG if fraudulent behavior detected
 ```
 
-### **3. Matching IA (La Magie!) 🤖**
+### **3. Matching IA (La Magie!) **
 
 ```
 ALGORITHM HYBRID (70% Collab + 30% Content)
@@ -426,7 +426,7 @@ OUTPUT: Top 10 campaigns
 
 ---
 
-## 🔐 Security & Compliance
+##  Security & Compliance
 
 ### **Authentication & Authorization**
 
@@ -531,7 +531,7 @@ Testing:
 
 ---
 
-## 🚀 Plan de Déploiement
+##  Plan de Déploiement
 
 ### **Phase 1: MVP (Mois 1-2)**
 
@@ -636,7 +636,7 @@ Before launch:
 
 ---
 
-## 💡 Bonnes Pratiques
+##  Bonnes Pratiques
 
 ### **Code Quality**
 
@@ -776,7 +776,7 @@ Diagrams:
 
 ---
 
-## 🎓 Recommandations Finales
+##  Recommandations Finales
 
 ### **Choix Gagnants ✅ (Recommandés)**
 
@@ -795,7 +795,7 @@ Diagrams:
 | **ML/Matching** | Scikit-learn (Python microservice) | DEPRECATED: use Java ML5 ou in-service ML |
 | **Monitoring** | Prometheus + Grafana | Free, powerful, industry standard |
 
-### **Pièges à Éviter ❌**
+### **Pièges à Éviter **
 
 | Piège | Pourquoi pas | Alternative |
 |-------|-------------|------------|
@@ -846,7 +846,7 @@ Success Criteria Week 1:
 
 ---
 
-## 📚 Resources
+##  Resources
 
 ### **Learning**
 - Spring Boot: https://spring.io/guides
@@ -870,7 +870,7 @@ Success Criteria Week 1:
 
 ---
 
-## 📞 Questions?
+##  Questions?
 
 Pour questions architecture, security, ou recommandations techniques:
 1. Vérifiez ce document d'abord
@@ -878,7 +878,6 @@ Pour questions architecture, security, ou recommandations techniques:
 3. Consultez la documentation officielle des frameworks
 4. Discutez en team pour consensus
 
-**Bonne chance! 🚀**
 
 ---
 

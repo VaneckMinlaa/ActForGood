@@ -1,58 +1,54 @@
-#!/usr/bin/env bash
-#
-# Arrête tous les microservices ActForGood (processus Spring Boot).
-# À exécuter depuis la racine du projet actforgood.
-#
+#!/bin/bash
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PID_FILE="$ROOT_DIR/logs/microservices.pid"
+# ActForGood - Script d'arrêt des microservices
 
-echo "=== Arrêt des microservices ActForGood ==="
+echo "========================================================"
+echo "🛑 Arrêt des microservices ActForGood"
+echo "========================================================"
 
-# D'abord tuer les PIDs enregistrés par start-microservices.sh
-if [ -f "$PID_FILE" ]; then
-  while read -r pid; do
-    [ -z "$pid" ] && continue
-    if kill -0 "$pid" 2>/dev/null; then
-      echo "Arrêt du PID $pid..."
-      kill "$pid" 2>/dev/null || kill -9 "$pid" 2>/dev/null
-    fi
-  done < "$PID_FILE"
-  echo "" > "$PID_FILE"
-  sleep 2
+SCRIPT_DIR=$(dirname "$0")
+PID_FILE="$SCRIPT_DIR/microservices.pid"
+
+if [ ! -f "$PID_FILE" ]; then
+    echo "⚠️ Aucun fichier PID ($PID_FILE) trouvé. Les microservices ne semblent pas tourner."
+else
+    echo "📄 Fichier de PIDs trouvé. Arrêt des processus..."
+    
+    # Lire chaque ligne: "service:pid"
+    while IFS=: read -r SERVICE PID; do
+        if [ -n "$PID" ]; then
+            echo "🛑 Arrêt de $SERVICE (PID: $PID)..."
+            
+            # Sous Windows (Git Bash), utilise taskkill pour s'assurer que l'arbre des processus Java/Maven est tué.
+            if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+                # Utilise taskkill pour forcer l'arrêt du processus et de ses enfants
+                taskkill //PID "$PID" //T //F > /dev/null 2>&1
+            else
+                kill -9 "$PID" > /dev/null 2>&1
+            fi
+            echo "✅ $SERVICE intercepté et arrêté."
+        fi
+    done < "$PID_FILE"
+    
+    # Supprimer le fichier PID une fois terminé
+    rm -f "$PID_FILE"
+    echo "✅ Les microservices Java ont été arrêtés."
 fi
 
-# Ensuite tuer tout processus spring-boot:run restant (actforgood)
-pids=$(pgrep -f "spring-boot:run" 2>/dev/null || true)
-if [ -n "$pids" ]; then
-  echo "Processus Spring Boot restants: $pids"
-  echo "$pids" | xargs -r kill -- 2>/dev/null || true
-  sleep 2
-  pids=$(pgrep -f "spring-boot:run" 2>/dev/null || true)
-  if [ -n "$pids" ]; then
-    echo "$pids" | xargs -r kill -9 -- 2>/dev/null || true
-  fi
+echo "========================================================"
+echo "📦 Arrêt de l'infrastructure Docker ?"
+echo "========================================================"
+read -p "Voulez-vous aussi arrêter Postgres, Redis, RabbitMQ et MongoDB ? (o/N) " RESP
+
+if [[ "$RESP" == "o" || "$RESP" == "O" || "$RESP" == "y" || "$RESP" == "Y" ]]; then
+    BASE_DIR=$(cd "$SCRIPT_DIR/.." || exit; pwd)
+    cd "$BASE_DIR" || exit
+    docker-compose stop postgres redis rabbitmq mongodb
+    echo "✅ Infrastructure de base de données arrêtée."
+else
+    echo "ℹ️ L'infrastructure via Docker continue de tourner en arrière-plan."
 fi
 
-# Libérer les ports au cas où un processus n'a pas été tué
-PORTS="8761 8080 8081 8082 8083 8084 8085"
-for port in $PORTS; do
-  pid=$(lsof -ti ":$port" 2>/dev/null || true)
-  if [ -n "$pid" ]; then
-    echo "Libération du port $port (PID $pid)..."
-    echo "$pid" | xargs -r kill -9 -- 2>/dev/null || true
-  fi
-done
-
-echo "Microservices arrêtés."
-
-# Option: arrêter Docker
-if [ "$1" = "--docker" ] || [ "$1" = "-d" ]; then
-  echo ""
-  echo ">> Arrêt des conteneurs Docker (postgres, redis)..."
-  (cd "$ROOT_DIR" && docker-compose down 2>/dev/null || true)
-  echo "   Docker arrêté."
-fi
-
-echo ""
-echo "Terminé."
+echo "========================================================"
+echo "✅ Script terminé."
+echo "========================================================"

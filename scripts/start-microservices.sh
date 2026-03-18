@@ -1,131 +1,88 @@
-#!/usr/bin/env bash
-#
-# Lance tous les microservices ActForGood dans le bon ordre.
-# À exécuter depuis la racine du projet actforgood.
-#
+#!/bin/bash
 
-set -e
+# ActForGood - Script de lancement des microservices en environnement de développement
+# Ce script configure l'infrastructure via Docker et lance chaque microservice
+# en arrière-plan, en redirigeant les logs vers un dossier spécifique.
 
-# Répertoire racine du projet (parent du dossier scripts)
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-MS_DIR="$ROOT_DIR/ActForGood Microservices"
+echo " Initialisation du projet ActForGood - Microservices"
 
-cd "$ROOT_DIR"
+# 1. Identifier les dossiers
+SCRIPT_DIR=$(dirname "$0")
+BASE_DIR=$(cd "$SCRIPT_DIR/.." || exit; pwd)
+TARGET_DIR="$BASE_DIR/ActForGood Microservices"
+LOG_DIR="$BASE_DIR/Logs"
 
-echo "=== ActForGood - Démarrage des microservices ==="
-echo "Racine projet: $ROOT_DIR"
-echo ""
+# Créer le répertoire de logs s'il n'existe pas
+mkdir -p "$LOG_DIR"
+echo " Les logs seront sauvegardés dans : $LOG_DIR"
 
-# Option: démarrer PostgreSQL (et Redis) avec Docker
-if [ "$1" = "--with-docker" ] || [ "$1" = "-d" ]; then
-  echo ">> Démarrage des bases de données (Docker)..."
-  docker-compose up -d postgres redis rabbitmq mongodb
-  echo "   Attente 10s que les bases soient prêtes..."
-  sleep 10
-  echo ""
-fi
+# Fichier pour stocker les PIDs des processus
+PID_FILE="$SCRIPT_DIR/microservices.pid"
+> "$PID_FILE" # Vider le fichier s'il existe
 
-if [ ! -d "$MS_DIR" ]; then
-  echo "Erreur: dossier microservices introuvable: $MS_DIR"
-  exit 1
-fi
+# 2. Lancement des dépendances d'infrastructure
+cd "$BASE_DIR" || exit
+echo " 1. Démarrage de l'infrastructure via Docker (Postgres, Redis, RabbitMQ, MongoDB)..."
+docker-compose up -d postgres redis rabbitmq mongodb
 
-# Créer le dossier des logs et fichier PIDs
-mkdir -p "$ROOT_DIR/logs"
-PID_FILE="$ROOT_DIR/logs/microservices.pid"
-: > "$PID_FILE"
+echo " Attente de l'initialisation des bases de données (15 secondes)..."
+sleep 15
+echo " Infrastructure démarrée."
 
+# 3. Méthode pour démarrer un service Spring Boot en arrière-plan
 start_service() {
-  local name="$1"
-  local dir="$2"
-  local port="${3:-}"
-  echo ">> Démarrage de $name..."
-  (cd "$dir" && mvn spring-boot:run -q >> "$ROOT_DIR/logs/${name}.log" 2>&1 &)
-  local pid=$!
-  echo $pid >> "$PID_FILE"
-  echo "   PID: $pid"
+    SERVICE=$1
+    WAIT_TIME=$2
+    LOG_FILE="$LOG_DIR/$SERVICE.log"
+    
+    echo " Démarrage de: $SERVICE... (Logs => $LOG_FILE)"
+    
+    cd "$TARGET_DIR/$SERVICE" || { echo " Dossier introuvable: $TARGET_DIR/$SERVICE"; return; }
+    
+    # Lancement en arrière-plan
+    nohup mvn spring-boot:run > "$LOG_FILE" 2>&1 &
+    PID=$!
+    
+    # Écriture du nom du service et de son PID
+    echo "$SERVICE:$PID" >> "$PID_FILE"
+    
+    if [ "$WAIT_TIME" -gt 0 ]; then
+        echo " Attente de $WAIT_TIME secondes pour permettre l'initialisation du service..."
+        sleep "$WAIT_TIME"
+    fi
 }
 
-# 1. Config Server - doit être lancé en premier
-echo ""
-echo "--- 1/12 Config Server ---"
-start_service "config-server" "$MS_DIR/config-server" "8888"
-sleep 15
+echo " 2. Démarrage de l'infrastructure Spring Cloud"
 
-# 2. Service Discovery (Eureka)
-echo "--- 2/12 Service Discovery (Eureka) ---"
-start_service "service-discovery" "$MS_DIR/service-discovery" "8761"
-sleep 15
-echo "   Config et Eureka démarrés. Attente 15s..."
-echo ""
+# L'ordre est très important pour Spring Cloud
+start_service "config-server" 15
+start_service "service-discovery" 20
+start_service "api-gateway" 15
 
-# 3. User Service
-echo "--- 3/12 User Service ---"
-start_service "user-service" "$MS_DIR/user-service" "8081"
-sleep 5
+echo " 3. Démarrage des microservices métiers"
 
-# 4. Campaign Service
-echo "--- 4/12 Campaign Service ---"
-start_service "campaign-service" "$MS_DIR/campaign-service" "8082"
-sleep 5
+SERVICES=(
+    "user-service"
+    "campaign-service"
+    "matching-service"
+    "donation-service"
+    "wallet-service"
+    "transaction-service"
+    "payment-service"
+    "notification-service"
+    "blockchain-service"
+)
 
-# 5. Matching Service
-echo "--- 5/12 Matching Service ---"
-start_service "matching-service" "$MS_DIR/matching-service" "8083"
-sleep 5
+# On boucle sur tous les autres microservices
+for service in "${SERVICES[@]}"; do
+    start_service "$service" 5
+done
 
-# 6. Donation Service
-echo "--- 6/12 Donation Service ---"
-start_service "donation-service" "$MS_DIR/donation-service" "8084"
-sleep 5
+# Retour au dossier de base
+cd "$BASE_DIR" || exit
 
-# 7. Wallet Service
-echo "--- 7/12 Wallet Service ---"
-start_service "wallet-service" "$MS_DIR/wallet-service" "8085"
-sleep 5
-
-# 8. Transaction Service
-echo "--- 8/12 Transaction Service ---"
-start_service "transaction-service" "$MS_DIR/transaction-service" "8086"
-sleep 5
-
-# 9. Notification Service
-echo "--- 9/12 Notification Service ---"
-start_service "notification-service" "$MS_DIR/notification-service" "8087"
-sleep 5
-
-# 10. Payment Service
-echo "--- 10/12 Payment Service ---"
-start_service "payment-service" "$MS_DIR/payment-service" "8088"
-sleep 5
-
-# 11. Blockchain Service
-echo "--- 11/12 Blockchain Service ---"
-start_service "blockchain-service" "$MS_DIR/blockchain-service" "8089"
-sleep 5
-
-# 12. API Gateway
-echo "--- 12/12 API Gateway ---"
-start_service "api-gateway" "$MS_DIR/api-gateway" "8080"
-sleep 5
-
-echo ""
-echo "=== Tous les microservices ont été lancés en arrière-plan ==="
-echo ""
-echo "Ports principaux:"
-echo "  - Config Server:   http://localhost:8888"
-echo "  - Eureka:          http://localhost:8761"
-echo "  - API Gateway:     http://localhost:8080"
-echo "  - User Service:    http://localhost:8081"
-echo "  - Campaign:        http://localhost:8082"
-echo "  - Matching:        http://localhost:8083"
-echo "  - Donation:        http://localhost:8084"
-echo "  - Wallet:          http://localhost:8085"
-echo "  - Transaction:     http://localhost:8086"
-echo "  - Notification:    http://localhost:8087"
-echo "  - Payment:         http://localhost:8088"
-echo "  - Blockchain:      http://localhost:8089"
-echo ""
-echo "Logs: $ROOT_DIR/logs/"
-echo "Pour arrêter: ./scripts/stop-microservices.sh"
-echo ""
+echo " TERMINÉ : Tous les services ont été démarrés en arrière-plan !"
+echo " Les logs sont tous situés dans    : $LOG_DIR"
+echo " Pour arrêter les services, lancez : bash scripts/stop-microservices.sh"
+echo " Eureka Dashboard                  : http://localhost:8761"
+echo " API Gateway                       : http://localhost:8080"

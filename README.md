@@ -8,7 +8,7 @@
 
 A modern, open-source donation platform connecting donors with verified charitable organizations in Cameroon. Built with microservices architecture, featuring mobile (React Native) and web (Angular) interfaces.
 
-## 🚀 Quick Start
+##  Quick Start
 
 ```bash
 # 1. Clone repository
@@ -37,7 +37,7 @@ cd ActForGood\ Mobile && npm start  # Scan QR code with Expo Go
 
 **New to the project?** → See [GETTING_STARTED.md](./GETTING_STARTED.md) for detailed setup instructions.
 
-## 📱 Platform Overview
+##  Platform Overview
 
 ### For Donors
 
@@ -105,11 +105,11 @@ cd ActForGood\ Mobile && npm start  # Scan QR code with Expo Go
 | `matching-service`     | ML-based donor-campaign matching | ✅ Ready       |
 | `service-discovery`    | Service registry (Eureka)        | ✅ Ready       |
 
-## 📚 Documentation
+##  Documentation
 
 | Document                                                             | Purpose                                   |
 | -------------------------------------------------------------------- | ----------------------------------------- |
-| [GETTING_STARTED.md](./GETTING_STARTED.md) ⭐                        | **Start here!** Setup guide & quick start |
+| [GETTING_STARTED.md](./GETTING_STARTED.md)                         | **Start here!** Setup guide & quick start |
 | [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md)                   | Complete docs index & navigation          |
 | [ARCHITECTURE_COMPLETE.md](./documentation/ARCHITECTURE_COMPLETE.md) | Technical architecture details            |
 | [CONTRIBUTING.md](./CONTRIBUTING.md)                                 | Contribution guide & code standards       |
@@ -119,7 +119,7 @@ cd ActForGood\ Mobile && npm start  # Scan QR code with Expo Go
 | [ROADMAP.md](./documentation/ROADMAP.md)                             | 6-month development timeline              |
 | [IMPROVEMENT_PLAN.md](./documentation/IMPROVEMENT_PLAN.md)           | Priority matrix & implementation          |
 
-## 🛠️ Common Commands
+##  Common Commands
 
 ```bash
 make help               # Show all available commands
@@ -132,7 +132,7 @@ make clean              # Clean build artifacts
 
 **Full Makefile reference:** See [Makefile](./Makefile)
 
-## 📊 Project Structure
+##  Project Structure
 
 ```
 actforgood/
@@ -155,7 +155,7 @@ actforgood/
     └── DOCUMENTATION_INDEX.md
 ```
 
-## 🔐 Security
+##  Security
 
 - **Authentication:** JWT with bcrypt hashing
 - **Authorization:** Role-based access control (Admin, ONG, Donor)
@@ -165,7 +165,7 @@ actforgood/
 
 See [DEVELOPMENT_BEST_PRACTICES.md - Security](./DEVELOPMENT_BEST_PRACTICES.md#security) for details.
 
-## 🧪 Testing
+##  Testing
 
 ```bash
 make test               # Run all tests
@@ -181,7 +181,7 @@ make coverage           # Generate coverage report
 - Integration tests with TestContainers
 - E2E tests for critical flows
 
-## 📦 Deployment
+##  Deployment
 
 ### Development
 
@@ -204,7 +204,7 @@ make deploy-prod        # Deploy to production (requires approval)
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment guide.
 
-## 🎯 Current Status
+##  Current Status
 
 **Active Development** - Public Beta
 
@@ -219,7 +219,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment guide.
 - 🔜 Advanced analytics
 - 🔜 AI-powered recommendations
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 
@@ -241,7 +241,7 @@ We welcome contributions! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
 
-## 📖 Learning Resources
+##  Learning Resources
 
 ### For Backend Developers
 
@@ -261,7 +261,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
 - [Environment Configuration](./ENVIRONMENT_CONFIGURATION.md)
 - [Docker & Kubernetes](./DEPLOYMENT.md#docker--kubernetes)
 
-## 🐛 Issues & Bug Reports
+##  Issues & Bug Reports
 
 Found a bug? Please help us improve!
 
@@ -274,7 +274,7 @@ Found a bug? Please help us improve!
 
 [Create Issue →](https://github.com/your-org/actforgood/issues/new)
 
-## 💡 Feature Requests
+##  Feature Requests
 
 Have an idea? We'd love to hear it!
 
@@ -284,14 +284,14 @@ Have an idea? We'd love to hear it!
 
 [Suggest Feature →](https://github.com/your-org/actforgood/discussions)
 
-## 📞 Support & Community
+##  Support & Community
 
 - **Slack:** [#actforgood-dev](slack://channel) - Development discussions
 - **Email:** dev-team@actforgood.org
 - **GitHub Discussions:** [Ask questions](https://github.com/your-org/actforgood/discussions)
 - **Documentation:** [Complete Guides](./DOCUMENTATION_INDEX.md)
 
-## 📈 Roadmap
+##  Roadmap
 
 Our 6-month development roadmap is available in [ROADMAP.md](./documentation/ROADMAP.md) covering:
 
@@ -300,7 +300,7 @@ Our 6-month development roadmap is available in [ROADMAP.md](./documentation/ROA
 - Phase 3: Advanced Features (Weeks 7-18)
 - Phase 4: Launch & Scale (Weeks 19-26)
 
-## 📊 Performance & Metrics
+##  Performance & Metrics
 
 - **API Response Time:** < 200ms (p95)
 - **Uptime Target:** 99.9%
@@ -308,7 +308,7 @@ Our 6-month development roadmap is available in [ROADMAP.md](./documentation/ROA
 - **Mobile App:** < 3MB bundle size
 - **Web App:** < 500KB gzipped
 
-## ♻️ Environment Variables
+##  Environment Variables
 
 All required environment variables are documented in:
 

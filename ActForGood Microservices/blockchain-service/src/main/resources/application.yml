@@ -1,14 +1,16 @@
 server:
-  port: 8085
+  port: 8089
 
 spring:
   application:
     name: blockchain-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/actforgood_blockchain
-    username: postgres
-    password: root
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/actforgood_blockchain
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 3
   jpa:
     hibernate:
       ddl-auto: update
