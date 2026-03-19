@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ThemeService } from '../../../../core/services/theme.service';
 
 @Component({
   selector: 'app-register',
@@ -18,8 +19,8 @@ export class RegisterComponent {
   step1 = { name: '', type: '', year: '', city: '', website: '', address: '', mission: '' };
   step2 = { rccm: '', taxId: '', legalDoc: null as File | null, statutes: null as File | null };
   step3 = { firstName: '', lastName: '', email: '', phone: '', password: '', confirmPassword: '', acceptTerms: false };
-
-  constructor(private router: Router) {}
+  
+  constructor(private router: Router, public themeService: ThemeService) {}
 
   toggleSector(sector: string): void {
     const idx = this.selectedSectors.indexOf(sector);

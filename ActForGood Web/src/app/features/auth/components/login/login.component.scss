@@ -1,6 +1,8 @@
-$green: #1a4a3a;
-$orange: #F59542;
+$dark: #1a1a1b;
+$solar-yellow: #FFD700;
+$solar-glow: rgba(255, 215, 0, 0.4);
 $orange-dark: #e07d2a;
+$text-muted: #65676B;
 
 /* ===== FOND : image floutée plein écran ===== */
 .login-bg {
@@ -8,18 +10,9 @@ $orange-dark: #e07d2a;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('/assets/images/acceuil.jpg') center/cover no-repeat fixed;
-  font-family: 'Roboto', sans-serif;
+  background: var(--bg-deep); 
+  font-family: 'Outfit', sans-serif;
   padding: 24px;
-
-  &::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(26, 74, 58, 0.55);
-    backdrop-filter: blur(4px);
-    z-index: 0;
-  }
 }
 
 /* ===== CARTE CENTRALE ===== */
@@ -31,20 +24,24 @@ $orange-dark: #e07d2a;
   height: 480px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.15);
 }
 
 /* ===== GAUCHE : image + overlay ===== */
 .card-left {
   flex: 1;
-  background: url('/assets/images/acceuil.jpg') center/cover no-repeat;
+  background: linear-gradient(135deg, #1a1a1b 0%, #000 100%);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 
   &::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(26, 74, 58, 0.65);
+    background: radial-gradient(circle at center, rgba(255, 214, 0, 0.15) 0%, transparent 70%);
   }
 }
 
@@ -63,9 +60,9 @@ $orange-dark: #e07d2a;
 /* ===== COURBE SVG ===== */
 .card-curve {
   position: absolute;
-  left: calc(50% - 120px);
+  right: 360px; /* Align precisely with card-right width */
   top: 0;
-  width: 120px;
+  width: 100px;
   height: 100%;
   z-index: 2;
   pointer-events: none;
@@ -74,6 +71,9 @@ $orange-dark: #e07d2a;
     width: 100%;
     height: 100%;
     display: block;
+    path {
+      fill: var(--bg-card); /* Matches the form side color */
+    }
   }
 }
 
@@ -81,7 +81,7 @@ $orange-dark: #e07d2a;
 .card-right {
   width: 360px;
   flex-shrink: 0;
-  background: #fff;
+  background: var(--bg-card);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,19 +90,20 @@ $orange-dark: #e07d2a;
   gap: 16px;
   position: relative;
   z-index: 1;
+  border-left: 1px solid var(--border-glass);
 }
 
 .form-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #444;
+  color: var(--text-main);
   margin: 0;
   text-align: center;
 }
 
 .form-subtitle {
   font-size: 0.85rem;
-  color: #aaa;
+  color: var(--text-muted);
   text-align: center;
   margin: -8px 0 4px;
 }
@@ -118,16 +119,19 @@ $orange-dark: #e07d2a;
 .input-wrap {
   display: flex;
   align-items: center;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 30px;
+  border: 1.5px solid var(--border-glass);
+  border-radius: 12px;
   padding: 0 16px;
-  background: #fff;
-  transition: border-color 0.2s;
-  &:focus-within { border-color: $green; }
+  background: var(--bg-glass);
+  transition: all 0.2s;
+  &:focus-within { 
+    border-color: var(--primary-yellow); 
+    box-shadow: 0 0 15px var(--primary-glow);
+  }
 }
 
 .input-icon {
-  color: #ccc;
+  color: #bbb;
   font-size: 1.1rem;
   width: 20px;
   height: 20px;
@@ -139,12 +143,13 @@ $orange-dark: #e07d2a;
   flex: 1;
   border: none;
   outline: none;
-  padding: 12px 0;
-  font-size: 0.9rem;
+  padding: 4px 0;
+  height: 45px;
+  font-size: 0.95rem;
   font-family: inherit;
-  color: #333;
+  color: var(--text-main);
   background: transparent;
-  &::placeholder { color: #ccc; }
+  &::placeholder { color: var(--text-muted); opacity: 0.6; }
 }
 
 .forgot-row {
@@ -154,27 +159,30 @@ $orange-dark: #e07d2a;
 
 .forgot-link {
   font-size: 0.78rem;
-  color: #bbb;
+  color: var(--text-muted);
   text-decoration: none;
-  &:hover { color: $green; text-decoration: underline; }
+  &:hover { color: var(--primary-yellow); text-decoration: underline; }
 }
 
 /* ===== BOUTON ===== */
 .btn-login {
-  width: 60%;
-  margin: 4px auto 0;
-  display: block;
-  padding: 13px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
   border: none;
-  border-radius: 30px;
-  background: $orange;
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 700;
+  border-radius: 12px;
+  background: var(--primary-yellow);
+  color: #000;
+  font-size: 1rem;
+  font-weight: 800;
   cursor: pointer;
-  font-family: inherit;
-  transition: background 0.2s, opacity 0.2s;
-  &:hover:not(:disabled) { background: $orange-dark; }
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s;
+  box-shadow: 0 5px 20px var(--primary-glow);
+  &:hover:not(:disabled) { 
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--primary-glow);
+  }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
@@ -187,24 +195,33 @@ $orange-dark: #e07d2a;
 }
 
 .link-signup {
-  color: $green;
+  color: var(--text-main);
   font-weight: 700;
   text-decoration: none;
-  &:hover { text-decoration: underline; }
+  border-bottom: 2px solid var(--primary-yellow);
+  &:hover { color: var(--primary-yellow); }
 }
 
 .social-row {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   justify-content: center;
+  margin-top: 10px;
 }
 
 .social-icon {
-  color: #ccc;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--bg-glass);
+  color: var(--text-main);
   text-decoration: none;
-  transition: color 0.2s;
-  mat-icon { font-size: 1.3rem; width: 22px; height: 22px; }
-  &:hover { color: $green; }
+  transition: all 0.2s;
+  mat-icon { font-size: 1.3rem; }
+  &:hover { background: var(--primary-yellow); color: #000; transform: scale(1.1); }
 }
 
 .error-msg {
@@ -223,8 +240,9 @@ $orange-dark: #e07d2a;
   align-items: center;
   gap: 2px;
   font-size: 0.72rem;
-  color: #ddd;
-  border-top: 1px dashed #eee;
+  color: var(--text-muted);
+  opacity: 0.5;
+  border-top: 1px dashed var(--border-glass);
   padding-top: 10px;
   width: 100%;
   text-align: center;

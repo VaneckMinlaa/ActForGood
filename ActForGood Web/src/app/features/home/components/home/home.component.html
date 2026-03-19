@@ -1,309 +1,198 @@
-<div class="home-page">
+<div class="organic-bento-layout">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
-      <div class="hero-left">
-        <span class="hero-badge">L'IMPACT EN TEMPS RÉEL</span>
-        <h1 class="hero-title">
-          Chaque don,<br>
-          tracé.<br>
-          Chaque vie,<br>
-          comptée.
-        </h1>
-        <p class="hero-subtitle">
-          Révolutionnez votre générosité. Suivez l'impact de vos contributions via la blockchain et soutenez les communautés camerounaises instantanément par Mobile Money.
-        </p>
-        <div class="hero-actions">
-          <a routerLink="/auth/register" class="btn-primary">Faire un don</a>
-          <a routerLink="/auth/register" class="btn-outline-dark">Inscrire mon ONG</a>
+  <!-- Solid Organic Background Blobs (Fidélité Mockup) -->
+  <div class="bg-blob-solid blob-top-left"></div>
+  <div class="bg-blob-solid blob-bottom-right"></div>
+  <div class="bg-blob-solid blob-right-middle"></div>
+
+  <!-- HERO SECTION (MATCHING MOCKUP) -->
+  <section class="hero-bento">
+    <div class="hero-grid">
+      
+      <!-- Left side: Organic Visual -->
+      <div class="hero-visual">
+        <div class="hero-image-container">
+          <img src="/assets/new-design/education.png" alt="Community Garden" class="organic-main-img">
         </div>
       </div>
-      <div class="hero-right">
-        <div class="hero-image-wrapper">
-          <img src="assets/images/acceuil.jpg" alt="Impact Social" class="hero-image" />
-          <div class="hero-badge-card">
-            <div class="badge-shield"><mat-icon>verified_user</mat-icon></div>
-            <div>
-              <p class="badge-label">BLOCKCHAIN VERIFY</p>
-              <p class="badge-value">100% Transparence</p>
-            </div>
-          </div>
+
+      <!-- Right side: High Impact Text -->
+      <div class="hero-text-container">
+        <h1 class="giant-title">Together We Fuel <br> <span class="text-yellow">Soutien Éducatif</span></h1>
+        <p class="hero-desc">Grâce aux dons blockchain, le foyer de Maria accueille désormais 150 enfants dans un environnement sécurisé et stimulant.</p>
+        <div class="hero-cta-group">
+          <button class="btn-solid-yellow" routerLink="/get-involved">Get Started</button>
+          <a routerLink="/campaigns" class="btn-link-white">Explorer les Projects ➔</a>
         </div>
       </div>
+
     </div>
   </section>
-
-  <!-- STATS -->
-  <section class="stats-section">
-    <div class="stats-grid">
-      <div class="stat-item">
-        <p class="stat-value">450M+</p>
-        <p class="stat-label">FCFA distribués</p>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <p class="stat-value">128</p>
-        <p class="stat-label">Projets actifs</p>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <p class="stat-value">15k+</p>
-        <p class="stat-label">Donateurs</p>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <p class="stat-value">42</p>
-        <p class="stat-label">ONG certifiées</p>
-      </div>
+  <!-- DETAILED DOCUMENTATION SECTION (FULL PAGE WIDTH) -->
+  <section class="detailed-documentation-free">
+      
+    <h2 class="article-title-free">L'Écosystème Humanitaire & Notre Solution Blockchain</h2>
+    
+    <div class="article-content-free">
+      <p>
+        Le secteur humanitaire, particulièrement en Afrique subsaharienne, est confronté à des défis structurels qui minent la confiance des donateurs internationaux. ActForGood n'est pas simplement une plateforme de don ; c'est un protocole de confiance décentralisé conçu pour combler le fossé entre la générosité globale et l'impact local.
+      </p>
+      <p>
+        Traditionnellement, l'aide aux orphelinats transite par de multiples intermédiaires, entraînant des "frais de friction" pouvant atteindre 30% du don initial. Notre architecture utilise des Smart Contracts pour automatiser la distribution des fonds en fonction de jalons vérifiables (milestones). Par exemple, lorsqu'un orphelinat demande la construction d'un forage, les fonds sont bloqués sur la blockchain et ne sont libérés qu'au moment où l'entrepreneur local fournit une preuve numérique (photo géolocalisée et hachage de facture) vérifiée par le réseau.
+      </p>
     </div>
   </section>
-
-  <!-- PARCOURS -->
-  <section class="parcours-section">
-    <div class="section-container">
-      <h2 class="section-title">Le parcours de votre impact</h2>
-      <p class="section-eyebrow">Trois étapes pour une transformation réelle.</p>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-icon step-icon-green"><mat-icon>search</mat-icon></div>
-          <h3 class="step-title">Choisir</h3>
-          <p class="step-desc">Parcourez les initiatives locales vérifiées et choisissez la cause qui vous tient à cœur.</p>
+  <!-- CONTENT BENTO - DOCUMENTATION & MISSION DETAILS -->
+  <section class="content-bento">
+    <div class="section-badge-title">Notre Mission & Documentation</div>
+    
+    <div class="documentation-grid">
+      <!-- Card 1: Rebuild Community -->
+      <div class="doc-card glass-bento-bordered">
+        <div class="card-visual-top">
+          <img src="/assets/new-design/rebuild.png" alt="Rebuild Community" class="doc-visual-img">
         </div>
-        <div class="step-card">
-          <div class="step-icon step-icon-gold"><mat-icon>phone_iphone</mat-icon></div>
-          <h3 class="step-title">Donner via MoMo</h3>
-          <p class="step-desc">Contribuez instantanément avec Orange Money ou MTN Mobile Money en toute sécurité.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-icon step-icon-teal"><mat-icon>hub</mat-icon></div>
-          <h3 class="step-title">Suivre sur Blockchain</h3>
-          <p class="step-desc">Recevez une preuve immuable et voyez chaque franc arriver à sa destination finale.</p>
+        <div class="card-content-body">
+          <mat-icon class="card-icon">home_work</mat-icon>
+          <h3>REBUILD COMMUNITY</h3>
+          <p>Nous finançons la rénovation et la construction d'orphelinats modernes. Chaque projet est audité pour garantir des standards de sécurité et de confort optimaux pour les enfants.</p>
+          <div class="mini-progress"><div class="fill" style="width: 65%"></div></div>
+          <a routerLink="/get-involved" class="get-started-link">Get Started ⇢</a>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- PROJETS EN VEDETTE -->
-  <section class="projects-section">
-    <div class="section-container">
-      <div class="projects-header">
-        <div>
-          <h2 class="section-title-left">Projets en vedette</h2>
-          <p class="section-sub">Soutenez les actions les plus urgentes aujourd'hui.</p>
+      <!-- Card 2: Support Education -->
+      <div class="doc-card glass-bento-bordered highlight-border">
+        <div class="card-visual-top">
+          <img src="/assets/new-design/education.png" alt="Support Education" class="doc-visual-img">
         </div>
-        <a routerLink="/campaigns" class="view-all-link">Voir tous les projets →</a>
+        <div class="card-content-body">
+          <mat-icon class="card-icon">school</mat-icon>
+          <h3>SUPPORT EDUCATION</h3>
+          <p>L'éducation est le pilier du changement. Nous fournissons des kits scolaires, payons les frais de scolarité et soutenons les programmes de tutorat pour les orphelins.</p>
+          <div class="mini-progress"><div class="fill solar" style="width: 85%"></div></div>
+          <a routerLink="/campaigns" class="get-started-link">Explore Projects ➔</a>
+        </div>
       </div>
-      <div class="projects-grid">
-
-        <div class="project-card">
-          <div class="project-image project-img-1">
-            <span class="project-tag tag-urgent">URGENT</span>
+      
+      <!-- Card 3: Blockchain Transparency (Full Width) -->
+      <div class="doc-card glass-bento-bordered full-width-doc">
+        <div class="doc-horizontal-layout">
+          <div class="doc-text-side">
+            <mat-icon class="card-icon text-yellow">verified_user</mat-icon>
+            <h3>Transparence Totale (Web3)</h3>
+            <p>Grâce à la technologie Blockchain, chaque don est traçable à 100%. Les Smart Contracts garantissent que les fonds ne sont libérés qu'aux étapes vérifiées de chaque projet, éliminant tout intermédiaire ou corruption.</p>
+            <ul class="doc-list">
+              <li><mat-icon>check_circle</mat-icon> Traçabilité immuable des flux</li>
+              <li><mat-icon>check_circle</mat-icon> Audit public en temps réel</li>
+              <li><mat-icon>check_circle</mat-icon> Zéro frais intermédiaires cachés</li>
+            </ul>
           </div>
-          <div class="project-body">
-            <div class="project-meta">
-              <span class="project-category">Éducation &amp; Avenir</span>
-              <span class="project-location">📍 Douala</span>
-            </div>
-            <h3 class="project-title">Bibliothèques Mobiles</h3>
-            <p class="project-desc">Équiper 5 vans solaires pour apporter des livres et des ordinateurs dans les zones rurales du...</p>
-            <div class="project-progress">
-              <div class="progress-info">
-                <span class="progress-pct">75% récoltés</span>
-                <span class="progress-goal">Objectif: 5M FCFA</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 75%"></div>
-              </div>
-            </div>
-            <a routerLink="/campaigns" class="btn-support">Soutenir ce projet</a>
-          </div>
+          <!--<div class="doc-visual-side">
+             <div class="glass-orb-visual">
+                <mat-icon class="huge-icon">currency_bitcoin</mat-icon>
+             </div>
+          </div> -->
         </div>
-
-        <div class="project-card">
-          <div class="project-image project-img-2">
-            <span class="project-tag tag-sante">SANTÉ</span>
-          </div>
-          <div class="project-body">
-            <div class="project-meta">
-              <span class="project-category">Soins &amp; Communauté</span>
-              <span class="project-location">📍 Garoua</span>
-            </div>
-            <h3 class="project-title">Clinique Mobile du Nord</h3>
-            <p class="project-desc">Fournir des soins pédiatriques essentiels et des vaccinations dans les villages isolés du Nord.</p>
-            <div class="project-progress">
-              <div class="progress-info">
-                <span class="progress-pct">40% récoltés</span>
-                <span class="progress-goal">Objectif: 12M FCFA</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 40%"></div>
-              </div>
-            </div>
-            <a routerLink="/campaigns" class="btn-support">Soutenir ce projet</a>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-image project-img-3">
-            <span class="project-tag tag-impact">IMPACT</span>
-          </div>
-          <div class="project-body">
-            <div class="project-meta">
-              <span class="project-category">Autonomie &amp; Agri</span>
-              <span class="project-location">📍 Bafoussam</span>
-            </div>
-            <h3 class="project-title">Coopérative Féminine</h3>
-            <p class="project-desc">Achat de broyeuses de manioc pour 50 femmes agricultrices pour booster leur revenus de...</p>
-            <div class="project-progress">
-              <div class="progress-info">
-                <span class="progress-pct">92% récoltés</span>
-                <span class="progress-goal">Objectif: 2.5M FCFA</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 92%"></div>
-              </div>
-            </div>
-            <a routerLink="/campaigns" class="btn-support">Soutenir ce projet</a>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
-
-  <!-- POURQUOI NOUS -->
-  <section class="why-section" id="about">
-    <div class="section-container why-grid">
-      <div class="why-left">
-        <h2 class="why-title">Pourquoi nous confier votre impact ?</h2>
-        <div class="why-items">
-          <div class="why-item">
-            <div class="why-icon"><mat-icon>link</mat-icon></div>
-            <div>
-              <h4 class="why-item-title">Blockchain Stellar</h4>
-              <p class="why-item-desc">Chaque transaction est inscrite sur un registre public infalsifiable. Votre reçu est un certificat numérique unique.</p>
-            </div>
+      </div>
+      <div class ="documentation-grid"></div>
+      <h3 class="sub-title-free">Comment Créer un Compte & Processus de Vérification</h3>
+      <p>
+        Pour garantir la sécurité de tous nos utilisateurs et respecter les régulations AML (Anti-Money Laundering), nous appliquons un protocole rigoureux d'inscription. Que vous soyez un donateur, un bénévole ou un représentant d'orphelinat, voici la marche à suivre :
+      </p>
+      <div class="steps-list-free">
+        <div class="step-item-free">
+          <span class="step-num-free">01</span>
+          <div class="step-text-free">
+            <strong>Inscription Initiale :</strong> Cliquez sur "Get Started" et choisissez votre profil. Vous devrez fournir une adresse email valide et créer un mot de passe sécurisé. À cette étape, votre wallet (portefeuille numérique) sera automatiquement généré.
           </div>
-          <div class="why-item">
-            <div class="why-icon"><mat-icon>smartphone</mat-icon></div>
-            <div>
-              <h4 class="why-item-title">Mobile Money First</h4>
-              <p class="why-item-desc">Pas besoin de carte bancaire. Donnez et recevez des fonds via les réseaux locaux MTN et Orange en 30 secondes.</p>
-            </div>
+        </div>
+        
+        <div class="step-item-free">
+          <span class="step-num-free">02</span>
+          <div class="step-text-free">
+            <strong>Vérification d'Identité (KYC) :</strong> C'est l'étape cruciale pour débloquer les fonctionnalités de don ou de levée de fonds. Pour les individus, une pièce d'identité nationale ou un passeport en cours de validité est requis. Une reconnaissance faciale (Biométrie) sera effectuée via votre caméra pour prévenir l'usurpation d'identité.
           </div>
-          <div class="why-item">
-            <div class="why-icon"><mat-icon>psychology</mat-icon></div>
-            <div>
-              <h4 class="why-item-title">AI Matching</h4>
-              <p class="why-item-desc">Notre algorithme connecte vos valeurs avec les projets les plus pertinents et efficaces pour maximiser chaque FCFA.</p>
-            </div>
+        </div>
+        
+        <div class="step-item-free">
+          <span class="step-num-free">03</span>
+          <div class="step-text-free">
+            <strong>Documents Requis pour les Institutions :</strong> Si vous représentez un orphelinat ou une ONG, vous devez fournir :
+            <ul class="article-inner-list-free">
+              <li>L'acte de création légal (Document d'enregistrement officiel).</li>
+              <li>Le récépissé de reconnaissance administrative délivré par l'État.</li>
+              <li>Une preuve de localisation (Facture d'eau/électricité ou certificat de domicile).</li>
+              <li>La liste des membres du bureau directeur avec leurs identités vérifiées.</li>
+            </ul>
           </div>
         </div>
       </div>
-      <div class="why-right">
-        <div class="why-image-wrapper">
-          <img src="assets/images/acceuil.jpg" alt="Impact" class="why-image" />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ILS NOUS FONT CONFIANCE -->
-  <section class="trust-section">
-    <p class="trust-label">ILS NOUS FONT CONFIANCE</p>
-    <div class="trust-logos">
-      <!-- Remplacer chaque bloc par le logo du partenaire -->
-      <div class="trust-logo-item"><span class="trust-placeholder">ONG 1</span></div>
-      <div class="trust-logo-item"><span class="trust-placeholder">ONG 2</span></div>
-      <div class="trust-logo-item"><span class="trust-placeholder">ONG 3</span></div>
-      <div class="trust-logo-item"><span class="trust-placeholder">ONG 4</span></div>
-      <div class="trust-logo-item"><span class="trust-placeholder">ONG 5</span></div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact-section" id="contact">
-    <div class="section-container">
-      <div class="contact-grid">
-
-        <div class="contact-info">
-          <h2 class="contact-title">Contactez-nous</h2>
-          <p class="contact-subtitle">Une question, un partenariat ou une idée ? Écrivez-nous, nous répondons sous 48h.</p>
-          <div class="contact-details">
-            <div class="contact-detail-item">
-              <div class="contact-detail-icon"><mat-icon>location_on</mat-icon></div>
-              <div>
-                <p class="contact-detail-label">Adresse</p>
-                <p class="contact-detail-value">Yaoundé, Cameroun</p>
-              </div>
-            </div>
-            <div class="contact-detail-item">
-              <div class="contact-detail-icon"><mat-icon>email</mat-icon></div>
-              <div>
-                <p class="contact-detail-label">Email</p>
-                <p class="contact-detail-value">contact&#64;actforgood.cm</p>
-              </div>
-            </div>
-            <div class="contact-detail-item">
-              <div class="contact-detail-icon"><mat-icon>phone</mat-icon></div>
-              <div>
-                <p class="contact-detail-label">Téléphone</p>
-                <p class="contact-detail-value">+237 6XX XXX XXX</p>
-              </div>
-            </div>
+      <div class="documentation-grid">
+      <!-- Card 4: Maria's Impact Context -->
+      <div class="doc-card glass-bento-bordered">
+        <div class="card-content-body">
+          <mat-icon class="card-icon">volunteer_activism</mat-icon>
+          <h3>Impact Social Mesurable</h3>
+          <p>Plus de 1.2M$ ont déjà été injectés directement dans l'économie sociale camerounaise, impactant positivement plus de 450 centres d'accueil.</p>
+          <div class="impact-stat">
+            <span class="value">15K+</span>
+            <span class="label">Volontaires actifs</span>
           </div>
         </div>
-
-        <form class="contact-form" (ngSubmit)="sendMessage()" #contactForm="ngForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Nom complet</label>
-              <input type="text" class="form-input" placeholder="Jean Dupont" name="name" [(ngModel)]="contactData.name" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Email</label>
-              <input type="email" class="form-input" placeholder="vous&#64;email.com" name="email" [(ngModel)]="contactData.email" required />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Sujet</label>
-            <input type="text" class="form-input" placeholder="Partenariat, question, suggestion..." name="subject" [(ngModel)]="contactData.subject" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Message</label>
-            <textarea class="form-textarea" rows="5" placeholder="Votre message..." name="message" [(ngModel)]="contactData.message" required></textarea>
-          </div>
-          <button type="submit" class="btn-send" [disabled]="contactForm.invalid || messageSent">
-            {{ messageSent ? 'Message envoyé ✓' : 'Envoyer le message' }}
-          </button>
-        </form>
-
       </div>
-    </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-top">
-        <span class="footer-logo">ActForGood</span>
-        <nav class="footer-nav">
-          <a href="#">Confidentialité</a>
-          <a href="#">Conditions</a>
-          <a href="#">Contact</a>
-          <a href="#">FAQ</a>
-        </nav>
-        <div class="footer-social">
-          <a href="#" class="social-btn">↗</a>
-          <a href="#" class="social-btn">✉</a>
+      <!-- Card 5: Future Goals -->
+      <div class="doc-card glass-bento-bordered">
+        <div class="card-content-body">
+          <mat-icon class="card-icon">rocket_launch</mat-icon>
+          <h3>Objectifs 2026</h3>
+          <p>Déployer notre solution dans 5 nouveaux pays d'Afrique subsaharienne et automatiser 100% des rapports d'impact via Oracles Décentralisés.</p>
+          <div class="mini-progress"><div class="fill" style="width: 30%"></div></div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <span>&#169; 2024 ActForGood. L'Archive Humaine du Cameroun.</span>
-        <span>Propulsé par la technologie Stellar Blockchain.</span>
+
+      <!-- NEW SECTION: Sector Challenges Card (Split Card Style) -->
+      <div class="doc-card glass-bento-bordered full-width-doc accent-card">
+        <div class="doc-horizontal-layout reversed">
+          <div class="doc-text-side">
+            <mat-icon class="card-icon text-white">warning_amber</mat-icon>
+            <h3 class="text-white">Défis du Secteur Humanitaire</h3>
+            <p>Le secteur de l'aide aux orphelins en Afrique fait face à trois obstacles majeurs :</p>
+            <ul class="doc-list highlight-white">
+              <li><strong>Manque de Confiance:</strong> 40% des donateurs hésitent à cause du manque de visibilité sur l'utilisation réelle des fonds.</li>
+              <li><strong>Frais de Transfert:</strong> Les banques traditionnelles prélèvent jusqu'à 15% sur les virements internationaux vers le Cameroun.</li>
+              <li><strong>Rapports d'Impact:</strong> Les preuves de réalisation (photos, factures) sont souvent falsifiables ou perdues.</li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-  </footer>
+      </div>
+      <div class="documentation-grid">
+      <!-- NEW SECTION: How ActForGood Simple Solutions -->
+      <div class="doc-card glass-bento-bordered">
+        <div class="card-content-body">
+          <mat-icon class="card-icon text-yellow">bolt</mat-icon>
+          <h3>La Solution ActForGood</h3>
+          <p>Nous utilisons les **Stablecoins (XAF/USDC)** pour des transferts instantanés avec moins de 1% de frais, maximisant l'aide directe.</p>
+        </div>
+      </div>
+
+      <div class="doc-card glass-bento-bordered">
+        <div class="card-content-body">
+          <mat-icon class="card-icon text-yellow">memory</mat-icon>
+          <h3>Preuve de Travail Social</h3>
+          <p>Chaque brique posée est validée par des photos géolocalisées ancrées sur la blockchain, créant un audit inaltérable pour le donateur.</p>
+        </div>
+      </div>
+      </div>
+      <h3 class="sub-title-free">Soutenir l'Économie Locale</h3>
+      <p>
+        L'originalité d'ActForGood réside dans son intégration avec les commerçants locaux. Au lieu d'importer des biens, nous privilégions l'achat auprès des fournisseurs camerounais de la zone d'intervention. Ces fournisseurs font également l'objet d'une vérification KYB (Know Your Business) stricte, garantissant que l'argent des donateurs alimente directement la croissance économique de la communauté locale tout en aidant les enfants.
+      </p>
+  </section><!-- End content-bento -->
+
+  
 
 </div>

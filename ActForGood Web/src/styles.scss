@@ -1,4 +1,40 @@
-/* Global Styles - ActForGood maquette */
+/* ════════════════════════════════════════════════════════════
+   ACTFORGOOD  --  Design System "ORGANIC BENTO" (Global)
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Palette Primaire - Solar Yellow */
+  --primary-yellow: #FFD700;
+  --primary-glow: rgba(255, 215, 0, 0.4);
+  --amber-warm: #FFA500;
+  
+  /* Palette Fond - Light Mode Default */
+  --bg-deep: #F8F9FA;
+  --bg-card: #FFFFFF;
+  --bg-glass: rgba(0, 0, 0, 0.03);
+  
+  /* Accent & Typo */
+  --text-main: #1A1A1B;
+  --text-muted: #65676B;
+  --border-glass: rgba(0, 0, 0, 0.08);
+  --border-yellow: rgba(255, 215, 0, 0.3);
+  
+  /* Fonts */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+}
+
+/* Dark Mode (pour référence ou switch futur) */
+.dark-mode {
+  --bg-deep: #121212;
+  --bg-card: #202020;
+  --bg-glass: rgba(255, 255, 255, 0.05);
+  --text-main: #FFFFFF;
+  --text-muted: #A0A0A0;
+  --border-glass: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Reset & Base ────────────────────────────────────────── */
 * {
   margin: 0;
   padding: 0;
@@ -6,10 +42,65 @@
 }
 
 body {
-  font-family: 'Roboto', 'Arial', sans-serif;
-  background-color: #fff;
-  color: #000;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Material Design Theme - accent jaune-orange */
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* ── Utilitaires Premium (Global) ────────────────────────── */
+
+/* Bouton Royal Glow Yellow */
+.btn-glow-yellow {
+  background: var(--primary-yellow);
+  color: #000;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
+  }
+}
+
+/* Effet de Verre Bento */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+}
+
+/* Gradient Texte Solar */
+.text-solar {
+  background: linear-gradient(135deg, var(--primary-yellow) 0%, var(--amber-warm) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-yellow); }

@@ -22,9 +22,12 @@ import { ApiService } from '../../../../core/services/api.service';
   `,
   styles: [`
     .campaign-detail {
-      padding: 20px;
+      padding: 90px 20px;
       max-width: 800px;
       margin: 0 auto;
+      background: var(--bg-deep);
+      color: var(--text-main);
+      min-height: 100vh;
     }
   `]
 })

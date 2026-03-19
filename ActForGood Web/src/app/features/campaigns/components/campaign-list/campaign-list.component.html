@@ -1,14 +1,19 @@
-<div class="projets-page">
+<div class="organic-bento-layout">
+
+  <!-- Solid Organic Background Blobs -->
+  <div class="bg-blob-solid blob-top-left"></div>
+  <div class="bg-blob-solid blob-bottom-right"></div>
+
   <!-- Hero section -->
-  <section class="hero">
-    <h1 class="hero-title">Découvrez nos projets</h1>
-    <p class="hero-subtitle">
-      Explorez les initiatives qui transforment des vies au Cameroun. Votre soutien est la clé de leur succès.
+  <section class="campaign-hero">
+    <h1 class="giant-title">Soutenez nos <span class="text-yellow">Projets Locaux.</span></h1>
+    <p class="hero-desc">
+      Explorez les initiatives qui transforment des vies. Votre soutien direct aux orphelinats et à l'éducation des enfants est garanti et tracé via la blockchain.
     </p>
   </section>
 
-  <!-- Filtres -->
-  <section class="filters-section">
+  <!-- Filtres (Glassmorphism Bento) -->
+  <section class="filters-glass glass-bento-bordered">
     <div class="filter-group">
       <span class="filter-label">Cause:</span>
       <div class="filter-tags">
@@ -52,26 +57,40 @@
 
   <!-- Grille de cartes -->
   <section class="cards-section">
-    <p *ngIf="filteredCampaigns.length === 0" class="no-results">Aucun projet ne correspond à vos critères.</p>
+    <p *ngIf="filteredCampaigns.length === 0" class="no-results">Aucun projet ne correspond à vos recherches pour le moment.</p>
     <div class="campaigns-grid" *ngIf="filteredCampaigns.length > 0">
+      
+      <!-- Utilisation de l'effet Dark Glass pour chaque projet -->
       <article
         *ngFor="let campaign of filteredCampaigns"
-        class="campaign-card"
+        class="project-bento-item glass-bento-bordered"
         [routerLink]="['/campaigns', campaign.id]">
-        <div class="card-image" [style.backgroundImage]="getCardImage(campaign)"></div>
-        <div class="card-body">
-          <h2 class="card-title">{{ campaign.title }}</h2>
-          <p class="card-description">{{ campaign.description }}</p>
+        
+        <div class="project-bento-img" [style.backgroundImage]="getCardImage(campaign)"></div>
+        <div class="project-bento-content">
+          <h3>{{ campaign.title }}</h3>
+          <p class="bento-subtext">{{ campaign.description | slice:0:100 }}...</p>
+          
           <div class="card-badges">
-            <span class="badge">ONG vérifiée</span>
+            <span class="badge">Orphelinat vérifié</span>
             <span class="badge">Dons traçables</span>
           </div>
+          
+          <div class="mini-progress-bento">
+             <!-- Placeholder progress calc, since we don't have exact percentage -->
+            <div class="fill solar" style="width: 50%"></div>
+          </div>
+
           <div class="card-stats">
             <span class="collected">Collecté: <strong>{{ (campaign.currentAmount ?? 0) | number }} XAF</strong></span>
             <span class="objective">Objectif: {{ campaign.targetAmount | number }} XAF</span>
           </div>
+
+          <a href="javascript:void(0)" class="get-started-link">Soutenir ce projet ➔</a>
         </div>
+
       </article>
+
     </div>
   </section>
 </div>

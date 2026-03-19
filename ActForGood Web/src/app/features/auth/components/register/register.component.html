@@ -3,8 +3,13 @@
   <!-- TOP BAR -->
   <div class="top-bar">
     <a routerLink="/" class="top-logo">ActForGood</a>
-    <div class="top-help">
-      Besoin d'aide ? <a href="#contact" class="top-help-link">Contactez le support</a>
+    <div class="top-utils">
+      <button class="theme-toggle" (click)="themeService.toggleTheme()" [title]="(themeService.isDark$ | async) ? 'Passer au mode clair' : 'Passer au mode sombre'">
+        <mat-icon>{{ (themeService.isDark$ | async) ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+      <div class="top-help">
+        Besoin d'aide ? <a href="#contact" class="top-help-link">Contactez le support</a>
+      </div>
     </div>
   </div>
 
@@ -180,4 +185,23 @@
 
     </main>
   </div>
+
+  <footer class="register-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <p class="footer-copy">&copy; 2026 ActForGood. Propulsé par la Plateforme de l'Archive Humaine. Tous droits réservés.</p>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">Confidentialité</a>
+        <span class="dot-sep">&bull;</span>
+        <a href="#" class="footer-link">Conditions d'utilisation</a>
+        <span class="dot-sep">&bull;</span>
+        <a href="#" class="footer-link">Centre d'aide</a>
+        <div class="footer-lang">
+          <mat-icon>language</mat-icon>
+          <span>Français (CM)</span>
+        </div>
+      </div>
+    </div>
+  </footer>
 </div>
