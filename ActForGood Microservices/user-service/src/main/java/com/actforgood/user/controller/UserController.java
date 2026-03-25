@@ -90,10 +90,15 @@ public class UserController {
     @PostMapping("/{id}/validate")
     public ResponseEntity<ApiResponse<?>> validateAndSendPassword(@PathVariable UUID id) {
         log.info("POST /api/users/{}/validate", id);
-
         userService.validateUserAndSendPasswordByEmail(id);
+        return ResponseEntity.ok(ApiResponse.success("User validated and credentials sent via email", null));
+    }
 
-        return ResponseEntity.ok(ApiResponse.success("User validated and password sent via email", null));
+    @PostMapping("/{id}/reject")
+    public ResponseEntity<ApiResponse<?>> rejectUser(@PathVariable UUID id, @RequestBody String reason) {
+        log.info("POST /api/users/{}/reject", id);
+        userService.rejectUser(id, reason);
+        return ResponseEntity.ok(ApiResponse.success("User rejected and notification sent via email", null));
     }
 
     @PutMapping("/{id}/activate")

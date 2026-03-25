@@ -1,171 +1,126 @@
 <div class="dashboard-content">
-
-  <!-- TABS -->
-  <div class="tabs-bar">
-    <button *ngFor="let tab of tabs" class="tab-btn"
-      [class.active]="activeTab === tab.key"
-      (click)="activeTab = tab.key">
-      {{ tab.label }}
-    </button>
+  <!-- MODERN RECAP CARDS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">Total Collecté</span>
+      <h2 class="stat-value">52.4M</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>+12.5% ce mois</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Donateurs Actifs</span>
+      <h2 class="stat-value">1,420</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>+82 nouveaux</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">ONGs Approuvées</span>
+      <h2 class="stat-value">312</h2>
+      <div class="stat-trend neutral">
+        <mat-icon>remove</mat-icon>
+        <span>5 en attente</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Projets de Soutien</span>
+      <h2 class="stat-value">185</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>+14 ce trimestre</span>
+      </div>
+    </div>
   </div>
 
-  <!-- WIDGETS ROW -->
-  <div class="widgets-row">
-
-    <!-- ÉVOLUTION DES DONS -->
-    <div class="widget widget-large">
-      <div class="widget-header">
-        <div>
-          <h3 class="widget-title">Évolution des Dons</h3>
-          <p class="widget-sub">Numéraire vs Nature (6 derniers mois)</p>
-        </div>
-        <div class="legend">
-          <span class="legend-dot" style="background:#1a4a3a"></span><span>Cash</span>
-          <span class="legend-dot" style="background:#F59542"></span><span>Nature</span>
-        </div>
-      </div>
-      <div class="bar-chart">
-        <div class="bar-group" *ngFor="let b of barData">
-          <div class="bar-wrap">
-            <div class="bar bar-green" [style.height.px]="b.cash"></div>
-            <div class="bar bar-orange" [style.height.px]="b.nature"></div>
-          </div>
-          <span class="bar-label">{{ b.month }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- TENDANCES INSCRIPTIONS -->
-    <div class="widget widget-medium">
-      <h3 class="widget-title">Tendances<br>Inscriptions</h3>
-      <div class="donut-wrapper">
-        <svg viewBox="0 0 80 80" class="donut-svg">
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#e0e0e0" stroke-width="10"/>
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#1a4a3a" stroke-width="10"
-            stroke-dasharray="132 189" stroke-dashoffset="47" stroke-linecap="round"/>
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#F59542" stroke-width="10"
-            stroke-dasharray="57 189" stroke-dashoffset="-85" stroke-linecap="round"/>
-        </svg>
-        <div class="donut-center">
-          <p class="donut-pct">70%</p>
-          <p class="donut-label">DONATEURS</p>
-        </div>
-      </div>
-      <div class="donut-stats">
-        <div class="donut-stat"><p class="ds-value">1,420</p><p class="ds-label">DONATEURS</p></div>
-        <div class="donut-stat"><p class="ds-value ds-orange">312</p><p class="ds-label">ONGS</p></div>
-      </div>
-    </div>
-
-    <!-- PROJETS PAR CATÉGORIE -->
-    <div class="widget widget-medium">
-      <h3 class="widget-title">Projets par<br>Catégorie</h3>
-      <div class="category-list">
-        <div class="category-item" *ngFor="let c of categoryProjects">
-          <div class="cat-top">
-            <span class="cat-label">{{ c.label }}</span>
-            <span class="cat-pct">{{ c.pct }}%</span>
-          </div>
-          <div class="cat-bar">
-            <div class="cat-fill" [style.width.%]="c.pct" [style.background]="c.color"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- BOTTOM ROW -->
-  <div class="bottom-row">
-
-    <!-- VALIDATIONS TABLE -->
-    <div class="card validations-card">
+  <!-- MAIN PERFORMANCE GRID -->
+  <div class="main-grid">
+    <div class="graph-card">
       <div class="card-header">
         <div>
-          <h2 class="card-title">File de Priorité : Validations ONG</h2>
-          <p class="card-subtitle">3 dossiers critiques nécessitent une action immédiate.</p>
+          <h3 class="card-title">Flux de Trésorerie & Dons</h3>
+          <p class="card-sub">Comparaison Numéraire vs Nature (6 derniers mois)</p>
         </div>
-        <div class="card-actions">
-          <button class="btn-filter"><mat-icon>filter_list</mat-icon></button>
-          <button class="btn-treat-all">Traiter Tout</button>
+        <div class="legend">
+          <span class="dot primary"></span> Cash
+          <span class="dot accent"></span> Nature
         </div>
       </div>
-      <table class="ngo-table">
+      <div class="chart-container-dynamic">
+        <canvas #mainChart></canvas>
+      </div>
+    </div>
+
+    <div class="graph-card">
+      <div class="card-header">
+        <h3 class="card-title">Impact par Secteur</h3>
+        <p class="card-sub">Répartition des projets actifs</p>
+      </div>
+      <div class="project-cat-list">
+        <div class="cat-item" *ngFor="let c of categoryProjects">
+          <div class="cat-info">
+            <span class="cat-name">{{ c.label }}</span>
+            <span class="cat-count">{{ c.pct }}%</span>
+          </div>
+          <div class="cat-bar-bg">
+            <div class="cat-bar-fill" [style.width.%]="c.pct" [style.background]="c.color"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM OPERATIONS GRID -->
+  <div class="bottom-grid">
+    <div class="table-card">
+      <div class="card-header">
+        <h2 class="card-title">Validations ONGs Prioritaires</h2>
+      </div>
+      <table>
         <thead>
           <tr>
-            <th>INSTITUTION</th><th>INDICE RISQUE</th><th>DOCUMENTS</th><th>STATUS</th><th>ACTIONS</th>
+            <th>INSTITUTION</th>
+            <th>INDICE RISQUE</th>
+            <th>DOCUMENTS</th>
+            <th>STATUS</th>
+            <th>ACTION</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let ngo of pendingNgos">
             <td>
-              <div class="ngo-name-cell">
-                <div class="ngo-avatar" [style.background]="ngo.color">{{ ngo.initials }}</div>
-                <div>
-                  <p class="ngo-name">{{ ngo.name }}</p>
-                  <p class="ngo-sub">{{ ngo.sub }}</p>
+              <div class="ngo-cell">
+                <div class="info">
+                  <span class="name">{{ ngo.name }}</span>
                 </div>
               </div>
             </td>
-            <td><span class="risk-badge" [style.color]="ngo.riskColor" [style.background]="ngo.riskBg">{{ ngo.risk }}</span></td>
-            <td>
-              <div class="doc-icons">
-                <mat-icon class="doc-icon">description</mat-icon>
-                <mat-icon class="doc-icon">image</mat-icon>
-                <span class="doc-more" *ngIf="ngo.docs > 2">+{{ ngo.docs - 2 }}</span>
-              </div>
-            </td>
-            <td>
-              <span class="status-dot" [style.background]="ngo.statusColor"></span>
-              <span class="status-text">{{ ngo.status }}</span>
-            </td>
-            <td><button class="btn-examine">Examiner</button></td>
+            <td><span class="status-tag" [class.urgent]="ngo.riskLevel === 'Critique'" [class.normal]="ngo.riskLevel !== 'Critique'">{{ ngo.risk }}</span></td>
+            <td><mat-icon>description</mat-icon> <strong>{{ ngo.docs }}</strong> dossiers</td>
+            <td>En attente</td>
+            <td><button class="btn-examine-mini">Examiner</button></td>
           </tr>
         </tbody>
       </table>
-      <div class="table-footer">
-        <a class="link-green">Accéder à toutes les validations (18)</a>
-      </div>
     </div>
 
-    <!-- RIGHT COL -->
-    <div class="right-col">
-      <div class="card finance-card">
-        <p class="finance-label">VOLUME FINANCIER (30J)</p>
-        <p class="finance-value">45.2M <span>FCFA</span></p>
-        <p class="finance-trend"><mat-icon>trending_up</mat-icon> +14.2% vs mois dernier</p>
-        <div class="finance-split">
-          <div><p class="split-label">COLLECTÉ</p><p class="split-value">52.1M F</p></div>
-          <div><p class="split-label">DISTRIBUÉ</p><p class="split-value">45.2M F</p></div>
-        </div>
+    <div class="graph-card">
+      <div class="card-header">
+        <h3 class="card-title">Dernières Activités</h3>
+        <p class="card-sub">Flux des dons en temps réel</p>
       </div>
-      <div class="card reports-card">
-        <div class="card-header">
-          <h2 class="card-title">Derniers Rapports</h2>
-          <button class="icon-btn"><mat-icon>more_horiz</mat-icon></button>
-        </div>
-        <div class="report-list">
-          <div class="report-item" *ngFor="let r of lastReports">
-            <div class="report-icon" [style.background]="r.iconBg">
-              <mat-icon [style.color]="r.iconColor">{{ r.icon }}</mat-icon>
-            </div>
-            <div class="report-body">
-              <p class="report-title">{{ r.title }}</p>
-              <p class="report-meta">{{ r.meta }}</p>
-              <div class="report-tags" *ngIf="r.tags">
-                <span class="report-tag" *ngFor="let t of r.tags">{{ t }}</span>
-              </div>
-              <p class="report-hash" *ngIf="r.hash">{{ r.hash }}</p>
-            </div>
+      <div class="recent-donations">
+        <div class="donation-item" *ngFor="let r of lastReports.slice(0, 4)">
+          <div class="donation-info">
+            <p class="amount">{{ r.title }}</p>
+            <p class="meta">{{ r.meta }}</p>
           </div>
+          <mat-icon>chevron_right</mat-icon>
         </div>
-        <button class="btn-all-reports">Tous les rapports</button>
       </div>
     </div>
-
   </div>
 
 </div>
-
-<!-- FAB -->
-<button class="fab"><mat-icon>add</mat-icon></button>

@@ -47,8 +47,8 @@
       </div>
     </aside>
 
-    <!-- RIGHT PANEL -->
-    <main class="right-panel">
+    <!-- MAIN FORM -->
+    <main class="right-panel" *ngIf="!isSubmitted">
 
       <!-- STEP 1 -->
       <div *ngIf="currentStep === 1" class="form-card">
@@ -61,9 +61,10 @@
             <label class="form-label">TYPE D'INSTITUTION</label>
             <select class="form-select" [(ngModel)]="step1.type" name="orgType">
               <option value="" disabled selected>Sélectionnez un type</option>
-              <option value="ONG">ONG</option>
-              <option value="Entreprise">Entreprise</option>
-              <option value="Association">Association</option>
+              <option value="ONG">ONG (Organisation Non Gouvernementale)</option>
+              <option value="Association">Association (Œuvre Sociale)</option>
+              <option value="Orphelinat">Orphelinat (Foyer d'Accueil)</option>
+              <option value="Entreprise">Entreprise / Fondation Entreprise</option>
             </select>
           </div>
           <div class="form-group">
@@ -82,13 +83,24 @@
         </div>
         <div class="form-row">
           <div class="form-group">
+            <label class="form-label">PAYS</label>
+            <select class="form-select" [(ngModel)]="step1.country" name="orgCountry">
+              <option value="Cameroun">Cameroun</option>
+              <option value="Gabon">Gabon</option>
+              <option value="Congo">Congo</option>
+              <option value="Sénégal">Sénégal</option>
+              <option value="France">France</option>
+              <option value="Autre">Autre (International)</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label class="form-label">VILLE / LOCALITÉ</label>
             <input type="text" class="form-input" placeholder="ex: Douala" [(ngModel)]="step1.city" name="orgCity" />
           </div>
-          <div class="form-group">
-            <label class="form-label">SITE WEB (OPTIONNEL)</label>
-            <input type="url" class="form-input" placeholder="https://" [(ngModel)]="step1.website" name="orgWebsite" />
-          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">SITE WEB (OPTIONNEL)</label>
+          <input type="url" class="form-input" placeholder="https://" [(ngModel)]="step1.website" name="orgWebsite" />
         </div>
         <div class="form-group">
           <label class="form-label">ADRESSE COMPLÈTE</label>
@@ -105,27 +117,84 @@
       <!-- STEP 2 -->
       <div *ngIf="currentStep === 2" class="form-card">
         <div class="form-group">
-          <label class="form-label">NUMÉRO RCCM / RÉCÉPISSÉ</label>
-          <input type="text" class="form-input" placeholder="ex: RC/DLA/2015/B/1234" [(ngModel)]="step2.rccm" name="rccm" />
+          <label class="form-label">NUMÉRO RCCM / RÉCÉPISSÉ / ÉQUIVALENT INTERNATIONAL</label>
+          <input type="text" class="form-input" placeholder="ex: RC/DLA/2015/B/1234 ou Code National" [(ngModel)]="step2.rccm" name="rccm_int" />
         </div>
         <div class="form-group">
           <label class="form-label">NUMÉRO CONTRIBUABLE (NIU)</label>
           <input type="text" class="form-input" placeholder="ex: M012345678901A" [(ngModel)]="step2.taxId" name="taxId" />
         </div>
-        <div class="form-group">
-          <label class="form-label">DOCUMENT LÉGAL (PDF)</label>
-          <div class="file-upload" (click)="legalInput.click()">
-            <mat-icon>upload_file</mat-icon>
+        <!-- COMMON DOCUMENTS -->
+        <div class="form-group" *ngIf="step1.type !== 'Orphelinat'">
+          <label class="form-label">DOCUMENT LÉGAL / RCCM (PDF)</label>
+          <div class="file-upload" (click)="legalInput.click()" [class.has-file]="step2.legalDoc">
+            <mat-icon>{{ step2.legalDoc ? 'check_circle' : 'upload_file' }}</mat-icon>
             <span>{{ step2.legalDoc ? step2.legalDoc.name : 'Cliquez pour uploader (PDF, max 5MB)' }}</span>
             <input #legalInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'legalDoc')" />
           </div>
         </div>
-        <div class="form-group">
+
+        <!-- ORPHANAGE-SPECIFIC DOCUMENTS -->
+        <ng-container *ngIf="step1.type === 'Orphelinat'">
+          <div class="form-group">
+            <label class="form-label">ARRÊTÉ D'AUTORISATION MINAS (Crucial)</label>
+            <div class="file-upload" (click)="minasInput.click()" [class.has-file]="step2.minasAuth">
+              <mat-icon>{{ step2.minasAuth ? 'check_circle' : 'upload_file' }}</mat-icon>
+              <span>{{ step2.minasAuth ? step2.minasAuth.name : 'Uploader l\'Arrêté (MINAS)' }}</span>
+              <input #minasInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'minasAuth')" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">RECÉPISSÉ DE DÉCLARATION D'ASSOCIATION</label>
+            <div class="file-upload" (click)="receiptInput.click()" [class.has-file]="step2.assocReceipt">
+              <mat-icon>{{ step2.assocReceipt ? 'check_circle' : 'upload_file' }}</mat-icon>
+              <span>{{ step2.assocReceipt ? step2.assocReceipt.name : 'Uploader le Récépissé' }}</span>
+              <input #receiptInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'assocReceipt')" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">RÈGLEMENT INTÉRIEUR (Cadre de vie)</label>
+            <div class="file-upload" (click)="rulesInput.click()" [class.has-file]="step2.rulesInternal">
+              <mat-icon>{{ step2.rulesInternal ? 'check_circle' : 'upload_file' }}</mat-icon>
+              <span>{{ step2.rulesInternal ? step2.rulesInternal.name : 'Uploader le règlement intérieur' }}</span>
+              <input #rulesInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'rulesInternal')" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">REGISTRE D'ACCUEIL ET DE PLACEMENT (Spécimen ou Extrait)</label>
+            <div class="file-upload" (click)="registryInput.click()" [class.has-file]="step2.registryEntry">
+              <mat-icon>{{ step2.registryEntry ? 'check_circle' : 'upload_file' }}</mat-icon>
+              <span>{{ step2.registryEntry ? step2.registryEntry.name : 'Uploader spécimen registre' }}</span>
+              <input #registryInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'registryEntry')" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ENQUÊTE SOCIALE (Spécimen par enfant)</label>
+            <div class="file-upload" (click)="socialInput.click()" [class.has-file]="step2.socialInquiry">
+              <mat-icon>{{ step2.socialInquiry ? 'check_circle' : 'upload_file' }}</mat-icon>
+              <span>{{ step2.socialInquiry ? step2.socialInquiry.name : 'Uploader spécimen enquête' }}</span>
+              <input #socialInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'socialInquiry')" />
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- STATUTES COMMON (Except possibly if Orphelinat uploaded specific ones already? Let's keep it below for all) -->
+        <div class="form-group" *ngIf="step1.type !== 'Orphelinat'">
           <label class="form-label">STATUTS DE L'ORGANISATION (PDF)</label>
-          <div class="file-upload" (click)="statutesInput.click()">
-            <mat-icon>upload_file</mat-icon>
+          <div class="file-upload" (click)="statutesInput.click()" [class.has-file]="step2.statutes">
+            <mat-icon>{{ step2.statutes ? 'check_circle' : 'upload_file' }}</mat-icon>
             <span>{{ step2.statutes ? step2.statutes.name : 'Cliquez pour uploader (PDF, max 5MB)' }}</span>
             <input #statutesInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'statutes')" />
+          </div>
+        </div>
+
+        <!-- SHARED FOR ASSOCIATION -->
+        <div class="form-group" *ngIf="step1.type === 'Association'">
+          <label class="form-label">RECÉPISSÉ DE DÉCLARATION (Si non inclus dans document légal)</label>
+          <div class="file-upload" (click)="receiptAssocOnlyInput.click()" [class.has-file]="step2.assocReceipt">
+            <mat-icon>{{ step2.assocReceipt ? 'check_circle' : 'upload_file' }}</mat-icon>
+            <span>{{ step2.assocReceipt ? step2.assocReceipt.name : 'Uploader le Récépissé' }}</span>
+            <input #receiptAssocOnlyInput type="file" accept=".pdf" hidden (change)="onFileChange($event, 'assocReceipt')" />
           </div>
         </div>
       </div>
@@ -151,16 +220,6 @@
           <label class="form-label">TÉLÉPHONE</label>
           <input type="tel" class="form-input" placeholder="+237 6XX XXX XXX" [(ngModel)]="step3.phone" name="phone" />
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">MOT DE PASSE</label>
-            <input type="password" class="form-input" placeholder="••••••••" [(ngModel)]="step3.password" name="password" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">CONFIRMER</label>
-            <input type="password" class="form-input" placeholder="••••••••" [(ngModel)]="step3.confirmPassword" name="confirmPassword" />
-          </div>
-        </div>
         <label class="checkbox-label">
           <input type="checkbox" [(ngModel)]="step3.acceptTerms" name="terms" />
           J'accepte les <a href="#" class="link-green">conditions d'utilisation</a> et la <a href="#" class="link-green">politique de confidentialité</a>
@@ -183,6 +242,39 @@
         </button>
       </div>
 
+    </main>
+
+    <!-- SUCCESS VIEW -->
+    <main class="right-panel success-view" *ngIf="isSubmitted">
+      <div class="success-card">
+        <div class="success-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <h2>Demande de soumission envoyée !</h2>
+        <p>Votre demande d'inscription pour <strong>{{ step1.name }}</strong> a été transmise avec succès à l'administration d'ActForGood.</p>
+        
+        <div class="next-steps">
+          <h3>Prochaines étapes :</h3>
+          <ul>
+            <li>
+              <mat-icon>verified_user</mat-icon>
+              <span>Examen de vos documents justificatifs par nos administrateurs.</span>
+            </li>
+            <li>
+              <mat-icon>email</mat-icon>
+              <span>Réception de vos identifiants de connexion par email (sous 24h-48h).</span>
+            </li>
+            <li>
+              <mat-icon>login</mat-icon>
+              <span>Connexion à votre espace institutionnel une fois validé.</span>
+            </li>
+          </ul>
+        </div>
+
+        <button class="btn-home" routerLink="/">
+          <mat-icon>home</mat-icon> Retour à l'accueil
+        </button>
+      </div>
     </main>
   </div>
 

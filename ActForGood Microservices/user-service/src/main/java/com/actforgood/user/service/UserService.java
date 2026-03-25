@@ -22,6 +22,8 @@ import com.actforgood.user.exception.ValidationException;
 import com.actforgood.user.model.User;
 import com.actforgood.user.repository.UserRepository;
 
+import com.actforgood.user.dto.NotificationRequest;
+import com.actforgood.user.messaging.NotificationProducer;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -49,7 +51,7 @@ public class UserService {
     private JwtService jwtService;
 
     @Autowired
-    private EmailService emailService;
+    private NotificationProducer notificationProducer;
 
     // ==================== Registration & Authentication ====================
 
@@ -68,9 +70,33 @@ public class UserService {
         user.setLastName(request.getLastName() != null ? request.getLastName() : "");
         user.setPhone(request.getPhone());
         user.setUserType(User.UserType.fromString(request.getUserType()));
-        user.setLocation(request.getLocation());
         user.setCountry(request.getCountry());
         user.setStatus(User.UserStatus.PENDING_VALIDATION);
+
+        // Map Organization Profile if type is NGO or ORPHANAGE
+        if (user.getUserType() == User.UserType.NGO || user.getUserType() == User.UserType.ORPHANAGE) {
+            User.OrganizationProfile profile = new User.OrganizationProfile();
+            profile.setOrganizationName(request.getOrganizationName());
+            profile.setOrganizationType(request.getOrganizationType());
+            profile.setCreationYear(request.getCreationYear());
+            profile.setWebsiteUrl(request.getWebsite());
+            profile.setAddress(request.getAddress());
+            profile.setMission(request.getMission());
+            profile.setSectors(request.getSectors());
+            
+            profile.setRccm(request.getRccm());
+            profile.setTaxId(request.getTaxId());
+            profile.setLegalDocUrl(request.getLegalDocUrl());
+            profile.setStatutesUrl(request.getStatutesUrl());
+            
+            profile.setMinasAuthUrl(request.getMinasAuthUrl());
+            profile.setAssocReceiptUrl(request.getAssocReceiptUrl());
+            profile.setRulesInternalUrl(request.getRulesInternalUrl());
+            profile.setRegistryEntryUrl(request.getRegistryEntryUrl());
+            profile.setSocialInquiryUrl(request.getSocialInquiryUrl());
+            
+            user.setOrganizationProfile(profile);
+        }
 
         // Si un mot de passe est fourni (ex: tests), on l'enregistre et on active le
         // compte
@@ -278,14 +304,14 @@ public class UserService {
 
     @Transactional
     public void validateUserAndSendPasswordByEmail(UUID userId) {
-        log.info("Validating user and sending password by email: {}", userId);
+        log.info("Validating user and sending credentials: {}", userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId.toString()));
 
         if (user.getStatus() != User.UserStatus.PENDING_VALIDATION) {
             log.warn("Cannot validate user {}: status is {}", userId, user.getStatus());
-            throw new ValidationException("Utilisateur déjà validé ou non en attente");
+            throw new ValidationException("Cet utilisateur n'est pas en attente de validation.");
         }
 
         String plainPassword = generateRandomPassword();
@@ -293,8 +319,36 @@ public class UserService {
         user.setStatus(User.UserStatus.ACTIVE);
         userRepository.save(user);
 
-        log.info("User {} validated, password sent via email", userId);
-        emailService.sendPasswordByEmail(user.getEmail(), user.getFirstName(), plainPassword);
+        log.info("User {} validated, publishing approval notification", userId);
+        notificationProducer.sendEmailNotification(NotificationRequest.builder()
+                .to(user.getEmail())
+                .firstName(user.getFirstName())
+                .template("APPROVAL")
+                .variable(plainPassword)
+                .build());
+    }
+
+    @Transactional
+    public void rejectUser(UUID userId, String reason) {
+        log.info("Rejecting user {}: reason={}", userId, reason);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId.toString()));
+
+        if (user.getStatus() != User.UserStatus.PENDING_VALIDATION) {
+            throw new ValidationException("Impossible de rejeter un utilisateur qui n'est pas en PENDING.");
+        }
+
+        user.setStatus(User.UserStatus.INACTIVE);
+        userRepository.save(user);
+
+        log.info("User {} rejected, publishing rejection notification", userId);
+        notificationProducer.sendEmailNotification(NotificationRequest.builder()
+                .to(user.getEmail())
+                .firstName(user.getFirstName())
+                .template("REJECTION")
+                .variable(reason)
+                .build());
     }
 
     @Transactional
@@ -378,9 +432,22 @@ public class UserService {
         if (profile == null)
             return null;
         return UserDTO.OrganizationProfileDTO.builder()
-                .registrationNumber(profile.getRegistrationNumber())
-                .organisationType(profile.getOrganisationType())
+                .organizationName(profile.getOrganizationName())
+                .organizationType(profile.getOrganizationType())
+                .creationYear(profile.getCreationYear())
                 .websiteUrl(profile.getWebsiteUrl())
+                .address(profile.getAddress())
+                .mission(profile.getMission())
+                .sectors(profile.getSectors())
+                .rccm(profile.getRccm())
+                .taxId(profile.getTaxId())
+                .legalDocUrl(profile.getLegalDocUrl())
+                .statutesUrl(profile.getStatutesUrl())
+                .minasAuthUrl(profile.getMinasAuthUrl())
+                .assocReceiptUrl(profile.getAssocReceiptUrl())
+                .rulesInternalUrl(profile.getRulesInternalUrl())
+                .registryEntryUrl(profile.getRegistryEntryUrl())
+                .socialInquiryUrl(profile.getSocialInquiryUrl())
                 .socializeLinks(profile.getSocializeLinks())
                 .representativeName(profile.getRepresentativeName())
                 .representativeContact(profile.getRepresentativeContact())

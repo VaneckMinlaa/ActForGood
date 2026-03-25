@@ -40,6 +40,13 @@ export class AdmingestinstitutionsComponent {
   filterCity = '';
   filterStatus = '';
 
+  // PAGINATION
+  pageCode = 1;
+  pageSize = 5;
+
+  // EXPANSION
+  expandedId: number | null = null;
+
   selectedInstitution: Institution | null = null;
   activeTab = 'profil';
   showDeleteConfirm = false;
@@ -111,14 +118,17 @@ export class AdmingestinstitutionsComponent {
   ];
 
   get filteredInstitutions(): Institution[] {
-    return this.institutions.filter(i => {
+    let list = this.institutions.filter(i => {
       const matchSearch = !this.searchQuery || i.name.toLowerCase().includes(this.searchQuery.toLowerCase());
       const matchType = !this.filterType || i.type === this.filterType;
       const matchCity = !this.filterCity || i.city.toLowerCase().includes(this.filterCity.toLowerCase());
       const matchStatus = !this.filterStatus || i.status === this.filterStatus;
       return matchSearch && matchType && matchCity && matchStatus;
     });
+    return list.slice((this.pageCode - 1) * this.pageSize, this.pageCode * this.pageSize);
   }
+
+  get totalPages() { return Math.ceil(this.institutions.length / this.pageSize); }
 
   get pendingCount(): number { return this.institutions.filter(i => i.status === 'En attente').length; }
   get validatedCount(): number { return this.institutions.filter(i => i.status === 'Validé').length; }
@@ -201,4 +211,6 @@ export class AdmingestinstitutionsComponent {
     if (type === 'Entreprise') return 'type-entreprise';
     return 'type-association';
   }
+
+  toggleExpand(id: number) { this.expandedId = this.expandedId === id ? null : id; }
 }

@@ -136,9 +136,26 @@ public class User {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class OrganizationProfile {
-        private String registrationNumber;
-        private String organisationType;
+        private String organizationName;
+        private String organizationType;
+        private Integer creationYear;
         private String websiteUrl;
+        private String address;
+        private String mission;
+        private java.util.List<String> sectors;
+        
+        private String rccm;
+        private String taxId;
+        private String legalDocUrl;
+        private String statutesUrl;
+        
+        // Documents spécifiques
+        private String minasAuthUrl;
+        private String assocReceiptUrl;
+        private String rulesInternalUrl;
+        private String registryEntryUrl;
+        private String socialInquiryUrl;
+
         private java.util.Map<String, String> socializeLinks;
         private String representativeName;
         private String representativeContact;

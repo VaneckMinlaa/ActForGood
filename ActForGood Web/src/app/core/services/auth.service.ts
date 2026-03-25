@@ -19,13 +19,32 @@ export interface LoginRequest {
 
 export interface RegisterRequest {
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
   phone?: string;
   userType: string;
   location?: string;
   country?: string;
+
+  // Organization fields
+  organizationName?: string;
+  organizationType?: string;
+  creationYear?: string | number;
+  website?: string;
+  address?: string;
+  mission?: string;
+  sectors?: string[];
+
+  // Document URL placeholders (to be set after potential upload)
+  rccm?: string;
+  taxId?: string;
+  legalDocUrl?: string;
+  statutesUrl?: string;
+  minasAuthUrl?: string;
+  assocReceiptUrl?: string;
+  rulesInternalUrl?: string;
+  registryEntryUrl?: string;
+  socialInquiryUrl?: string;
 }
 
 @Injectable({
@@ -50,8 +69,10 @@ export class AuthService {
   register(data: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data).pipe(
       tap(response => {
-        this.storeUser(response);
-        this.currentUserSubject.next(response);
+        if (response && response.token) {
+          this.storeUser(response);
+          this.currentUserSubject.next(response);
+        }
       })
     );
   }
@@ -64,7 +85,8 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    return (token && token !== 'null' && token !== 'undefined') ? token : null;
   }
 
   isAuthenticated(): boolean {
@@ -91,12 +113,15 @@ export class AuthService {
   }
 
   getRedirectUrlByRole(role: string): string {
-    switch (role) {
+    switch (role?.toUpperCase()) {
       case 'ADMIN':
         return '/admin';
       case 'ORGANIZATION':
+      case 'NGO':
+      case 'ORPHANAGE':
         return '/institution';
       case 'DONOR':
+      case 'PARTNER':
         return '/';
       default:
         return '/';
@@ -104,9 +129,11 @@ export class AuthService {
   }
 
   private storeUser(user: AuthResponse): void {
+    if (!user || !user.token) return;
+    
     localStorage.setItem('token', user.token);
     localStorage.setItem('user', JSON.stringify(user));
-    const expiresAt = Date.now() + user.expiresIn * 1000;
+    const expiresAt = Date.now() + (user.expiresIn || 3600) * 1000;
     localStorage.setItem('expiresAt', expiresAt.toString());
   }
 
@@ -118,6 +145,7 @@ export class AuthService {
       return null;
     }
     const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+    if (!userStr || userStr === 'null') return null;
+    return JSON.parse(userStr);
   }
 }

@@ -1,12 +1,193 @@
 <div class="module-content">
-  <div class="page-header">
-    <h1 class="page-title">Gestion des Projets</h1>
-    <span class="breadcrumb">Admin / Projets</span>
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">Total Organismes</span>
+      <h2 class="stat-value">{{ totalNgoElements }}</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>{{ pendingNgos }} en attente</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">En attente</span>
+      <h2 class="stat-value">{{ pendingNgos }}</h2>
+      <div class="stat-trend neutral">
+        <mat-icon>remove</mat-icon>
+        <span>Stable</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Projets Actifs</span>
+      <h2 class="stat-value">{{ activeProjectsCount }}</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>+15% vs 2023</span>
+      </div>
+    </div>
   </div>
-  <div class="coming-soon">
-    <mat-icon>folder_open</mat-icon>
-    <h2>Module en cours de développement</h2>
-    <p>La gestion des projets sera disponible prochainement.</p>
-    <a routerLink="/admin" class="btn-back-home"><mat-icon>arrow_back</mat-icon> Retour au Dashboard</a>
+
+  <!-- TABS -->
+  <div class="tabs-nav">
+    <button class="nav-btn" [class.active]="activeTab === 'ngos'" (click)="activeTab = 'ngos'">
+      <mat-icon>corporate_fare</mat-icon> Organismes ({{ totalNgoElements }})
+    </button>
+    <button class="nav-btn" [class.active]="activeTab === 'projects'" (click)="activeTab = 'projects'">
+      <mat-icon>assignment</mat-icon> Projets en cours ({{ projects.length }})
+    </button>
+  </div>
+
+  <!-- SEARCH & FILTERS -->
+  <div class="filters-bar">
+    <div class="search-input">
+      <mat-icon>search</mat-icon>
+      <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="searchQuery" />
+    </div>
+    <div class="header-actions">
+      <button class="btn-create"><mat-icon>add</mat-icon> Nouvelle Entité</button>
+    </div>
+  </div>
+
+  <!-- NGOs TABLE -->
+  <div class="table-container" *ngIf="activeTab === 'ngos'">
+    <div class="table-card" [class.loading]="isLoading">
+      <table>
+        <thead>
+          <tr>
+            <th width="40"></th>
+            <th>ORGANISME</th>
+            <th>SECTEURS</th>
+            <th>STATUT</th>
+            <th class="text-right">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let ngo of filteredNgos">
+            <tr [class.expanded]="expandedNgoId === ngo.id" (click)="toggleNgo(ngo.id)">
+              <td class="expand-cell">
+                <mat-icon>{{ expandedNgoId === ngo.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </td>
+              <td>
+                <div class="entity-cell">
+                  <div class="entity-info">
+                    <span class="entity-name-text">{{ ngo.organizationProfile?.organizationName }}</span>
+                    <span class="sub-text">{{ ngo.email }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="sectors-wrap">
+                  <span class="cat-pill" *ngFor="let s of ngo.organizationProfile?.sectors">{{ s }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge" [attr.data-status]="ngo.status">
+                  {{ ngo.status === 'PENDING_VALIDATION' ? 'En attente' : (ngo.status === 'ACTIVE' ? 'Actif' : ngo.status) }}
+                </span>
+              </td>
+              <td class="text-right">
+                <div class="actions-group">
+                  <button *ngIf="ngo.status === 'PENDING_VALIDATION'" class="btn-validate" title="Valider" (click)="validateUser(ngo.id); $event.stopPropagation()">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button *ngIf="ngo.status === 'PENDING_VALIDATION'" class="btn-reject" title="Rejeter" (click)="rejectUser(ngo.id); $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <button class="btn-action-icon" (click)="toggleNgo(ngo.id); $event.stopPropagation()">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <!-- DETAIL ROW -->
+            <tr class="detail-row" *ngIf="expandedNgoId === ngo.id">
+              <td colspan="5">
+                <div class="row-details">
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <label>Mission de l'organisation</label>
+                      <p class="mission-text">{{ ngo.organizationProfile?.mission || 'Aucune mission fournie.' }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Contact & Siège</label>
+                      <p><mat-icon>email</mat-icon> {{ ngo.email }}</p>
+                      <p><mat-icon>place</mat-icon> {{ ngo.location }}, {{ ngo.country }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Documents</label>
+                      <div class="docs-list">
+                        <a *ngIf="ngo.organizationProfile?.legalDocUrl" [href]="ngo.organizationProfile?.legalDocUrl" target="_blank" class="doc-link">
+                          <mat-icon>description</mat-icon> Document Légal
+                        </a>
+                        <a *ngIf="ngo.organizationProfile?.statutesUrl" [href]="ngo.organizationProfile?.statutesUrl" target="_blank" class="doc-link">
+                          <mat-icon>description</mat-icon> Statuts
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <span class="page-info">Total: {{ totalNgoElements }} ONG(s)</span>
+      <div class="page-btns">
+        <button [disabled]="ngoPage === 0" (click)="changeNgoPage(ngoPage - 1)"><mat-icon>chevron_left</mat-icon></button>
+        <span class="current-page">Page {{ ngoPage + 1 }} sur {{ ngoTotalPages }}</span>
+        <button [disabled]="ngoPage >= ngoTotalPages - 1" (click)="changeNgoPage(ngoPage + 1)"><mat-icon>chevron_right</mat-icon></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS TABLE -->
+  <div class="table-container" *ngIf="activeTab === 'projects'">
+    <!-- ... same as before ... -->
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th width="40"></th>
+            <th>PROJET</th>
+            <th>ONG RESPONSABLE</th>
+            <th>AVANCEMENT</th>
+            <th>BUDGET</th>
+            <th>STATUT</th>
+            <th class="text-right">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let p of filteredProjects">
+            <tr [class.expanded]="expandedProjectId === p.id" (click)="toggleProject(p.id)">
+              <td class="expand-cell">
+                <mat-icon>{{ expandedProjectId === p.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </td>
+              <td>
+                <div class="project-cell">
+                  <span class="project-title-text">{{ p.title }}</span>
+                  <span class="project-cat-text">{{ p.category }}</span>
+                </div>
+              </td>
+              <td><span class="ngo-link">{{ p.ngo }}</span></td>
+              <td>
+                <div class="prog-cell">
+                  <div class="prog-bar"><div class="prog-fill" [style.width.%]="p.progress"></div></div>
+                  <span class="prog-val">{{ p.progress }}%</span>
+                </div>
+              </td>
+              <td><span class="amount-val">{{ p.funding }}</span></td>
+              <td><span class="status-badge" [attr.data-status]="p.status">{{ p.status }}</span></td>
+              <td class="text-right">
+                <button class="btn-action-icon" (click)="$event.stopPropagation()"><mat-icon>visibility</mat-icon></button>
+              </td>
+            </tr>
+            <!-- ... -->
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

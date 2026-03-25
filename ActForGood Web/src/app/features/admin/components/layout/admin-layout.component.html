@@ -1,12 +1,11 @@
 <div class="admin-shell">
 
-  <!-- SIDEBAR -->
+  <!-- MODERN SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-icon">A</div>
-      <div>
+      <div class="brand-info">
         <p class="brand-name">ActForGood</p>
-        <p class="brand-role">Humanitarian Admin</p>
+        <p class="brand-role">Mission Admin</p>
       </div>
     </div>
 
@@ -24,34 +23,41 @@
     <div class="sidebar-bottom">
       <a routerLink="/admin/settings" class="nav-item">
         <mat-icon class="nav-icon">help_outline</mat-icon>
-        <span class="nav-label">Help Center</span>
+        <span class="nav-label">Profile</span>
       </a>
-      <button class="btn-support">SUPPORT MISSION</button>
+      <button class="nav-item" (click)="logout()">
+        <mat-icon class="nav-icon">logout</mat-icon>
+        <span class="nav-label">Déconnexion</span>
+      </button>
     </div>
   </aside>
 
-  <!-- RIGHT SIDE -->
+  <!-- MAIN WRAPPER -->
   <div class="main-wrapper">
 
-    <!-- TOPBAR (sticky) -->
+    <!-- MODERN TOPBAR -->
     <header class="topbar">
       <div class="search-box">
         <mat-icon>search</mat-icon>
-        <input type="text" placeholder="Rechercher dossiers, rapports..." />
+        <input type="text" placeholder="Rechercher dossiers, rapports, donateurs..." />
       </div>
+
       <div class="topbar-right">
         <button class="icon-btn notif-btn">
-          <mat-icon>notifications</mat-icon>
+          <mat-icon>notifications_none</mat-icon>
           <span class="notif-dot"></span>
         </button>
-        <button class="icon-btn"><mat-icon>settings</mat-icon></button>
+        <button class="icon-btn">
+          <mat-icon>settings</mat-icon>
+        </button>
+
         <div class="admin-profile">
-          <div>
-            <p class="profile-name">Admin Profile</p>
-            <p class="profile-role">Super Administrateur</p>
+          <div class="profile-info">
+            <p class="profile-name">Admin ActForGood</p>
+            <p class="profile-role">Super Admin</p>
           </div>
           <div class="profile-avatar">
-            <mat-icon>account_circle</mat-icon>
+            <mat-icon>person</mat-icon>
           </div>
         </div>
       </div>

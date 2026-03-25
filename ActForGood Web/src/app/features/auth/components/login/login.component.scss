@@ -10,95 +10,115 @@ $text-muted: #65676B;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-deep); 
+  background: var(--bg-deep);
+  background-image: 
+    radial-gradient(at 0% 0%, var(--primary-glow) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, rgba(255, 215, 0, 0.05) 0, transparent 50%);
   font-family: 'Outfit', sans-serif;
-  padding: 24px;
+  padding: 40px;
 }
 
 /* ===== CARTE CENTRALE ===== */
 .login-card {
   position: relative;
-  z-index: 1;
+  z-index: 10;
   display: flex;
-  width: 820px;
-  height: 480px;
-  border-radius: 20px;
+  width: 960px;
+  height: 560px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
 }
 
 /* ===== GAUCHE : image + overlay ===== */
 .card-left {
-  flex: 1;
-  background: linear-gradient(135deg, #1a1a1b 0%, #000 100%);
+  flex: 1.2;
+  background: #000 url('../../../../../assets/new-design/education.png') no-repeat center center;
+  background-size: cover;
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  padding: 40px;
   overflow: hidden;
 
-  &::after {
+  &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(255, 214, 0, 0.15) 0%, transparent 70%);
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+    z-index: 1;
   }
 }
 
-.card-logo {
-  position: absolute;
-  top: 28px;
-  left: 28px;
+.left-content {
+  position: relative;
   z-index: 2;
-  font-size: 1.3rem;
-  font-weight: 800;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-logo {
+  font-size: 1.8rem;
+  font-weight: 950;
   color: #fff;
   text-decoration: none;
-  letter-spacing: -0.5px;
+  letter-spacing: -1.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  span { color: var(--primary-yellow); }
+}
+
+.left-quote {
+  margin-bottom: 20px;
+  p {
+    font-size: 1.4rem;
+    line-height: 1.4;
+    font-weight: 800;
+    color: #fff;
+    max-width: 300px;
+    margin-bottom: 10px;
+  }
+  .quote-author {
+    font-size: 0.85rem;
+    color: var(--primary-yellow);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
 }
 
 /* ===== COURBE SVG ===== */
 .card-curve {
-  position: absolute;
-  right: 360px; /* Align precisely with card-right width */
-  top: 0;
-  width: 100px;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-
-  svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    path {
-      fill: var(--bg-card); /* Matches the form side color */
-    }
-  }
+  display: none; /* Removed absolute old curve, using natural flex split + better border-radius if needed */
 }
 
 /* ===== DROITE : formulaire ===== */
 .card-right {
-  width: 360px;
+  width: 440px;
   flex-shrink: 0;
   background: var(--bg-card);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 36px;
-  gap: 16px;
+  padding: 60px 50px;
+  gap: 20px;
   position: relative;
-  z-index: 1;
-  border-left: 1px solid var(--border-glass);
+  z-index: 10;
 }
 
 .form-title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 950;
   color: var(--text-main);
   margin: 0;
   text-align: center;
+  letter-spacing: -1px;
 }
 
 .form-subtitle {
@@ -120,13 +140,14 @@ $text-muted: #65676B;
   display: flex;
   align-items: center;
   border: 1.5px solid var(--border-glass);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 0 16px;
   background: var(--bg-glass);
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   &:focus-within { 
     border-color: var(--primary-yellow); 
-    box-shadow: 0 0 15px var(--primary-glow);
+    box-shadow: 0 0 25px var(--primary-glow);
+    transform: translateY(-2px);
   }
 }
 

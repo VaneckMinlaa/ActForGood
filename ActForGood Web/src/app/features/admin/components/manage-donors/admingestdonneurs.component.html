@@ -1,129 +1,144 @@
 <div class="module-content">
-  <div class="page-header">
-    <h1 class="page-title">Gestion des Donateurs</h1>
-    <span class="breadcrumb">Admin / Donateurs</span>
-  </div>
-
-  <!-- LIST -->
-  <ng-container *ngIf="!selectedDonor">
+  <ng-container>
     <!-- STATS -->
     <div class="stats-row">
-      <div class="stat-card"><mat-icon class="si green">people</mat-icon><div><div class="sv">{{ donors.length }}</div><div class="sl">Total Donateurs</div></div></div>
-      <div class="stat-card"><mat-icon class="si teal">check_circle</mat-icon><div><div class="sv">{{ activeCount }}</div><div class="sl">Actifs</div></div></div>
-      <div class="stat-card"><mat-icon class="si orange">volunteer_activism</mat-icon><div><div class="sv">{{ totalAmount | number }} FCFA</div><div class="sl">Total des Dons</div></div></div>
+      <div class="stat-card">
+        <span class="stat-label">Total Donateurs</span>
+        <h2 class="stat-value">{{ totalElements }}</h2>
+        <div class="stat-trend up">
+          <mat-icon>trending_up</mat-icon>
+          <span>{{ pendingCount }} en attente</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Actifs</span>
+        <h2 class="stat-value">{{ activeCount }}</h2>
+        <div class="stat-trend neutral">
+          <mat-icon>check_circle</mat-icon>
+          <span>Vérifiés</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Derniers inscrits</span>
+        <h2 class="stat-value">{{ donors.length }}</h2>
+        <div class="stat-trend neutral">
+          <mat-icon>history</mat-icon>
+          <span>Page actuelle</span>
+        </div>
+      </div>
     </div>
 
     <!-- FILTERS -->
     <div class="filters-bar">
-      <div class="filter-group"><mat-icon>search</mat-icon><input type="text" placeholder="Nom ou email..." [(ngModel)]="searchQuery" /></div>
+      <div class="filter-group">
+        <mat-icon>search</mat-icon>
+        <input type="text" placeholder="Rechercher par nom ou email..." [(ngModel)]="searchQuery" />
+      </div>
       <select [(ngModel)]="filterStatus">
         <option value="">Tous les statuts</option>
-        <option value="Actif">Actif</option>
-        <option value="Inactif">Inactif</option>
+        <option value="ACTIVE">Actif</option>
+        <option value="PENDING_VALIDATION">En attente</option>
+        <option value="SUSPENDED">Suspendu</option>
       </select>
-      <button class="btn-reset" (click)="searchQuery=''; filterStatus=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
+      <button class="btn-reset" (click)="searchQuery=''; filterStatus=''">
+        <mat-icon>refresh</mat-icon> Réinitialiser
+      </button>
     </div>
 
     <!-- TABLE -->
-    <div class="table-card">
-      <div class="table-header"><span>{{ filteredDonors.length }} donateur(s)</span></div>
-      <div class="table-scroll">
+    <div class="table-container">
+      <div class="table-card" [class.loading]="isLoading">
         <table>
           <thead>
-            <tr><th>Donateur</th><th>Contact</th><th>Ville</th><th>Total Dons</th><th>Nb. Dons</th><th>Dernier Don</th><th>Statut</th><th>Actions</th></tr>
+            <tr>
+              <th width="40"></th>
+              <th>DONATEUR</th>
+              <th>CONTACT</th>
+              <th>LOCALISATION</th>
+              <th>STATUT</th>
+              <th class="text-right">ACTIONS</th>
+            </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let d of filteredDonors">
-              <td>
-                <div class="name-cell">
-                  <div class="avatar green">{{ d.name.charAt(0) }}</div>
-                  <div><div class="name">{{ d.name }}</div><div class="sub">Inscrit le {{ d.registeredDate }}</div></div>
-                </div>
-              </td>
-              <td><div class="name">{{ d.email }}</div><div class="sub">{{ d.phone }}</div></td>
-              <td>{{ d.city }}</td>
-              <td class="amount">{{ d.totalDonations | number }} FCFA</td>
-              <td>{{ d.donationCount }}</td>
-              <td>{{ d.lastDonation }}</td>
-              <td><span class="badge" [class.badge-active]="d.status === 'Actif'" [class.badge-inactive]="d.status === 'Inactif'">{{ d.status }}</span></td>
-              <td><button class="btn-view" (click)="openDetail(d)"><mat-icon>visibility</mat-icon> Voir</button></td>
-            </tr>
-            <tr *ngIf="filteredDonors.length === 0"><td colspan="8" class="empty-row">Aucun donateur trouvé.</td></tr>
+            <ng-container *ngFor="let d of filteredDonors">
+              <tr [class.expanded]="expandedId === d.id" (click)="toggleExpand(d.id)">
+                <td class="expand-cell">
+                  <mat-icon>{{ expandedId === d.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </td>
+                <td>
+                  <div class="donor-cell">
+                    <div class="donor-info">
+                      <span class="donor-name-text">{{ d.firstName }} {{ d.lastName }}</span>
+                      <span class="sub-text">Inscrit le {{ d.createdAt | date:'shortDate' }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="contact-cell">
+                    <span class="email">{{ d.email }}</span>
+                    <span class="phone">{{ d.phone || 'N/A' }}</span>
+                  </div>
+                </td>
+                <td>{{ d.location }}, {{ d.country }}</td>
+                <td>
+                  <span class="status-badge" [attr.data-status]="d.status">
+                    {{ d.status === 'PENDING_VALIDATION' ? 'En attente' : (d.status === 'ACTIVE' ? 'Actif' : d.status) }}
+                  </span>
+                </td>
+                <td class="text-right">
+                  <div class="actions-group">
+                    <button *ngIf="d.status === 'PENDING_VALIDATION'" class="btn-validate" title="Valider" (click)="validateUser(d.id); $event.stopPropagation()">
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <button *ngIf="d.status === 'ACTIVE'" class="btn-action-icon" title="Suspendre" (click)="toggleStatus(d.id, d.status); $event.stopPropagation()">
+                      <mat-icon>pause</mat-icon>
+                    </button>
+                    <button *ngIf="d.status === 'SUSPENDED'" class="btn-action-icon" title="Activer" (click)="toggleStatus(d.id, d.status); $event.stopPropagation()">
+                      <mat-icon>play_arrow</mat-icon>
+                    </button>
+                    <button class="btn-action-icon delete" title="Supprimer" (click)="deleteUser(d.id); $event.stopPropagation()">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <!-- DETAIL ROW -->
+              <tr class="detail-row" *ngIf="expandedId === d.id">
+                <td colspan="6">
+                  <div class="row-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <label>Profil Complet</label>
+                        <p><mat-icon>person</mat-icon> {{ d.firstName }} {{ d.lastName }}</p>
+                        <p><mat-icon>email</mat-icon> {{ d.email }}</p>
+                        <p><mat-icon>phone</mat-icon> {{ d.phone || 'Non renseigné' }}</p>
+                      </div>
+                      <div class="detail-item">
+                        <label>Localisation</label>
+                        <p><mat-icon>place</mat-icon> {{ d.location }}</p>
+                        <p><mat-icon>public</mat-icon> {{ d.country }}</p>
+                      </div>
+                      <div class="detail-item">
+                        <label>Statut du compte</label>
+                        <p><strong>Dernière mise à jour:</strong> {{ d.updatedAt | date:'short' }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
-    </div>
-  </ng-container>
 
-  <!-- DETAIL -->
-  <ng-container *ngIf="selectedDonor">
-    <button class="btn-back" (click)="closeDetail()"><mat-icon>arrow_back</mat-icon> Retour</button>
-    <div class="detail-title-row">
-      <div class="avatar-lg green">{{ selectedDonor.name.charAt(0) }}</div>
-      <div>
-        <h2>{{ selectedDonor.name }}</h2>
-        <div class="detail-meta">
-          <span class="badge" [class.badge-active]="selectedDonor.status === 'Actif'" [class.badge-inactive]="selectedDonor.status === 'Inactif'">{{ selectedDonor.status }}</span>
-          <span class="meta-item"><mat-icon>location_on</mat-icon>{{ selectedDonor.city }}</span>
+      <!-- PAGINATION -->
+      <div class="pagination">
+        <span class="page-info">Total: {{ totalElements }} donateur(s)</span>
+        <div class="page-btns">
+          <button [disabled]="page === 0" (click)="changePage(page - 1)"><mat-icon>chevron_left</mat-icon></button>
+          <span class="current-page">Page {{ page + 1 }} sur {{ totalPages }}</span>
+          <button [disabled]="page >= totalPages - 1" (click)="changePage(page + 1)"><mat-icon>chevron_right</mat-icon></button>
         </div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="info-card">
-        <h3><mat-icon>person</mat-icon> Informations</h3>
-        <div class="info-grid">
-          <div class="info-item"><span class="info-label">Email</span><span>{{ selectedDonor.email }}</span></div>
-          <div class="info-item"><span class="info-label">Téléphone</span><span>{{ selectedDonor.phone }}</span></div>
-          <div class="info-item"><span class="info-label">Ville</span><span>{{ selectedDonor.city }}</span></div>
-          <div class="info-item"><span class="info-label">Inscrit le</span><span>{{ selectedDonor.registeredDate }}</span></div>
-          <div class="info-item"><span class="info-label">Total dons</span><span class="amount">{{ selectedDonor.totalDonations | number }} FCFA</span></div>
-          <div class="info-item"><span class="info-label">Nb. dons</span><span>{{ selectedDonor.donationCount }}</span></div>
-        </div>
-        <div class="action-row">
-          <button class="btn-primary" (click)="toggleStatus(selectedDonor)">
-            <mat-icon>{{ selectedDonor.status === 'Actif' ? 'block' : 'check_circle' }}</mat-icon>
-            {{ selectedDonor.status === 'Actif' ? 'Désactiver' : 'Activer' }}
-          </button>
-        </div>
-      </div>
-
-      <div class="info-card danger-card">
-        <h3><mat-icon>warning</mat-icon> Zone de danger</h3>
-        <p class="danger-text">La suppression est irréversible.</p>
-        <button class="btn-danger" (click)="showDeleteConfirm = true" *ngIf="!showDeleteConfirm">
-          <mat-icon>delete_forever</mat-icon> Supprimer le compte
-        </button>
-        <div class="delete-confirm" *ngIf="showDeleteConfirm">
-          <p>Tapez <strong>SUPPRIMER</strong> pour confirmer :</p>
-          <input type="text" [(ngModel)]="deleteConfirmText" placeholder="SUPPRIMER" />
-          <div class="delete-actions">
-            <button class="btn-danger" (click)="confirmDelete()" [disabled]="deleteConfirmText !== 'SUPPRIMER'">Confirmer</button>
-            <button class="btn-cancel" (click)="showDeleteConfirm = false; deleteConfirmText = ''">Annuler</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DONATIONS HISTORY -->
-    <div class="table-card" style="margin-top: 20px;">
-      <div class="table-header"><span>Historique des dons ({{ selectedDonor.donations.length }})</span></div>
-      <div class="table-scroll" *ngIf="selectedDonor.donations.length > 0">
-        <table>
-          <thead><tr><th>ID</th><th>Date</th><th>Montant</th><th>Organisation</th><th>Hash Blockchain</th></tr></thead>
-          <tbody>
-            <tr *ngFor="let tx of selectedDonor.donations">
-              <td class="tx-id">{{ tx.id }}</td>
-              <td>{{ tx.date }}</td>
-              <td class="amount">{{ tx.amount | number }} FCFA</td>
-              <td>{{ tx.org }}</td>
-              <td><span class="hash" *ngIf="tx.hash">{{ tx.hash }}</span><span *ngIf="!tx.hash">—</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="empty-state" *ngIf="selectedDonor.donations.length === 0">
-        <mat-icon>volunteer_activism</mat-icon><p>Aucun don enregistré.</p>
       </div>
     </div>
   </ng-container>

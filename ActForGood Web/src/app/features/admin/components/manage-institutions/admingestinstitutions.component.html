@@ -1,13 +1,43 @@
 <div class="inst-content">
-
-  <div class="page-header">
-    <h1 class="page-title">Gestion des Institutions</h1>
-    <span class="breadcrumb">Admin / Institutions</span>
-  </div>
-
   <!-- ===== LIST VIEW ===== -->
   <ng-container *ngIf="!selectedInstitution">
 
+
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-label">Total Institutions</span>
+        <h2 class="stat-value">{{ institutions.length }}</h2>
+        <div class="stat-trend up">
+          <mat-icon>trending_up</mat-icon>
+          <span>+4% ce mois</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">En attente</span>
+        <h2 class="stat-value">{{ pendingCount }}</h2>
+        <div class="stat-trend neutral">
+          <mat-icon>remove</mat-icon>
+          <span>Stable</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Validées</span>
+        <h2 class="stat-value">{{ validatedCount }}</h2>
+        <div class="stat-trend up">
+          <mat-icon>trending_up</mat-icon>
+          <span>+12 initiées</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Rejetées</span>
+        <h2 class="stat-value">{{ rejectedCount }}</h2>
+        <div class="stat-trend down">
+          <mat-icon>trending_down</mat-icon>
+          <span>-2% global</span>
+        </div>
+      </div>
+    </div>
     <div class="filters-bar">
       <div class="filter-group">
         <mat-icon>search</mat-icon>
@@ -33,74 +63,81 @@
         <mat-icon>refresh</mat-icon> Réinitialiser
       </button>
     </div>
-
-    <div class="stats-row">
-      <div class="stat-card">
-        <mat-icon class="stat-icon green">account_balance</mat-icon>
-        <div><div class="stat-value">{{ institutions.length }}</div><div class="stat-label">Total</div></div>
-      </div>
-      <div class="stat-card">
-        <mat-icon class="stat-icon orange">hourglass_empty</mat-icon>
-        <div><div class="stat-value">{{ pendingCount }}</div><div class="stat-label">En attente</div></div>
-      </div>
-      <div class="stat-card">
-        <mat-icon class="stat-icon teal">verified</mat-icon>
-        <div><div class="stat-value">{{ validatedCount }}</div><div class="stat-label">Validées</div></div>
-      </div>
-      <div class="stat-card">
-        <mat-icon class="stat-icon red">cancel</mat-icon>
-        <div><div class="stat-value">{{ rejectedCount }}</div><div class="stat-label">Rejetées</div></div>
-      </div>
-    </div>
-
-    <div class="table-card">
-      <div class="table-header">
-        <span>{{ filteredInstitutions.length }} institution(s)</span>
-        <button class="btn-primary"><mat-icon>add</mat-icon> Ajouter</button>
-      </div>
-      <div class="table-scroll">
+    <div class="table-container">
+      <div class="table-card">
         <table>
           <thead>
             <tr>
-              <th>Institution</th>
-              <th>Type</th>
-              <th>Ville</th>
-              <th>Secteur</th>
-              <th>Statut</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th width="40"></th>
+              <th>INSTITUTION</th>
+              <th>TYPE</th>
+              <th>VILLE</th>
+              <th>SECTEUR</th>
+              <th>STATUT</th>
+              <th class="text-right">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let inst of filteredInstitutions">
-              <td>
-                <div class="inst-name-cell">
-                  <div class="inst-avatar"
-                    [style.background]="inst.type === 'ONG' ? '#1a4a3a' : inst.type === 'Entreprise' ? '#F59542' : '#7b5ea7'">
-                    {{ inst.name.charAt(0) }}
+            <ng-container *ngFor="let inst of filteredInstitutions">
+              <tr [class.expanded]="expandedId === inst.id" (click)="toggleExpand(inst.id)">
+                <td class="expand-cell">
+                  <mat-icon>{{ expandedId === inst.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </td>
+                <td>
+                  <div class="inst-name-cell">
+                    <div>
+                      <div class="inst-name">{{ inst.name }}</div>
+                      <div class="inst-email">{{ inst.email }}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div class="inst-name">{{ inst.name }}</div>
-                    <div class="inst-email">{{ inst.email }}</div>
+                </td>
+                <td><span class="type-pill" [ngClass]="getTypeClass(inst.type)">{{ inst.type }}</span></td>
+                <td>{{ inst.city }}</td>
+                <td><span class="secteur-val">{{ inst.sector }}</span></td>
+                <td><span class="status-badge" [attr.data-status]="inst.status">{{ inst.status }}</span></td>
+                <td class="text-right">
+                  <button class="btn-action-icon" (click)="openDetail(inst); $event.stopPropagation()"><mat-icon>visibility</mat-icon></button>
+                </td>
+              </tr>
+              <!-- EXPANDABLE ROW -->
+              <tr class="detail-row" *ngIf="expandedId === inst.id">
+                <td colspan="7">
+                  <div class="row-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <label>Mission & Valeurs</label>
+                        <p>{{ inst.mission }}</p>
+                      </div>
+                      <div class="detail-item">
+                        <label>Contact Direct</label>
+                        <p><mat-icon>person</mat-icon> {{ inst.responsable }}</p>
+                        <p><mat-icon>phone</mat-icon> {{ inst.phone }}</p>
+                      </div>
+                      <div class="detail-item">
+                        <label>Statistiques Clés</label>
+                        <div class="mini-stats">
+                          <div class="ms-item"><strong>{{ inst.orphanages.length }}</strong> Orphelinats</div>
+                          <div class="ms-item"><strong>{{ inst.transactions.length }}</strong> Transactions</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td><span class="type-badge" [ngClass]="getTypeClass(inst.type)">{{ inst.type }}</span></td>
-              <td>{{ inst.city }}</td>
-              <td>{{ inst.sector }}</td>
-              <td><span class="status-badge" [ngClass]="getStatusClass(inst.status)">{{ inst.status }}</span></td>
-              <td>{{ inst.createdAt }}</td>
-              <td>
-                <button class="btn-view" (click)="openDetail(inst)">
-                  <mat-icon>visibility</mat-icon> Voir
-                </button>
-              </td>
-            </tr>
-            <tr *ngIf="filteredInstitutions.length === 0">
-              <td colspan="7" class="empty-row">Aucune institution trouvée.</td>
-            </tr>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="pagination">
+        <span class="page-info">Affichage de 1 à {{ filteredInstitutions.length }} sur {{ institutions.length }} entrées</span>
+        <div class="page-btns">
+          <button [disabled]="pageCode === 1" (click)="pageCode = pageCode - 1"><mat-icon>chevron_left</mat-icon></button>
+          <button *ngFor="let p of [].constructor(totalPages); let i = index" 
+                  [class.active]="pageCode === i + 1" (click)="pageCode = i + 1">{{ i + 1 }}</button>
+          <button [disabled]="pageCode === totalPages" (click)="pageCode = pageCode + 1"><mat-icon>chevron_right</mat-icon></button>
+        </div>
       </div>
     </div>
 
@@ -114,10 +151,6 @@
     </button>
 
     <div class="detail-title-row">
-      <div class="detail-avatar"
-        [style.background]="selectedInstitution.type === 'ONG' ? '#1a4a3a' : selectedInstitution.type === 'Entreprise' ? '#F59542' : '#7b5ea7'">
-        {{ selectedInstitution.name.charAt(0) }}
-      </div>
       <div>
         <h2>{{ selectedInstitution.name }}</h2>
         <div class="detail-meta">

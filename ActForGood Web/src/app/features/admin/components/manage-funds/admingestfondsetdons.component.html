@@ -1,18 +1,36 @@
 <div class="module-content">
-  <div class="page-header">
-    <h1 class="page-title">Gestion des Transactions</h1>
-    <span class="breadcrumb">Admin / Transactions</span>
-  </div>
-
   <div class="stats-row">
-    <div class="stat-card"><mat-icon class="si green">payments</mat-icon><div><div class="sv">{{ totalVolume | number }} FCFA</div><div class="sl">Volume total (complétés)</div></div></div>
-    <div class="stat-card"><mat-icon class="si orange">hourglass_empty</mat-icon><div><div class="sv">{{ pendingCount }}</div><div class="sl">En attente</div></div></div>
-    <div class="stat-card"><mat-icon class="si teal">link</mat-icon><div><div class="sv">{{ platformCount }}</div><div class="sl">Via plateforme</div></div></div>
-    <div class="stat-card"><mat-icon class="si purple">swap_horiz</mat-icon><div><div class="sv">{{ transactions.length }}</div><div class="sl">Total transactions</div></div></div>
+    <div class="stat-card">
+      <span class="stat-label">Volume Total</span>
+      <h2 class="stat-value">{{ totalVolume | number }} F</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>+8.4% vs 2023</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">En attente</span>
+      <h2 class="stat-value">{{ pendingCount }}</h2>
+      <div class="stat-trend neutral">
+        <mat-icon>remove</mat-icon>
+        <span>Stable</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Via Plateforme</span>
+      <h2 class="stat-value">{{ platformCount }}</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>+12 ce mois</span>
+      </div>
+    </div>
   </div>
 
   <div class="filters-bar">
-    <div class="filter-group"><mat-icon>search</mat-icon><input type="text" placeholder="ID, donateur, bénéficiaire..." [(ngModel)]="searchQuery" /></div>
+    <div class="filter-group">
+      <mat-icon>search</mat-icon>
+      <input type="text" placeholder="ID, donateur, bénéficiaire..." [(ngModel)]="searchQuery" />
+    </div>
     <select [(ngModel)]="filterStatus">
       <option value="">Tous les statuts</option>
       <option value="Complété">Complété</option>
@@ -28,34 +46,96 @@
     <button class="btn-reset" (click)="searchQuery=''; filterStatus=''; filterType=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
   </div>
 
-  <div class="table-card">
-    <div class="table-header">
-      <span>{{ filtered.length }} transaction(s)</span>
-      <div class="legend">
-        <span class="legend-dot platform"></span> Plateforme
-        <span class="legend-dot offplatform"></span> Hors plateforme
-      </div>
-    </div>
-    <div class="table-scroll">
+  <div class="table-container">
+    <div class="table-card">
       <table>
         <thead>
-          <tr><th>ID</th><th>Date</th><th>Montant</th><th>Type</th><th>Donateur</th><th>Bénéficiaire</th><th>Hash Blockchain</th><th>Source</th><th>Statut</th></tr>
+          <tr>
+            <th width="40"></th>
+            <th>ID</th>
+            <th>DATE & HEURE</th>
+            <th>MONTANT</th>
+            <th>ACTEURS</th>
+            <th>SOURCE</th>
+            <th>STATUT</th>
+            <th class="text-right">HASH</th>
+          </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let tx of filtered">
-            <td class="tx-id">{{ tx.id }}</td>
-            <td>{{ tx.date }}</td>
-            <td class="amount">{{ tx.amount | number }} FCFA</td>
-            <td>{{ tx.type }}</td>
-            <td>{{ tx.donor }}</td>
-            <td>{{ tx.recipient }}</td>
-            <td><span class="hash" *ngIf="tx.hash">{{ tx.hash }}</span><span class="muted" *ngIf="!tx.hash">—</span></td>
-            <td><span class="source-badge" [class.platform]="tx.platform" [class.offplatform]="!tx.platform">{{ tx.platform ? 'Plateforme' : 'Hors plateforme' }}</span></td>
-            <td><span class="badge" [ngClass]="getStatusClass(tx.status)">{{ tx.status }}</span></td>
-          </tr>
-          <tr *ngIf="filtered.length === 0"><td colspan="9" class="empty-row">Aucune transaction trouvée.</td></tr>
+          <ng-container *ngFor="let tx of filtered">
+            <tr [class.expanded]="expandedId === tx.id" (click)="toggleExpand(tx.id)">
+              <td class="expand-cell">
+                <mat-icon>{{ expandedId === tx.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </td>
+              <td><span class="tx-id-badge">#{{ tx.id }}</span></td>
+              <td>
+                <div class="date-cell">
+                  <span>{{ tx.date }}</span>
+                  <span class="sub-text">Type: {{ tx.type }}</span>
+                </div>
+              </td>
+              <td><span class="amount-val">{{ tx.amount | number }} FCFA</span></td>
+              <td>
+                <div class="actors-cell">
+                  <div class="actor">
+                    <mat-icon>person</mat-icon>
+                    <span>{{ tx.donor }}</span>
+                  </div>
+                  <mat-icon class="arrow">keyboard_arrow_down</mat-icon>
+                  <div class="actor">
+                    <mat-icon>home_work</mat-icon>
+                    <span>{{ tx.recipient }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="source-tag" [class.platform]="tx.platform" [class.offplatform]="!tx.platform">
+                  {{ tx.platform ? 'Plateforme' : 'Hors Plateforme' }}
+                </span>
+              </td>
+              <td><span class="status-badge" [attr.data-status]="tx.status">{{ tx.status }}</span></td>
+              <td class="text-right">
+                <span class="hash-view" *ngIf="tx.hash">{{ tx.hash }}</span>
+                <span class="no-hash" *ngIf="!tx.hash">—</span>
+              </td>
+            </tr>
+            <!-- DETAIL ROW -->
+            <tr class="detail-row" *ngIf="expandedId === tx.id">
+              <td colspan="8">
+                <div class="row-details">
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <label>Détails de la transaction</label>
+                      <p><mat-icon>receipt</mat-icon> ID: {{ tx.id }}</p>
+                      <p><mat-icon>category</mat-icon> Type: {{ tx.type }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Flux Financier</label>
+                      <p><strong>De:</strong> {{ tx.donor }}</p>
+                      <p><strong>Vers:</strong> {{ tx.recipient }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Informations Techniques</label>
+                      <p *ngIf="tx.hash">Blockchain: <span class="hash-full">{{ tx.hash }}</span></p>
+                      <p>Source de données: {{ tx.platform ? 'Interne' : 'Import externe' }}</p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
+    </div>
+
+    <div class="pagination">
+      <span class="page-info">Affichage de 1 à {{ filtered.length }} sur {{ transactions.length }} entrées</span>
+      <div class="page-btns">
+        <button [disabled]="pageCode === 1" (click)="pageCode = pageCode - 1"><mat-icon>chevron_left</mat-icon></button>
+        <button *ngFor="let p of [].constructor(totalPages); let i = index" 
+                [class.active]="pageCode === i + 1" (click)="pageCode = i + 1">{{ i + 1 }}</button>
+        <button [disabled]="pageCode === totalPages" (click)="pageCode = pageCode + 1"><mat-icon>chevron_right</mat-icon></button>
+      </div>
     </div>
   </div>
 </div>

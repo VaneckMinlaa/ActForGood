@@ -1,17 +1,36 @@
 <div class="module-content">
-  <div class="page-header">
-    <h1 class="page-title">Rapports &amp; Documents</h1>
-    <span class="breadcrumb">Admin / Rapports</span>
-  </div>
-
   <div class="stats-row">
-    <div class="stat-card"><mat-icon class="si green">description</mat-icon><div><div class="sv">{{ reports.length }}</div><div class="sl">Total Rapports</div></div></div>
-    <div class="stat-card"><mat-icon class="si orange">hourglass_empty</mat-icon><div><div class="sv">{{ pendingCount }}</div><div class="sl">En attente de revue</div></div></div>
-    <div class="stat-card"><mat-icon class="si teal">verified</mat-icon><div><div class="sv">{{ validatedCount }}</div><div class="sl">Validés</div></div></div>
+    <div class="stat-card">
+      <span class="stat-label">Total Rapports</span>
+      <h2 class="stat-value">{{ reports.length }}</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>+4 ce mois</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">En attente</span>
+      <h2 class="stat-value">{{ pendingCount }}</h2>
+      <div class="stat-trend down">
+        <mat-icon>trending_down</mat-icon>
+        <span>-15% vs Fév</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Validés</span>
+      <h2 class="stat-value">{{ validatedCount }}</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>100% conformes</span>
+      </div>
+    </div>
   </div>
 
   <div class="filters-bar">
-    <div class="filter-group"><mat-icon>search</mat-icon><input type="text" placeholder="Titre ou institution..." [(ngModel)]="searchQuery" /></div>
+    <div class="filter-group">
+      <mat-icon>search</mat-icon>
+      <input type="text" placeholder="Titre ou institution..." [(ngModel)]="searchQuery" />
+    </div>
     <select [(ngModel)]="filterType">
       <option value="">Tous les types</option>
       <option value="Activité">Activité</option>
@@ -29,25 +48,87 @@
     <button class="btn-reset" (click)="searchQuery=''; filterType=''; filterStatus=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
   </div>
 
-  <div class="reports-list">
-    <div class="report-row" *ngFor="let r of filtered">
-      <div class="report-icon-wrap">
-        <mat-icon>{{ getTypeIcon(r.type) }}</mat-icon>
-      </div>
-      <div class="report-body">
-        <div class="report-title">{{ r.title }}</div>
-        <div class="report-meta">{{ r.institution }} · {{ r.date }} · {{ r.size }}</div>
-      </div>
-      <span class="type-tag">{{ r.type }}</span>
-      <span class="badge" [ngClass]="getStatusClass(r.status)">{{ r.status }}</span>
-      <div class="report-actions">
-        <button class="btn-icon" title="Télécharger"><mat-icon>download</mat-icon></button>
-        <button class="btn-validate" (click)="validate(r)" *ngIf="r.status === 'En attente'" title="Valider"><mat-icon>check_circle</mat-icon></button>
-        <button class="btn-reject" (click)="reject(r)" *ngIf="r.status === 'En attente'" title="Rejeter"><mat-icon>cancel</mat-icon></button>
-      </div>
+  <div class="table-container">
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th width="40"></th>
+            <th>TITRE DU RAPPORT</th>
+            <th>INSTITUTION</th>
+            <th>TYPE</th>
+            <th>DATE</th>
+            <th>TAILLE</th>
+            <th>STATUT</th>
+            <th class="text-right">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let r of filtered">
+            <tr [class.expanded]="expandedId === r.id" (click)="toggleExpand(r.id)">
+              <td class="expand-cell">
+                <mat-icon>{{ expandedId === r.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </td>
+              <td>
+                <div class="report-cell">
+                  <div class="report-icon-mini">
+                    <mat-icon>{{ getTypeIcon(r.type) }}</mat-icon>
+                  </div>
+                  <span class="report-title-text">{{ r.title }}</span>
+                </div>
+              </td>
+              <td><span class="inst-name-text">{{ r.institution }}</span></td>
+              <td><span class="type-tag">{{ r.type }}</span></td>
+              <td>{{ r.date }}</td>
+              <td><span class="size-text">{{ r.size }}</span></td>
+              <td><span class="status-badge" [attr.data-status]="r.status">{{ r.status }}</span></td>
+              <td class="text-right">
+                <div class="action-btns">
+                  <button class="btn-action-icon" title="Télécharger" (click)="$event.stopPropagation()"><mat-icon>download</mat-icon></button>
+                  <button class="btn-action-icon success" *ngIf="r.status === 'En attente'" (click)="validate(r); $event.stopPropagation()" title="Valider"><mat-icon>check_circle</mat-icon></button>
+                  <button class="btn-action-icon danger" *ngIf="r.status === 'En attente'" (click)="reject(r); $event.stopPropagation()" title="Rejeter"><mat-icon>cancel</mat-icon></button>
+                </div>
+              </td>
+            </tr>
+            <!-- DETAIL ROW -->
+            <tr class="detail-row" *ngIf="expandedId === r.id">
+              <td colspan="8">
+                <div class="row-details">
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <label>Informations du Fichier</label>
+                      <p><mat-icon>file_present</mat-icon> {{ r.title }}.pdf</p>
+                      <p><mat-icon>storage</mat-icon> Taille: {{ r.size }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Source & Publication</label>
+                      <p><mat-icon>business</mat-icon> {{ r.institution }}</p>
+                      <p><mat-icon>event</mat-icon> Soumis le {{ r.date }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Actions Complémentaires</label>
+                      <div class="quick-btns">
+                        <button class="btn-outline">Imprimer</button>
+                        <button class="btn-outline">Archiver</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
     </div>
-    <div class="empty-state" *ngIf="filtered.length === 0">
-      <mat-icon>description</mat-icon><p>Aucun rapport trouvé.</p>
+
+    <div class="pagination">
+      <span class="page-info">Affichage de 1 à {{ filtered.length }} sur {{ reports.length }} entrées</span>
+      <div class="page-btns">
+        <button [disabled]="pageCode === 1" (click)="pageCode = pageCode - 1"><mat-icon>chevron_left</mat-icon></button>
+        <button *ngFor="let p of [].constructor(totalPages); let i = index" 
+                [class.active]="pageCode === i + 1" (click)="pageCode = i + 1">{{ i + 1 }}</button>
+        <button [disabled]="pageCode === totalPages" (click)="pageCode = pageCode + 1"><mat-icon>chevron_right</mat-icon></button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,110 +1,147 @@
 <div class="module-content">
-  <div class="page-header">
-    <h1 class="page-title">Orphelinats &amp; Associations</h1>
-    <span class="breadcrumb">Admin / Orphelinats</span>
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">Total Orphelinats</span>
+      <h2 class="stat-value">{{ totalElements }}</h2>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>{{ pendingCount }} en attente</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Profils Actifs</span>
+      <h2 class="stat-value">{{ activeCount }}</h2>
+      <div class="stat-trend positive">
+        <mat-icon>check_circle</mat-icon>
+        <span>Vérifiés</span>
+      </div>
+    </div>
   </div>
 
-  <!-- LIST -->
-  <ng-container *ngIf="!selected">
-    <div class="stats-row">
-      <div class="stat-card"><mat-icon class="si green">home_work</mat-icon><div><div class="sv">{{ orphanages.length }}</div><div class="sl">Total Orphelinats</div></div></div>
-      <div class="stat-card"><mat-icon class="si teal">child_care</mat-icon><div><div class="sv">{{ totalChildren }}</div><div class="sl">Enfants accueillis</div></div></div>
-      <div class="stat-card"><mat-icon class="si orange">check_circle</mat-icon><div><div class="sv">{{ activeCount }}</div><div class="sl">Actifs</div></div></div>
+  <div class="filters-bar">
+    <div class="filter-group">
+      <mat-icon>search</mat-icon>
+      <input type="text" placeholder="Rechercher..." [(ngModel)]="searchQuery" />
     </div>
-
-    <div class="filters-bar">
-      <div class="filter-group"><mat-icon>search</mat-icon><input type="text" placeholder="Nom de l'orphelinat..." [(ngModel)]="searchQuery" /></div>
-      <div class="filter-group"><mat-icon>location_on</mat-icon><input type="text" placeholder="Ville..." [(ngModel)]="filterCity" /></div>
-      <select [(ngModel)]="filterStatus">
-        <option value="">Tous les statuts</option>
-        <option value="Actif">Actif</option>
-        <option value="Inactif">Inactif</option>
-        <option value="En révision">En révision</option>
-      </select>
-      <button class="btn-reset" (click)="searchQuery=''; filterCity=''; filterStatus=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
+    <div class="filter-group">
+      <mat-icon>location_on</mat-icon>
+      <input type="text" placeholder="Ville..." [(ngModel)]="filterCity" />
     </div>
+    <select [(ngModel)]="filterStatus">
+      <option value="">Tous les statuts</option>
+      <option value="ACTIVE">Actif</option>
+      <option value="PENDING_VALIDATION">En attente</option>
+    </select>
+    <button class="btn-reset" (click)="searchQuery=''; filterCity=''; filterStatus=''"><mat-icon>refresh</mat-icon> Réinitialiser</button>
+  </div>
 
-    <div class="cards-grid">
-      <div class="orphan-card" *ngFor="let o of filtered" (click)="open(o)">
-        <div class="oc-header">
-          <div class="oc-avatar">{{ o.name.charAt(0) }}</div>
-          <div class="oc-info">
-            <div class="oc-name">{{ o.name }}</div>
-            <div class="oc-sub"><mat-icon>location_on</mat-icon>{{ o.city }}, {{ o.region }}</div>
-          </div>
-          <span class="badge" [ngClass]="getStatusClass(o.status)">{{ o.status }}</span>
-        </div>
-        <div class="oc-stats">
-          <div class="oc-stat"><mat-icon>child_care</mat-icon><span>{{ o.children }} / {{ o.capacity }} enfants</span></div>
-          <div class="oc-stat"><mat-icon>account_balance</mat-icon><span>{{ o.institution }}</span></div>
-        </div>
-        <div class="occupancy-bar">
-          <div class="occupancy-fill" [style.width.%]="getOccupancyPct(o)" [style.background]="getOccupancyPct(o) > 80 ? '#e53935' : '#1a4a3a'"></div>
-        </div>
-        <div class="oc-footer">
-          <span class="occ-label">Occupation : {{ getOccupancyPct(o) }}%</span>
-          <button class="btn-view" (click)="open(o); $event.stopPropagation()"><mat-icon>visibility</mat-icon> Voir</button>
-        </div>
-      </div>
-      <div class="empty-state" *ngIf="filtered.length === 0">
-        <mat-icon>home_work</mat-icon><p>Aucun orphelinat trouvé.</p>
-      </div>
-    </div>
-  </ng-container>
-
-  <!-- DETAIL -->
-  <ng-container *ngIf="selected">
-    <button class="btn-back" (click)="close()"><mat-icon>arrow_back</mat-icon> Retour</button>
-    <div class="detail-title-row">
-      <div class="avatar-lg">{{ selected.name.charAt(0) }}</div>
-      <div>
-        <h2>{{ selected.name }}</h2>
-        <div class="detail-meta">
-          <span class="badge" [ngClass]="getStatusClass(selected.status)">{{ selected.status }}</span>
-          <span class="meta-item"><mat-icon>location_on</mat-icon>{{ selected.city }}, {{ selected.region }}</span>
-          <span class="meta-item"><mat-icon>account_balance</mat-icon>{{ selected.institution }}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="info-card">
-        <h3><mat-icon>info</mat-icon> Informations</h3>
-        <div class="info-grid">
-          <div class="info-item"><span class="info-label">Directeur</span><span>{{ selected.director }}</span></div>
-          <div class="info-item"><span class="info-label">Téléphone</span><span>{{ selected.phone }}</span></div>
-          <div class="info-item"><span class="info-label">Email</span><span>{{ selected.email }}</span></div>
-          <div class="info-item"><span class="info-label">Créé le</span><span>{{ selected.createdAt }}</span></div>
-          <div class="info-item"><span class="info-label">Enfants</span><span>{{ selected.children }} / {{ selected.capacity }}</span></div>
-          <div class="info-item"><span class="info-label">Occupation</span><span>{{ getOccupancyPct(selected) }}%</span></div>
-        </div>
-      </div>
-      <div class="info-card">
-        <h3><mat-icon>favorite</mat-icon> Besoins déclarés</h3>
-        <div class="needs-list">
-          <span class="need-tag" *ngFor="let n of selected.needs">{{ n }}</span>
-        </div>
-        <div class="empty-state small" *ngIf="selected.needs.length === 0"><p>Aucun besoin déclaré.</p></div>
-      </div>
-    </div>
-
-    <div class="table-card" style="margin-top: 20px;">
-      <div class="table-header"><span>Dons reçus ({{ selected.donations.length }})</span></div>
-      <div class="table-scroll" *ngIf="selected.donations.length > 0">
-        <table>
-          <thead><tr><th>Date</th><th>Montant</th><th>Donateur</th></tr></thead>
-          <tbody>
-            <tr *ngFor="let d of selected.donations">
-              <td>{{ d.date }}</td>
-              <td class="amount">{{ d.amount | number }} FCFA</td>
-              <td>{{ d.donor }}</td>
+  <div class="table-container">
+    <div class="table-card" [class.loading]="isLoading">
+      <table>
+        <thead>
+          <tr>
+            <th width="40"></th>
+            <th>ORPHELINAT / INSTITUTION</th>
+            <th>LOCALISATION</th>
+            <th>SECTEURS</th>
+            <th>STATUT</th>
+            <th class="text-right">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let o of filtered">
+            <tr [class.expanded]="expandedId === o.id" (click)="toggleRow(o.id)">
+              <td class="expand-cell">
+                <mat-icon>{{ expandedId === o.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </td>
+              <td>
+                <div class="entity-cell">
+                  <div class="entity-info">
+                    <span class="entity-name-text">{{ o.organizationProfile?.organizationName }}</span>
+                    <span class="sub-text">Email: {{ o.email }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="loc-cell">
+                  <span>{{ o.location }}</span>
+                  <span class="region">{{ o.country }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="sectors-wrap">
+                  <span class="inst-tag" *ngFor="let s of o.organizationProfile?.sectors">{{ s }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge" [attr.data-status]="o.status">
+                  {{ o.status === 'PENDING_VALIDATION' ? 'En attente' : (o.status === 'ACTIVE' ? 'Actif' : o.status) }}
+                </span>
+              </td>
+              <td class="text-right">
+                <div class="actions-group">
+                  <button *ngIf="o.status === 'PENDING_VALIDATION'" class="btn-validate" title="Valider" (click)="validateUser(o.id); $event.stopPropagation()">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button *ngIf="o.status === 'PENDING_VALIDATION'" class="btn-reject" title="Rejeter" (click)="rejectUser(o.id); $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <button class="btn-action-icon" (click)="toggleRow(o.id); $event.stopPropagation()">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </div>
+              </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="empty-state" *ngIf="selected.donations.length === 0">
-        <mat-icon>volunteer_activism</mat-icon><p>Aucun don enregistré.</p>
+            <tr class="detail-row" *ngIf="expandedId === o.id">
+              <td colspan="6">
+                <div class="row-details">
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <label>Mission / Description</label>
+                      <p class="mission-text">{{ o.organizationProfile?.mission || 'Aucune description fournie.' }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Informations Légales</label>
+                      <p><strong>RCCM:</strong> {{ o.organizationProfile?.rccm || 'N/A' }}</p>
+                      <p><strong>NIU:</strong> {{ o.organizationProfile?.taxId || 'N/A' }}</p>
+                      <p><strong>Création:</strong> {{ o.organizationProfile?.creationYear || 'N/A' }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Contact Représentant</label>
+                      <p><mat-icon>person</mat-icon> {{ o.firstName }} {{ o.lastName }}</p>
+                      <p><mat-icon>phone</mat-icon> {{ o.phone }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Documents Fournis</label>
+                      <div class="docs-list">
+                        <a *ngIf="o.organizationProfile?.minasAuthUrl" [href]="o.organizationProfile?.minasAuthUrl" target="_blank" class="doc-link">
+                          <mat-icon>description</mat-icon> Autorisation MINAS
+                        </a>
+                        <a *ngIf="o.organizationProfile?.assocReceiptUrl" [href]="o.organizationProfile?.assocReceiptUrl" target="_blank" class="doc-link">
+                          <mat-icon>description</mat-icon> Récépissé Assoc.
+                        </a>
+                        <a *ngIf="o.organizationProfile?.legalDocUrl" [href]="o.organizationProfile?.legalDocUrl" target="_blank" class="doc-link">
+                          <mat-icon>description</mat-icon> Document Légal
+                        </a>
+                        <!-- ... other docs ... -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span class="page-info">Total: {{ totalElements }} orphelinat(s)</span>
+      <div class="page-btns">
+        <button [disabled]="page === 0" (click)="changePage(page - 1)"><mat-icon>chevron_left</mat-icon></button>
+        <span class="current-page">Page {{ page + 1 }} sur {{ totalPages }}</span>
+        <button [disabled]="page >= totalPages - 1" (click)="changePage(page + 1)"><mat-icon>chevron_right</mat-icon></button>
       </div>
     </div>
-  </ng-container>
+  </div>
 </div>

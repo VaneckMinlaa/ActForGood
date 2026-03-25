@@ -18,7 +18,16 @@ interface Transaction {
 })
 export class AdmingestfondsetdonsComponent {
 
-  searchQuery = ''; filterStatus = ''; filterType = '';
+  searchQuery = ''; 
+  filterStatus = ''; 
+  filterType = '';
+
+  // PAGINATION
+  pageCode = 1;
+  pageSize = 10;
+
+  // EXPANSION
+  expandedId: string | null = null;
 
   transactions: Transaction[] = [
     { id: 'TX001', date: '2024-03-18', amount: 500000, type: 'Don en espèces', donor: 'Jean Dupont', recipient: 'Espoir de Douala', status: 'Complété', hash: '0x9c41...a12c', platform: true },
@@ -29,13 +38,16 @@ export class AdmingestfondsetdonsComponent {
   ];
 
   get filtered(): Transaction[] {
-    return this.transactions.filter(t => {
+    let list = this.transactions.filter(t => {
       const ms = !this.searchQuery || t.donor.toLowerCase().includes(this.searchQuery.toLowerCase()) || t.recipient.toLowerCase().includes(this.searchQuery.toLowerCase()) || t.id.toLowerCase().includes(this.searchQuery.toLowerCase());
       const mst = !this.filterStatus || t.status === this.filterStatus;
       const mt = !this.filterType || t.type === this.filterType;
       return ms && mst && mt;
     });
+    return list.slice((this.pageCode - 1) * this.pageSize, this.pageCode * this.pageSize);
   }
+
+  get totalPages() { return Math.ceil(this.transactions.length / this.pageSize); }
 
   get totalVolume(): number { let t = 0; for (const tx of this.transactions) if (tx.status === 'Complété') t += tx.amount; return t; }
   get pendingCount(): number { return this.transactions.filter(t => t.status === 'En attente').length; }
@@ -46,4 +58,6 @@ export class AdmingestfondsetdonsComponent {
     if (s === 'En attente') return 'badge-pending';
     return 'badge-failed';
   }
+
+  toggleExpand(id: string) { this.expandedId = this.expandedId === id ? null : id; }
 }

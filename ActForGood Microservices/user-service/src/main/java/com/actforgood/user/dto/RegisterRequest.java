@@ -1,5 +1,6 @@
 package com.actforgood.user.dto;
 
+import java.util.List;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -29,4 +30,26 @@ public class RegisterRequest {
 
     private String location;
     private String country;
+
+    // Organization Information
+    private String organizationName;
+    private String organizationType;
+    private Integer creationYear;
+    private String website;
+    private String address;
+    private String mission;
+    private java.util.List<String> sectors;
+
+    // Legal Information & Documents (URLs or IDs after upload)
+    private String rccm;
+    private String taxId;
+    private String legalDocUrl;
+    private String statutesUrl;
+    
+    // Specific for Orphanages/NGOs (MINAS, etc.)
+    private String minasAuthUrl;
+    private String assocReceiptUrl;
+    private String rulesInternalUrl;
+    private String registryEntryUrl;
+    private String socialInquiryUrl;
 }

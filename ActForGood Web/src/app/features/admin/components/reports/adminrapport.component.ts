@@ -17,7 +17,16 @@ interface Report {
 })
 export class AdminrapportComponent {
 
-  searchQuery = ''; filterType = ''; filterStatus = '';
+  searchQuery = ''; 
+  filterType = ''; 
+  filterStatus = '';
+
+  // PAGINATION
+  pageCode = 1;
+  pageSize = 10;
+
+  // EXPANSION
+  expandedId: number | null = null;
 
   reports: Report[] = [
     { id: 1, title: "Rapport d'activité T1 2024", institution: 'Espoir de Douala', type: 'Activité', date: '2024-04-01', status: 'En attente', size: '2.4 MB' },
@@ -28,13 +37,16 @@ export class AdminrapportComponent {
   ];
 
   get filtered(): Report[] {
-    return this.reports.filter(r => {
+    let list = this.reports.filter(r => {
       const ms = !this.searchQuery || r.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || r.institution.toLowerCase().includes(this.searchQuery.toLowerCase());
       const mt = !this.filterType || r.type === this.filterType;
       const mst = !this.filterStatus || r.status === this.filterStatus;
       return ms && mt && mst;
     });
+    return list.slice((this.pageCode - 1) * this.pageSize, this.pageCode * this.pageSize);
   }
+
+  get totalPages() { return Math.ceil(this.reports.length / this.pageSize); }
 
   get pendingCount(): number { return this.reports.filter(r => r.status === 'En attente').length; }
   get validatedCount(): number { return this.reports.filter(r => r.status === 'Validé').length; }
@@ -52,4 +64,6 @@ export class AdminrapportComponent {
     const map: Record<string, string> = { Activité: 'event_note', Financier: 'account_balance_wallet', Annuel: 'calendar_today', Audit: 'verified', Impact: 'trending_up' };
     return map[t] || 'description';
   }
+
+  toggleExpand(id: number) { this.expandedId = this.expandedId === id ? null : id; }
 }

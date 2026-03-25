@@ -3,3 +3,4 @@ CREATE DATABASE actforgood_campaigns;
 CREATE DATABASE actforgood_payments;
 CREATE DATABASE actforgood_blockchain;
 CREATE DATABASE actforgood_matching;
+CREATE DATABASE actforgood_notifications;
