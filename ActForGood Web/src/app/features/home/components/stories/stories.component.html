@@ -1,66 +1,131 @@
-<div class="organic-bento-layout">
-  
-  <div class="bg-blob-solid blob-center-massive"></div>
+<!-- ═══════════════════════════════════════════════════════════
+     IMPACT / STORIES PAGE — Design Replica of the7.io/fse-company
+     ═══════════════════════════════════════════════════════════ -->
 
-  <section class="page-hero">
-    <h1 class="giant-title">Histoires d'<span class="text-yellow">Impact.</span></h1>
-    <p class="doc-text">
-      Derrière chaque transaction sur la blockchain se cache une vie transformée. Lisez les témoignages des orphelinats, des enfants et des volontaires qui témoignent de l'efficacité d'ActForGood.
-    </p>
-  </section>
+<div class="page-wrapper">
 
-  <section class="content-bento">
-    <div class="stories-grid-container">
-      
-      <!-- Story 1 -->
-      <div class="glass-bento-bordered story-doc full-width">
-        <div class="story-doc-visual">
-          <img src="/assets/new-design/maria.png" alt="Maria Volunteer">
-        </div>
-        <div class="story-doc-content">
-          <div class="story-header">
-            <h3>La Reconstruction du Foyer des Anges</h3>
-            <span class="badge">Orphelinat de Yaoundé</span>
-          </div>
-          <p class="doc-text">"Avant l'intervention d'ActForGood, le dortoir des filles prenait l'eau à chaque saison des pluies. Les méthodes de dons traditionnelles n'avaient jamais permis d'amasser assez de fonds, une grande partie se perdant en frais administratifs."</p>
-          <p class="doc-text">"Lorsque la campagne a été lancée sur ActForGood, nous avons pu suivre en temps réel la progression des levées de fonds (Ethereum et XAF fiat tokenisé). Dès que l'objectif de 5,000,000 XAF a été atteint, le contrat intelligent a débloqué les fonds directement au fournisseur de matériaux. Aujourd'hui, 40 petites filles dorment au sec."</p>
-          <div class="testimonial-footer">
-            <mat-icon class="quote-mini">format_quote</mat-icon>
-            <span class="author">Mme. Tchuente, Directrice de l'orphelinat</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Story 2 -->
-      <div class="glass-bento-bordered story-doc split-bento">
-        <div class="story-doc-content full-flex">
-          <div class="story-header">
-            <h3>L'École pour Tous : Don de Fournitures</h3>
-            <span class="badge highlight">Éducation (Douala)</span>
-          </div>
-          <p class="doc-text">Un donateur anonyme depuis la Suisse a financé intégralement l'achat de 250 kits scolaires pour des enfants démunis. "La traçabilité de cette DApp est stupéfiante. J'ai pu vérifier la signature numérique du reçu d'achat fourni par la librairie locale sur l'explorateur de blocs."</p>
-          <div class="testimonial-footer">
-            <mat-icon class="quote-mini text-yellow">verified</mat-icon>
-            <span class="author text-yellow">Donateur Verifié (0x4A...2f)</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Story 3 -->
-      <div class="glass-bento-bordered story-doc split-bento">
-        <div class="story-doc-content full-flex">
-          <div class="story-header">
-            <h3>Mission Bénévole : Bâtir ensemble</h3>
-            <span class="badge">Engagement</span>
-          </div>
-          <p class="doc-text">"Partir au Cameroun pour aider à ériger un centre d'étude grâce à la plateforme de matching d'ActForGood a été la meilleure décision de l'année. La logistique était claire et le suivi impeccable."</p>
-          <div class="testimonial-footer">
-            <mat-icon class="quote-mini">engineering</mat-icon>
-            <span class="author">Lucas M., Ingénieur bénévole</span>
-          </div>
-        </div>
-      </div>
-
+<!-- 1. DARK HERO SECTION -->
+  <section class="subpage-hero">
+    <div class="container hero-container">
+      <h1 class="hero-title reveal">Documentation</h1>
     </div>
   </section>
+
+  <!-- 2. FILTER BAR -->
+  <section class="filter-section">
+    <div class="container footer-border">
+      <div class="filter-links reveal">
+        <button class="filter-btn active">Tout</button>
+        <button class="filter-btn">Audit Blockchain</button>
+        <button class="filter-btn">Impact Social</button>
+        <button class="filter-btn">Rapports Annuels</button>
+        <button class="filter-btn">Guides Donateurs</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. BLOG GRID (MATCHING THE7 BLOG) -->
+  <section class="blog-section">
+    <div class="container section-padding">
+      <div class="blog-grid reveal-stagger">
+        
+        <!-- Post 1 -->
+        <article class="blog-card reveal">
+          <div class="blog-image hover-zoom">
+            <img src="/assets/new-design/rebuild.png" alt="Post 1">
+            <div class="blog-date">31 MAR 2026</div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-cat">TECHNOLOGIE</span>
+            <h3 class="blog-title">Comment la Blockchain sécurise vos dons</h3>
+            <p class="blog-excerpt text-justify">
+              Découvrez les mécanismes techniques derrière notre architecture Web3 qui garantit une transparence immuable sur chaque transaction humanitaire.
+            </p>
+            <a href="#" class="blog-readmore">Read More</a>
+          </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="blog-card reveal">
+          <div class="blog-image hover-zoom">
+            <img src="/assets/new-design/rapport.jpg" alt="Post 2">
+            <div class="blog-date">25 MAR 2026</div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-cat">IMPACT</span>
+            <h3 class="blog-title">Rapport d'Impact Trimestriel : Q1 2026</h3>
+            <p class="blog-excerpt text-justify">
+              Analyse détaillée des fonds alloués et des résultats obtenus sur le terrain. Plus de 500 enfants ont bénéficié de nos programmes ce trimestre.
+            </p>
+            <a href="#" class="blog-readmore">Read More</a>
+          </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="blog-card reveal">
+          <div class="blog-image hover-zoom">
+            <img src="/assets/new-design/maria.png" alt="Post 3">
+            <div class="blog-date">10 MAR 2026</div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-cat">GUIDE</span>
+            <h3 class="blog-title">Guide Complet du Donneur Responsable</h3>
+            <p class="blog-excerpt text-justify">
+              Les meilleures pratiques pour choisir ses actions de solidarité et maximiser l'efficacité de son engagement social.
+            </p>
+            <a href="#" class="blog-readmore">Read More</a>
+          </div>
+        </article>
+
+         <!-- Post 4 -->
+        <article class="blog-card reveal">
+          <div class="blog-image hover-zoom">
+            <img src="/assets/new-design/rebuild.png" alt="Post 1">
+            <div class="blog-date">31 MAR 2026</div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-cat">TECHNOLOGIE</span>
+            <h3 class="blog-title">Comment la Blockchain sécurise vos dons</h3>
+            <p class="blog-excerpt text-justify">
+              Découvrez les mécanismes techniques derrière notre architecture Web3 qui garantit une transparence immuable sur chaque transaction humanitaire.
+            </p>
+            <a href="#" class="blog-readmore">Read More</a>
+          </div>
+        </article>
+
+        <!-- Post 5 -->
+        <article class="blog-card reveal">
+          <div class="blog-image hover-zoom">
+            <img src="/assets/new-design/hero-bg.png" alt="Post 2">
+            <div class="blog-date">25 MAR 2026</div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-cat">IMPACT</span>
+            <h3 class="blog-title">Rapport d'Impact Trimestriel : Q1 2026</h3>
+            <p class="blog-excerpt text-justify">
+              Analyse détaillée des fonds alloués et des résultats obtenus sur le terrain. Plus de 500 enfants ont bénéficié de nos programmes ce trimestre.
+            </p>
+            <a href="#" class="blog-readmore">Read More</a>
+          </div>
+        </article>
+
+        <!-- Post 6 -->
+        <article class="blog-card reveal">
+          <div class="blog-image hover-zoom">
+            <img src="/assets/new-design/maria.png" alt="Post 3">
+            <div class="blog-date">10 MAR 2026</div>
+          </div>
+          <div class="blog-content">
+            <span class="blog-cat">GUIDE</span>
+            <h3 class="blog-title">Guide Complet du Donneur Responsable</h3>
+            <p class="blog-excerpt text-justify">
+              Les meilleures pratiques pour choisir ses actions de solidarité et maximiser l'efficacité de son engagement social.
+            </p>
+            <a href="#" class="blog-readmore">Read More</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
 </div>

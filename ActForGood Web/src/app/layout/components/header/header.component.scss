@@ -1,114 +1,104 @@
 /* ════════════════════════════════════════════════════════════
-   HEADER COMPONENT  --  Design "ORGANIC BENTO"
+   HEADER COMPONENT SCSS  —  Replication of the7.io/fse-company
    ════════════════════════════════════════════════════════════ */
 
 .header {
-  height: 70px;
-  background: var(--bg-deep);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-glass);
-  position: sticky;
-  top: 0;
-  z-index: 2000;
-  opacity: 0.98;
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  z-index: 1000;
+  padding: 32px 0;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  background: transparent;
+
+  &.header--scrolled {
+    background: #fff;
+    padding: 16px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+    .logo-text, .nav-link { color: var(--section-dark); }
+    .btn-outline-white { border-color: var(--primary-yellow); color: var(--primary-yellow); }
+  }
 }
 
 .header-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 48px;
+  align-items: center;
 }
 
-.logo {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 1.5rem;
-  color: var(--text-main);
-  text-decoration: none;
-  letter-spacing: -1.2px;
+.logo-group {
   display: flex;
   align-items: center;
+  gap: 12px;
+  text-decoration: none;
   
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 16px;
+  .logo-icon {
+    width: 32px; height: 32px;
     background: var(--primary-yellow);
-    margin-right: 12px;
-    border-radius: 3px;
-    transform: skewX(-15deg);
+    display: flex; align-items: center; justify-content: center;
+    color: #000; font-weight: 900; font-size: 1rem;
+    border-radius: 2px;
+  }
+  
+  .logo-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #fff;
+    letter-spacing: -0.02em;
+    transition: color 0.3s ease;
   }
 }
 
 .nav {
   display: flex;
-  gap: 32px;
+  gap: 40px;
+  align-items: center;
 }
 
 .nav-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.95rem;
+  font-family: var(--font-body);
   font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  text-decoration: none;
   transition: all 0.3s ease;
   position: relative;
-  
-  &:hover, &.active {
-    color: var(--text-main);
-  }
 
-  &.active::after {
+  &::after {
     content: '';
     position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 100%;
-    height: 3px;
+    bottom: -8px; left: 0; width: 0; height: 2.5px;
     background: var(--primary-yellow);
-    border-radius: 10px;
+    transition: width 0.3s ease;
+  }
+
+  &:hover, &.active {
+    color: var(--primary-yellow) !important;
+    &::after { width: 100%; }
   }
 }
 
 .header-actions {
   display: flex;
+  gap: 16px;
   align-items: center;
 }
 
-.theme-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-muted);
-  margin-right: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  &:hover { color: var(--primary-yellow); transform: rotate(15deg) scale(1.1); }
-  mat-icon { font-size: 1.25rem; width: 24px; height: 24px; }
+/* Specific buttons inside header */
+.btn-primary.sm { padding: 10px 24px; font-size: 0.85rem; }
+.btn-outline-white.sm { 
+  padding: 10px 24px; font-size: 0.85rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-weight: 700;
+  border-radius: var(--radius-btn);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  &:hover { background: rgba(255, 255, 255, 0.1); border-color: #fff; }
 }
 
-.btn-logout {
-  background: var(--bg-glass);
-  color: var(--text-main);
-  border: 1px solid var(--border-glass);
-  padding: 10px 24px;
-  border-radius: 100px;
-  font-weight: 800;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  &:hover { background: #ff4d4d; color: #fff; border-color: #ff4d4d; }
-}
-
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .nav { display: none; }
-  .header-container { padding: 0 24px; }
+  .header { padding: 20px 0; }
 }

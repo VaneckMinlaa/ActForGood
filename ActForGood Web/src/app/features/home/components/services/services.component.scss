@@ -1,0 +1,118 @@
+/* ════════════════════════════════════════════════════════════
+   SERVICES COMPONENT SCSS  —  Replication of the7.io/fse-company
+   ════════════════════════════════════════════════════════════ */
+
+.page-wrapper {
+  overflow: hidden;
+}
+
+/* 1. DARK SUBPAGE HERO */
+.subpage-hero {
+  background: var(--section-dark);
+  padding: 160px 0 100px;
+  text-align: left;
+}
+.text-justify { text-align: justify; }
+.text-yellow { color: var(--primary-yellow) !important; }
+
+.hero-title.reveal {
+  color: #fff;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+
+/* 2. SERVICES LIST & BLOCKS */
+.services-main {
+  background: #fff;
+}
+
+.service-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 120px;
+  align-items: center;
+  padding: 120px 0;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.05);
+
+  &:last-child { border-bottom: none; }
+  &.reversed {
+    .service-image { order: 2; }
+    .service-text { order: 1; }
+  }
+}
+
+.service-image {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+  img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+}
+
+.service-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.section-label {
+  display: inline-block;
+  color: var(--teal);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--section-dark);
+  margin-bottom: 32px;
+}
+
+.service-desc {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+
+/* 3. COMPARISON SECTION & STATS */
+.comparison-section {
+  padding: 140px 0;
+}
+
+.dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 120px;
+}
+
+.huge-stat {
+  font-family: var(--font-heading);
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: -4px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 40px;
+
+  .stat-unit { font-size: 1.25rem; font-weight: 700; color: var(--section-dark); letter-spacing: 0; text-transform: uppercase; }
+}
+
+/* Helpers */
+.bg-light { background-color: var(--bg-deep); }
+.mt-20 { margin-top: 20px; }
+
+@media (max-width: 1024px) {
+  .service-block, .dual-grid { grid-template-columns: 1fr; gap: 60px; }
+  .service-block.reversed .service-image { order: 1; }
+  .service-block.reversed .service-text { order: 2; }
+  .huge-stat { font-size: 4rem; }
+  .hero-title.reveal { font-size: 3.5rem; }
+}

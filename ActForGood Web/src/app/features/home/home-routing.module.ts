@@ -1,14 +1,18 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 
-import { MissionComponent } from './components/mission/mission.component';
 import { GetInvolvedComponent } from './components/get-involved/get-involved.component';
 import { StoriesComponent } from './components/stories/stories.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { ServicesComponent } from './components/services/services.component';
 
 export const homeRoutes: Routes = [
-  { path: '', redirectTo: 'mission', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'mission', component: MissionComponent },
   { path: 'get-involved', component: GetInvolvedComponent },
-  { path: 'stories', component: StoriesComponent }
+  { path: 'stories', component: StoriesComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'services', component: ServicesComponent }
 ];

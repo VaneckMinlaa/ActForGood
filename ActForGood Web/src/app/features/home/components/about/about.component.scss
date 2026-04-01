@@ -1,0 +1,187 @@
+/* ════════════════════════════════════════════════════════════
+   ABOUT COMPONENT SCSS  —  Replication of the7.io/fse-company
+   ════════════════════════════════════════════════════════════ */
+
+.page-wrapper {
+  overflow: hidden;
+}
+
+/* 1. DARK SUBPAGE HERO */
+.subpage-hero {
+  background: var(--section-dark);
+  padding: 160px 0 100px;
+  text-align: left;
+}
+
+.hero-title.reveal {
+  color: #fff;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+
+.text-justify { text-align: justify; }
+.text-yellow { color: var(--primary-yellow) !important; }
+
+/* 2. MAIN ABOUT SECTION (TWO COLUMN) */
+.about-main {
+  padding: 120px 0;
+  background: #fff;
+}
+
+.about-main-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 100px;
+  align-items: center;
+}
+
+.about-main-image {
+  border-radius: 0;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.section-label {
+  display: inline-block;
+  color: var(--primary-yellow);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--section-dark);
+  margin-bottom: 32px;
+}
+
+.section-desc {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.about-sub-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-glass);
+}
+
+.sub-feature {
+  display: flex;
+  gap: 24px;
+  
+  .sub-icon { color: var(--primary-yellow); font-weight: 900; font-size: 1.2rem; margin-top: 4px; }
+  h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; font-family: var(--font-heading); }
+  p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; }
+}
+
+/* 3. STATS BANNER */
+.stats-banner-lg {
+  padding: 140px 0;
+  background: var(--bg-deep);
+}
+
+.stats-banner-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 120px;
+  align-items: center;
+}
+
+.stats-intro p {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.stat-item {
+  padding: 40px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
+  &:last-child { border-bottom: none; }
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--primary-yellow);
+  letter-spacing: -3px;
+}
+
+.text-justify-centered { text-align: justify; max-width: 800px; margin: 0 auto; color: var(--text-muted); line-height: 1.8; }
+.text-center { text-align: center; }
+
+.text-justify-centered { text-align: justify; max-width: 800px; margin: 0 auto; color: var(--text-muted); line-height: 1.8; }
+.text-center { text-align: center; }
+
+/* 4. TEAM GRID CONTAINERS (MATCHING IMAGE 8) */
+.team-section-centered {
+  justify-content: center;
+  padding: 140px 0;
+  background: #f4f7f8;
+}
+
+.team-header-centered { margin-bottom: 80px; }
+
+.team-grid-containers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px; /* Space between containers */
+}
+
+.team-member-container {
+  .member-card {
+    position: relative;
+    aspect-ratio: 0.75;
+    overflow: hidden;
+    border-radius: var(--radius-card); /* Individual containers */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+
+    img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    
+    .member-info {
+      position: absolute;
+      inset: 0;
+      padding: 30px;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      color: #fff;
+      
+      h3 { font-size: 1.4rem; margin-bottom: 5px; color: #fff; font-weight: 700; }
+      p { font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; font-weight: 500; }
+      .member-socials {
+        display: flex; gap: 12px;
+        opacity: 0; transform: translateY(10px); transition: all 0.3s ease;
+        a { color: #fff; font-size: 0.95rem; &:hover { color: var(--primary-yellow); } }
+      }
+    }
+
+    &:hover {
+      img { transform: scale(1.05); }
+      .member-socials { opacity: 1; transform: translateY(0); }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-grid-containers { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .team-grid-containers { grid-template-columns: 1fr; }
+}

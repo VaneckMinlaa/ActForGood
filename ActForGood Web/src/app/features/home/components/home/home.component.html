@@ -1,198 +1,238 @@
-<div class="organic-bento-layout">
+<!-- ═══════════════════════════════════════════════════════════
+     HOME PAGE — Design Replica of the7.io/fse-company
+     ═══════════════════════════════════════════════════════════ -->
 
-  <!-- Solid Organic Background Blobs (Fidélité Mockup) -->
-  <div class="bg-blob-solid blob-top-left"></div>
-  <div class="bg-blob-solid blob-bottom-right"></div>
-  <div class="bg-blob-solid blob-right-middle"></div>
+<div class="home-wrapper">
 
-  <!-- HERO SECTION (MATCHING MOCKUP) -->
-  <section class="hero-bento">
-    <div class="hero-grid">
-      
-      <!-- Left side: Organic Visual -->
-      <div class="hero-visual">
-        <div class="hero-image-container">
-          <img src="/assets/new-design/education.png" alt="Community Garden" class="organic-main-img">
+  <!-- 1. HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-container">
+      <div class="hero-content reveal visible">
+        <span class="hero-subtitle">SOLIDARITÉ & TRANSPARENCE</span>
+        <h1 class="hero-title">Bâtir un avenir<br>plus <span class="text-teal">solide</span> pour tous.</h1>
+        <p class="hero-description">
+          Nous utilisons la technologie blockchain pour garantir que chaque don parvienne directement à ceux qui en ont le plus besoin, sans frais de friction.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" routerLink="/services">Nos Actions</button>
+          <a href="mailto:contact&#64;actforgood.org" class="btn-outline-white">Contactez-nous ➔</a>
         </div>
       </div>
-
-      <!-- Right side: High Impact Text -->
-      <div class="hero-text-container">
-        <h1 class="giant-title">Together We Fuel <br> <span class="text-yellow">Soutien Éducatif</span></h1>
-        <p class="hero-desc">Grâce aux dons blockchain, le foyer de Maria accueille désormais 150 enfants dans un environnement sécurisé et stimulant.</p>
-        <div class="hero-cta-group">
-          <button class="btn-solid-yellow" routerLink="/get-involved">Get Started</button>
-          <a routerLink="/campaigns" class="btn-link-white">Explorer les Projects ➔</a>
-        </div>
-      </div>
-
     </div>
   </section>
-  <!-- DETAILED DOCUMENTATION SECTION (FULL PAGE WIDTH) -->
-  <section class="detailed-documentation-free">
-      
-    <h2 class="article-title-free">L'Écosystème Humanitaire & Notre Solution Blockchain</h2>
-    
-    <div class="article-content-free">
-      <p>
-        Le secteur humanitaire, particulièrement en Afrique subsaharienne, est confronté à des défis structurels qui minent la confiance des donateurs internationaux. ActForGood n'est pas simplement une plateforme de don ; c'est un protocole de confiance décentralisé conçu pour combler le fossé entre la générosité globale et l'impact local.
-      </p>
-      <p>
-        Traditionnellement, l'aide aux orphelinats transite par de multiples intermédiaires, entraînant des "frais de friction" pouvant atteindre 30% du don initial. Notre architecture utilise des Smart Contracts pour automatiser la distribution des fonds en fonction de jalons vérifiables (milestones). Par exemple, lorsqu'un orphelinat demande la construction d'un forage, les fonds sont bloqués sur la blockchain et ne sont libérés qu'au moment où l'entrepreneur local fournit une preuve numérique (photo géolocalisée et hachage de facture) vérifiée par le réseau.
-      </p>
+
+  <!-- 2. LOGO BAR (PARTNERS) -->
+  <section class="partners-section reveal">
+    <div class="container partners-grid">
+      <div class="partner-logo"><span>ORANGE MONEY</span></div>
+      <div class="partner-logo"><span>MOBILE MONEY</span></div>
+      <div class="partner-logo"><span>BREVO</span></div>
+      <div class="partner-logo"><span>FONDATION CHANTAL BIYA</span></div>
+      <div class="partner-logo"><span></span></div>
     </div>
   </section>
-  <!-- CONTENT BENTO - DOCUMENTATION & MISSION DETAILS -->
-  <section class="content-bento">
-    <div class="section-badge-title">Notre Mission & Documentation</div>
-    
-    <div class="documentation-grid">
-      <!-- Card 1: Rebuild Community -->
-      <div class="doc-card glass-bento-bordered">
-        <div class="card-visual-top">
-          <img src="/assets/new-design/rebuild.png" alt="Rebuild Community" class="doc-visual-img">
-        </div>
-        <div class="card-content-body">
-          <mat-icon class="card-icon">home_work</mat-icon>
-          <h3>REBUILD COMMUNITY</h3>
-          <p>Nous finançons la rénovation et la construction d'orphelinats modernes. Chaque projet est audité pour garantir des standards de sécurité et de confort optimaux pour les enfants.</p>
-          <div class="mini-progress"><div class="fill" style="width: 65%"></div></div>
-          <a routerLink="/get-involved" class="get-started-link">Get Started ⇢</a>
-        </div>
-      </div>
 
-      <!-- Card 2: Support Education -->
-      <div class="doc-card glass-bento-bordered highlight-border">
-        <div class="card-visual-top">
-          <img src="/assets/new-design/education.png" alt="Support Education" class="doc-visual-img">
+  <!-- 3. ABOUT MINI SECTION -->
+  <section class="about-mini reveal">
+    <div class="container about-mini-grid">
+      <div class="about-mini-image hover-zoom">
+        <img src="/assets/new-design/maria.png" alt="About Team">
+      </div>
+      <div class="about-mini-text">
+        <span class="section-label">EXPÉRIENCE & IMPACT</span>
+        <h2 class="section-title">Aider les orphelinats à croître durablement</h2>
+        <p class="section-desc text-justify">
+          Nous sommes un partenaire humanitaire dédié à aider les institutions à naviguer dans la complexité de l'aide locale, en apportant clarté et élan à chaque engagement.
+        </p>
+        <div class="about-mini-bullets">
+          <div class="bullet-item">
+            <span class="bullet-icon">➔</span>
+            <h3>Solutions sur mesure</h3>
+            <p class="text-justify">Chaque plan est construit autour de votre contexte unique.</p>
+          </div>
+          <div class="bullet-item">
+            <span class="bullet-icon">➔</span>
+            <h3>Priorité au terrain</h3>
+            <p class="text-justify">Nous alignons chaque recommandation avec l'impact direct.</p>
+          </div>
         </div>
-        <div class="card-content-body">
-          <mat-icon class="card-icon">school</mat-icon>
-          <h3>SUPPORT EDUCATION</h3>
-          <p>L'éducation est le pilier du changement. Nous fournissons des kits scolaires, payons les frais de scolarité et soutenons les programmes de tutorat pour les orphelins.</p>
-          <div class="mini-progress"><div class="fill solar" style="width: 85%"></div></div>
-          <a routerLink="/campaigns" class="get-started-link">Explore Projects ➔</a>
-        </div>
+        <button class="btn-outline mt-30" routerLink="/about">En savoir plus</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. PROJECTS / MISSIONS (MATCHING THE7 CASES) -->
+  <section class="projects-grid-section bg-light reveal">
+    <div class="container section-padding">
+      <div class="grid-header">
+        <span class="section-label">NOS PROJETS</span>
+        <h2 class="section-title">Comment nous transformons<br>votre générosité en impact réel.</h2>
       </div>
       
-      <!-- Card 3: Blockchain Transparency (Full Width) -->
-      <div class="doc-card glass-bento-bordered full-width-doc">
-        <div class="doc-horizontal-layout">
-          <div class="doc-text-side">
-            <mat-icon class="card-icon text-yellow">verified_user</mat-icon>
-            <h3>Transparence Totale (Web3)</h3>
-            <p>Grâce à la technologie Blockchain, chaque don est traçable à 100%. Les Smart Contracts garantissent que les fonds ne sont libérés qu'aux étapes vérifiées de chaque projet, éliminant tout intermédiaire ou corruption.</p>
-            <ul class="doc-list">
-              <li><mat-icon>check_circle</mat-icon> Traçabilité immuable des flux</li>
-              <li><mat-icon>check_circle</mat-icon> Audit public en temps réel</li>
-              <li><mat-icon>check_circle</mat-icon> Zéro frais intermédiaires cachés</li>
-            </ul>
+      <div class="projects-grid">
+        <div class="project-card reveal">
+          <div class="image-box hover-zoom">
+            <img src="/assets/new-design/campaign-education.png" alt="Education">
+            <div class="category-label">ÉDUCATION</div>
           </div>
-          <!--<div class="doc-visual-side">
-             <div class="glass-orb-visual">
-                <mat-icon class="huge-icon">currency_bitcoin</mat-icon>
-             </div>
-          </div> -->
-        </div>
-      </div>
-      </div>
-      <div class ="documentation-grid"></div>
-      <h3 class="sub-title-free">Comment Créer un Compte & Processus de Vérification</h3>
-      <p>
-        Pour garantir la sécurité de tous nos utilisateurs et respecter les régulations AML (Anti-Money Laundering), nous appliquons un protocole rigoureux d'inscription. Que vous soyez un donateur, un bénévole ou un représentant d'orphelinat, voici la marche à suivre :
-      </p>
-      <div class="steps-list-free">
-        <div class="step-item-free">
-          <span class="step-num-free">01</span>
-          <div class="step-text-free">
-            <strong>Inscription Initiale :</strong> Cliquez sur "Get Started" et choisissez votre profil. Vous devrez fournir une adresse email valide et créer un mot de passe sécurisé. À cette étape, votre wallet (portefeuille numérique) sera automatiquement généré.
+          <div class="project-info">
+            <h3>Programme de bourses scolaires</h3>
+            <p class="text-justify">Financement complet du cycle primaire pour 200 orphelins en milieu rural.</p>
+            <a routerLink="/mission" class="project-link">Détails ➔</a>
           </div>
         </div>
-        
-        <div class="step-item-free">
-          <span class="step-num-free">02</span>
-          <div class="step-text-free">
-            <strong>Vérification d'Identité (KYC) :</strong> C'est l'étape cruciale pour débloquer les fonctionnalités de don ou de levée de fonds. Pour les individus, une pièce d'identité nationale ou un passeport en cours de validité est requis. Une reconnaissance faciale (Biométrie) sera effectuée via votre caméra pour prévenir l'usurpation d'identité.
+        <div class="project-card reveal">
+          <div class="image-box hover-zoom">
+             <img src="/assets/new-design/clinique.jpg" alt="Health">
+             <div class="category-label">SANTÉ</div>
+          </div>
+          <div class="project-info">
+            <h3>Cliniques mobiles locales</h3>
+            <p class="text-justify">Mise en place de centres de soins mobiles pour un suivi sanitaire régulier.</p>
+            <a routerLink="/mission" class="project-link">Détails ➔</a>
           </div>
         </div>
-        
-        <div class="step-item-free">
-          <span class="step-num-free">03</span>
-          <div class="step-text-free">
-            <strong>Documents Requis pour les Institutions :</strong> Si vous représentez un orphelinat ou une ONG, vous devez fournir :
-            <ul class="article-inner-list-free">
-              <li>L'acte de création légal (Document d'enregistrement officiel).</li>
-              <li>Le récépissé de reconnaissance administrative délivré par l'État.</li>
-              <li>Une preuve de localisation (Facture d'eau/électricité ou certificat de domicile).</li>
-              <li>La liste des membres du bureau directeur avec leurs identités vérifiées.</li>
-            </ul>
+        <div class="project-card reveal">
+          <div class="image-box hover-zoom">
+             <img src="/assets/new-design/constrution.jpg" alt="Infrastructure">
+             <div class="category-label">INFRASTRUCTURE</div>
+          </div>
+          <div class="project-info">
+            <h3>Construction d'orphelinats éco-responsables</h3>
+            <p class="text-justify">Rénovation durable avec panneaux solaires et traitement d'eau autonome.</p>
+            <a routerLink="/mission" class="project-link">Détails ➔</a>
+          </div>
+        </div>
+        <div class="project-card reveal">
+          <div class="image-box hover-zoom">
+             <img src="/assets/new-design/transparence.jpg" alt="Blockchain">
+             <div class="category-label">TRANSPARENCE</div>
+          </div>
+          <div class="project-info">
+            <h3>Audit Blockchain Real-time</h3>
+            <p class="text-justify">Traçabilité immuable de chaque dollar versé jusqu'à l'achat final.</p>
+            <a routerLink="/mission" class="project-link">Détails ➔</a>
           </div>
         </div>
       </div>
-      <div class="documentation-grid">
-      <!-- Card 4: Maria's Impact Context -->
-      <div class="doc-card glass-bento-bordered">
-        <div class="card-content-body">
-          <mat-icon class="card-icon">volunteer_activism</mat-icon>
-          <h3>Impact Social Mesurable</h3>
-          <p>Plus de 1.2M$ ont déjà été injectés directement dans l'économie sociale camerounaise, impactant positivement plus de 450 centres d'accueil.</p>
-          <div class="impact-stat">
-            <span class="value">15K+</span>
-            <span class="label">Volontaires actifs</span>
-          </div>
-        </div>
-      </div>
+    </div>
+  </section>
 
-      <!-- Card 5: Future Goals -->
-      <div class="doc-card glass-bento-bordered">
-        <div class="card-content-body">
-          <mat-icon class="card-icon">rocket_launch</mat-icon>
-          <h3>Objectifs 2026</h3>
-          <p>Déployer notre solution dans 5 nouveaux pays d'Afrique subsaharienne et automatiser 100% des rapports d'impact via Oracles Décentralisés.</p>
-          <div class="mini-progress"><div class="fill" style="width: 30%"></div></div>
-        </div>
-      </div>
-
-      <!-- NEW SECTION: Sector Challenges Card (Split Card Style) -->
-      <div class="doc-card glass-bento-bordered full-width-doc accent-card">
-        <div class="doc-horizontal-layout reversed">
-          <div class="doc-text-side">
-            <mat-icon class="card-icon text-white">warning_amber</mat-icon>
-            <h3 class="text-white">Défis du Secteur Humanitaire</h3>
-            <p>Le secteur de l'aide aux orphelins en Afrique fait face à trois obstacles majeurs :</p>
-            <ul class="doc-list highlight-white">
-              <li><strong>Manque de Confiance:</strong> 40% des donateurs hésitent à cause du manque de visibilité sur l'utilisation réelle des fonds.</li>
-              <li><strong>Frais de Transfert:</strong> Les banques traditionnelles prélèvent jusqu'à 15% sur les virements internationaux vers le Cameroun.</li>
-              <li><strong>Rapports d'Impact:</strong> Les preuves de réalisation (photos, factures) sont souvent falsifiables ou perdues.</li>
-            </ul>
+  <!-- 5. NEW TESTIMONIALS SECTION (MATCHING IMAGE 1) -->
+  <section class="testimonials-modern-section reveal">
+    <div class="container testimonials-grid">
+      <div class="testimonial-image-side">
+        <div class="image-wrapper">
+          <img src="/assets/new-design/testimonial-main.jpg" alt="Impact Presentation">
+          <div class="rating-overlay">
+            <div class="rating-number">4.75</div>
+            <div class="rating-meta">
+              <span class="platform">Trustpilot rating</span>
+              <div class="stars">★★★★★</div>
+            </div>
+            <p class="rating-text">Expertise & engagement pour un impact social durable et transparent.</p>
           </div>
         </div>
       </div>
-      </div>
-      <div class="documentation-grid">
-      <!-- NEW SECTION: How ActForGood Simple Solutions -->
-      <div class="doc-card glass-bento-bordered">
-        <div class="card-content-body">
-          <mat-icon class="card-icon text-yellow">bolt</mat-icon>
-          <h3>La Solution ActForGood</h3>
-          <p>Nous utilisons les **Stablecoins (XAF/USDC)** pour des transferts instantanés avec moins de 1% de frais, maximisant l'aide directe.</p>
+      <div class="testimonial-content-side">
+        <span class="section-label text-yellow">Clients' success</span>
+        <h2 class="section-title">Découvrez comment nous créons de la valeur réelle</h2>
+        <div class="author-info">
+          <img src="/assets/new-design/author-1.jpg" alt="Marta Lewin" class="author-avatar">
+          <div class="author-meta">
+            <h4>Marta Lewin</h4>
+            <p>Directrice Marketing – Groupe Solidarity First</p>
+          </div>
+          <div class="testimonial-nav">
+            <button class="nav-btn prev">←</button>
+            <button class="nav-btn next">→</button>
+          </div>
+        </div>
+        <div class="quote-wrapper">
+          <p class="quote-text">
+            “Nous avons rejoint ActForGood à une étape charnière. En quelques semaines, ils nous ont apporté une structure claire et, plus important encore, ont aligné notre transparence avec les attentes des donateurs. C'était bien plus qu'une plateforme, c'était une nouvelle clarté.”
+          </p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="doc-card glass-bento-bordered">
-        <div class="card-content-body">
-          <mat-icon class="card-icon text-yellow">memory</mat-icon>
-          <h3>Preuve de Travail Social</h3>
-          <p>Chaque brique posée est validée par des photos géolocalisées ancrées sur la blockchain, créant un audit inaltérable pour le donateur.</p>
+  <!-- 6. TEAM SECTION (MATCHING IMAGE 2) -->
+  <section class="team-section reveal">
+    <div class="team-grid">
+      <div class="team-card">
+        <img src="/assets/new-design/team-1.png" alt="Mark Jensen">
+        <div class="team-overlay">
+          <div class="team-info">
+            <h3>Mark Jensen</h3>
+            <p>Strategy Lead</p>
+            <div class="team-socials">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="team-card">
+        <img src="/assets/new-design/team-2.png" alt="Chloe Rivers">
+        <div class="team-overlay">
+          <div class="team-info">
+            <h3>Chloe Rivers</h3>
+            <p>Client Director</p>
+            <div class="team-socials">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
       </div>
-      <h3 class="sub-title-free">Soutenir l'Économie Locale</h3>
-      <p>
-        L'originalité d'ActForGood réside dans son intégration avec les commerçants locaux. Au lieu d'importer des biens, nous privilégions l'achat auprès des fournisseurs camerounais de la zone d'intervention. Ces fournisseurs font également l'objet d'une vérification KYB (Know Your Business) stricte, garantissant que l'argent des donateurs alimente directement la croissance économique de la communauté locale tout en aidant les enfants.
-      </p>
-  </section><!-- End content-bento -->
+      <div class="team-card">
+        <img src="/assets/new-design/team-2.png" alt="Eliza Tran">
+        <div class="team-overlay">
+          <div class="team-info">
+            <h3>Eliza Tran</h3>
+            <p>Senior Analyst</p>
+            <div class="team-socials">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <img src="/assets/new-design/team-1.png" alt="Noah Davison">
+        <div class="team-overlay">
+          <div class="team-info">
+            <h3>Noah Davison</h3>
+            <p>Corporate Strategy Consultant</p>
+            <div class="team-socials">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-reddit"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="team-next-btn">➔</div>
+      </div>
+    </div>
+  </section>
 
-  
+  <!-- 7. FINAL CTA (MATCHING IMAGE 3 TOP) -->
+  <section class="discuss-section reveal">
+    <div class="discuss-overlay"></div>
+    <div class="container discuss-container">
+      <div class="discuss-content">
+        <span class="label-box">Request for quote now!</span>
+        <h2 class="white">Discutons de vos défis<br>et opportunités.</h2>
+      </div>
+      <div class="discuss-actions">
+        <button class="btn-primary-yellow" routerLink="/contact">Get a quote online</button>
+        <p class="white-faint small-text">
+          Que vous exploriez un défi ou soyez prêt pour un diagnostic complet, nous sommes là pour vous écouter.
+        </p>
+      </div>
+    </div>
+  </section>
 
 </div>

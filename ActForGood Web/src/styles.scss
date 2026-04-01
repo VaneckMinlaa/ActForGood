@@ -1,37 +1,34 @@
 /* ════════════════════════════════════════════════════════════
-   ACTFORGOOD  --  Design System "ORGANIC BENTO" (Global)
+   ACTFORGOOD  --  Design System "THE7 FSE COMPANY" STYLE
    ════════════════════════════════════════════════════════════ */
 
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
 :root {
-  /* Palette Primaire - Solar Yellow */
-  --primary-yellow: #FFD700;
-  --primary-glow: rgba(255, 215, 0, 0.4);
-  --amber-warm: #FFA500;
+  /* Palette Primaire - Vibrant Yellow */
+  --primary-yellow: #FFB800;   /* Vibrant Gold/Yellow */
+  --primary-yellow-dark: #E6A600;
+  --yellow-glow: rgba(255, 184, 0, 0.4);
   
-  /* Palette Fond - Light Mode Default */
-  --bg-deep: #F8F9FA;
+  /* Palette Fond - Modern Corporate */
+  --bg-deep: #F8F9FA; 
   --bg-card: #FFFFFF;
   --bg-glass: rgba(0, 0, 0, 0.03);
+  --section-dark: #000000; /* True Black for premium look */
   
   /* Accent & Typo */
-  --text-main: #1A1A1B;
-  --text-muted: #65676B;
+  --text-main: #111111;
+  --text-muted: #666666;
   --border-glass: rgba(0, 0, 0, 0.08);
-  --border-yellow: rgba(255, 215, 0, 0.3);
+  --border-yellow: rgba(255, 184, 0, 0.3);
   
   /* Fonts */
-  --font-heading: 'Outfit', sans-serif;
-  --font-body: 'Space Grotesk', sans-serif;
-}
-
-/* Dark Mode (pour référence ou switch futur) */
-.dark-mode {
-  --bg-deep: #121212;
-  --bg-card: #202020;
-  --bg-glass: rgba(255, 255, 255, 0.05);
-  --text-main: #FFFFFF;
-  --text-muted: #A0A0A0;
-  --border-glass: rgba(255, 255, 255, 0.1);
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  
+  /* Radius */
+  --radius-btn: 2px; /* Sharper for more premium feel */
+  --radius-card: 0px;
 }
 
 /* ── Reset & Base ────────────────────────────────────────── */
@@ -42,7 +39,7 @@
 }
 
 body {
-  background-color: var(--bg-deep);
+  background-color: #fff;
   color: var(--text-main);
   font-family: var(--font-body);
   line-height: 1.6;
@@ -52,51 +49,97 @@ body {
 
 h1, h2, h3, h4, h5 {
   font-family: var(--font-heading);
-  font-weight: 800;
-  letter-spacing: -1px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--section-dark);
+}
+
+/* ── Global Animations ───────────────────────────────────── */
+
+/* Scroll Reveal Base */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), 
+              transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered Reveal Utils */
+.reveal-stagger > .reveal {
+  &:nth-child(2) { transition-delay: 0.1s; }
+  &:nth-child(3) { transition-delay: 0.2s; }
+  &:nth-child(4) { transition-delay: 0.3s; }
+  &:nth-child(5) { transition-delay: 0.4s; }
+  &:nth-child(6) { transition-delay: 0.5s; }
+}
+
+/* Card Hover Zoom */
+.hover-zoom {
+  overflow: hidden;
+  img {
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  &:hover img {
+    transform: scale(1.1);
+  }
 }
 
 /* ── Utilitaires Premium (Global) ────────────────────────── */
 
-/* Bouton Royal Glow Yellow */
-.btn-glow-yellow {
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.btn-primary {
   background: var(--primary-yellow);
-  color: #000;
+  color: #000; /* Black text for yellow buttons */
   border: none;
-  padding: 12px 28px;
-  border-radius: 100px;
-  font-weight: 800;
-  font-family: var(--font-heading);
-  font-size: 1rem;
+  padding: 14px 32px;
+  border-radius: var(--radius-btn);
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
   
   &:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
+    background: var(--primary-yellow-dark);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   }
 }
 
-/* Effet de Verre Bento */
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glass);
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-}
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--primary-yellow);
+  color: var(--primary-yellow);
+  padding: 13px 31px;
+  border-radius: var(--radius-btn);
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 
-/* Gradient Texte Solar */
-.text-solar {
-  background: linear-gradient(135deg, var(--primary-yellow) 0%, var(--amber-warm) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  &:hover {
+    background: rgba(255, 184, 0, 0.05);
+    transform: translateY(-2px);
+  }
 }
 
 /* Custom Scrollbar */
@@ -104,3 +147,7 @@ h1, h2, h3, h4, h5 {
 ::-webkit-scrollbar-track { background: var(--bg-deep); }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary-yellow); }
+
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+}

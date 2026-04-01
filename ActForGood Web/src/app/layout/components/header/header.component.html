@@ -1,20 +1,30 @@
-<header class="header">
-  <div class="header-container">
-    <a routerLink="/" class="logo">ActForGood</a>
-    <nav class="nav">
-      <a routerLink="/mission" class="nav-link">Mission</a>
-      <a routerLink="/campaigns" class="nav-link">Impact</a>
-      <a routerLink="/get-involved" class="nav-link">Get Involved</a>
-      <a routerLink="/stories" class="nav-link">Stories</a>
-      <a routerLink="/campaigns" class="nav-link">Donate</a>
-    </nav>
-    <div class="header-actions">
-      <button class="theme-toggle" (click)="themeService.toggleTheme()" [title]="(themeService.isDark$ | async) ? 'Passer au mode clair' : 'Passer au mode sombre'">
-        <mat-icon>{{ (themeService.isDark$ | async) ? 'light_mode' : 'dark_mode' }}</mat-icon>
-      </button>
+<!-- ═══════════════════════════════════════════════════════════
+     HEADER COMPONENT — Design Replica of the7.io/fse-company
+     ═══════════════════════════════════════════════════════════ -->
 
-      <button *ngIf="!isAuthenticated" routerLink="/auth/login" class="btn-glow-yellow">Connexion</button>
-      <button *ngIf="isAuthenticated" (click)="logout()" class="btn-logout">Déconnexion</button>
+<header class="header" [class.header--scrolled]="isScrolled">
+  <div class="container header-container">
+    
+    <!-- Logo -->
+    <a routerLink="/" class="logo-group">
+      <div class="logo-icon">AF</div>
+      <span class="logo-text">ACTFORGOOD</span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+      <a routerLink="/about" class="nav-link" routerLinkActive="active">À propos</a>
+      <a routerLink="/services" class="nav-link" routerLinkActive="active">Nos Actions</a>
+      <a routerLink="/stories" class="nav-link" routerLinkActive="active">Impact</a>
+      <a routerLink="/contact" class="nav-link" routerLinkActive="active">Contact</a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      <a href="mailto:contact&#64;actforgood.org" class="btn-outline-white sm">Parlons ensemble</a>
+      <button class="btn-primary sm" routerLink="/login">Faire un don</button>
     </div>
+
   </div>
 </header>
