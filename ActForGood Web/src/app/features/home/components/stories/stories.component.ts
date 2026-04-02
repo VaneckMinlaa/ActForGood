@@ -1,11 +1,12 @@
 import { Component, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-stories',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, RouterModule, MatIconModule],
   templateUrl: './stories.component.html',
   styleUrl: './stories.component.scss'
 })

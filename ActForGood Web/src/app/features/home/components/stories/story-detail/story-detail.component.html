@@ -1,0 +1,46 @@
+<div class="page-wrapper post-detail-page">
+  
+  <!-- 1. POST HERO (CLEAN & CENTERED) -->
+  <section class="post-hero reveal">
+    <div class="container hero-container-sm">
+      <div class="post-meta">
+        <span class="category-badge">{{ story?.category }}</span>
+        <span class="post-date">{{ story?.date }}</span>
+      </div>
+      <h1 class="post-title">{{ story?.title }}</h1>
+      <div class="author-meta">
+        Par <span class="author-name"><strong>{{ story?.author }}</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. MAIN IMAGE SECTION -->
+  <section class="post-featured-image reveal">
+    <div class="container container-content">
+      <div class="main-image-wrap">
+        <img [src]="story?.image" [alt]="story?.title">
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ARTICLE CONTENT -->
+  <section class="article-content reveal transition-stagger">
+    <div class="container container-content-sm">
+      <div class="content-body" [innerHTML]="story?.content"></div>
+      
+      <div class="article-footer">
+        <div class="share-box">
+          <span>Partager :</span>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <button class="btn-outline-dark" routerLink="/stories">← Retour à la documentation</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. RELATED STORIES MINI? OR FOOTER -->
+</div>
