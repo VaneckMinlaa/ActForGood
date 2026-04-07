@@ -135,14 +135,7 @@
   }
 }
 
-@media (max-width: 1024px) {
-  .reality-grid { grid-template-columns: 1fr; gap: 80px; }
-  .reality-image-box { order: -1; }
-}
 
-@media (max-width: 768px) {
-  .donation-types-grid { grid-template-columns: 1fr; gap: 40px; }
-}
 
 /* 3. STATS BANNER */
 .stats-banner-lg {
@@ -305,8 +298,30 @@
 
 @media (max-width: 1024px) {
   .team-grid-containers { grid-template-columns: repeat(2, 1fr); }
+  .roadmap-grid { grid-template-columns: repeat(2, 1fr); gap: 60px; }
+  .roadmap-item:nth-child(2) .roadmap-indicator .line { display: none; }
+  .about-main-grid { grid-template-columns: 1fr; gap: 60px; }
+  .reality-grid { grid-template-columns: 1fr; gap: 80px; }
+  .reality-image-box { order: -1; }
+  .stats-banner-grid { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+}
+
+@media (max-width: 768px) {
+  /* Reduce padding for subpage sections */
+  .subpage-hero { padding: 120px 0 60px; }
+  .about-main, .children-reality, .stats-banner-lg, .ambitions-roadmap, .team-section-centered { padding: 80px 0; }
+  
+  .donation-types-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-sub-features { grid-template-columns: 1fr; gap: 30px; }
+  
+  /* Typography tweaks */
+  .hero-title.reveal { font-size: clamp(2.5rem, 8vw, 4rem); }
+  .section-title { font-size: clamp(2rem, 7vw, 3rem); line-height: 1.2; word-wrap: break-word; hyphens: auto; }
 }
 
 @media (max-width: 600px) {
   .team-grid-containers { grid-template-columns: 1fr; }
+  .roadmap-grid { grid-template-columns: 1fr; }
+  .roadmap-indicator .line { display: none; }
+  .section-desc { font-size: 1.1rem; }
 }

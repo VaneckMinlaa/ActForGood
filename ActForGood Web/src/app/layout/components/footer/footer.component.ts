@@ -164,6 +164,7 @@ import { Component } from '@angular/core';
       .footer-grid { grid-template-columns: 1fr; }
       .main-footer { padding: 60px 0; }
     }
-  `]
+  `],
+  standalone: false
 })
 export class FooterComponent { }

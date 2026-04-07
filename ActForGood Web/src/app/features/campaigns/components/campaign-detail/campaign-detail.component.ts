@@ -29,7 +29,8 @@ import { ApiService } from '../../../../core/services/api.service';
       color: var(--text-main);
       min-height: 100vh;
     }
-  `]
+  `],
+  standalone: false
 })
 export class CampaignDetailComponent implements OnInit {
   campaign: any;

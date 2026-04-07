@@ -22,6 +22,7 @@ import { Component } from '@angular/core';
       flex: 1;
       padding: 0;
     }
-  `]
+  `],
+  standalone: false
 })
 export class MainLayoutComponent { }

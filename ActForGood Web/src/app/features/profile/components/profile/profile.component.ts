@@ -22,7 +22,8 @@ import { AuthService } from '../../../../core/services/auth.service';
     .profile {
       padding: 20px;
     }
-  `]
+  `],
+  standalone: false
 })
 export class ProfileComponent implements OnInit {
   user: any;

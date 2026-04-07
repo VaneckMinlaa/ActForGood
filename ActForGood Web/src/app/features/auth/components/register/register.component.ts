@@ -6,7 +6,8 @@ import { AuthService, RegisterRequest } from '../../../../core/services/auth.ser
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  standalone: false
 })
 export class RegisterComponent {
   currentStep = 1;

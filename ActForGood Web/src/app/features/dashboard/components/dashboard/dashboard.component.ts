@@ -35,7 +35,8 @@ import { AuthService } from '../../../../core/services/auth.service';
       gap: 20px;
       margin-top: 20px;
     }
-  `]
+  `],
+  standalone: false
 })
 export class DashboardComponent implements OnInit {
   totalDonations = 0;

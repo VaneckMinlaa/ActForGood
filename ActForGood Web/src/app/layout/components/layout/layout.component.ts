@@ -21,6 +21,7 @@ import { Component } from '@angular/core';
       flex: 1;
       padding: 20px;
     }
-  `]
+  `],
+  standalone: false
 })
 export class LayoutComponent { }

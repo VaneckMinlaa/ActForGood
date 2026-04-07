@@ -116,3 +116,16 @@
   .huge-stat { font-size: 4rem; }
   .hero-title.reveal { font-size: 3.5rem; }
 }
+
+@media (max-width: 768px) {
+  .subpage-hero { padding: 120px 0 60px; }
+  .service-block { padding: 80px 0; }
+  .comparison-section { padding: 80px 0; }
+  .hero-title.reveal { font-size: clamp(2.5rem, 8vw, 4rem); }
+  .section-title { font-size: clamp(2rem, 8vw, 3rem); line-height: 1.2; word-wrap: break-word; hyphens: auto; }
+}
+
+@media (max-width: 600px) {
+  .service-desc { font-size: 1.1rem; }
+  .huge-stat { font-size: 3rem; }
+}

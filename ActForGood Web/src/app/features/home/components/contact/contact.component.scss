@@ -113,3 +113,17 @@
   .form-row { grid-template-columns: 1fr; }
   .form-card-premium { padding: 40px; }
 }
+
+@media (max-width: 768px) {
+  .subpage-hero { padding: 120px 0 60px; }
+  .contact-details { padding: 80px 0; }
+  .contact-form-section { padding: 80px 0; }
+  .detail-card { padding: 40px 24px; }
+  .hero-title.reveal { font-size: clamp(2.5rem, 8vw, 4rem); }
+  .section-title { font-size: clamp(2rem, 8vw, 3rem); line-height: 1.2; word-wrap: break-word; hyphens: auto; }
+}
+
+@media (max-width: 600px) {
+  .form-card-premium { padding: 30px 20px; }
+  .map-container { height: 300px; }
+}

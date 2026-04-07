@@ -22,9 +22,32 @@
 
     <!-- Actions -->
     <div class="header-actions">
-      <a href="mailto:contact&#64;actforgood.org" class="btn-outline-white sm">Parlons ensemble</a>
+      <a href="mailto:contact@actforgood.org" class="btn-outline-white sm">Parlons ensemble</a>
       <button class="btn-primary sm" routerLink="/login">Faire un don</button>
     </div>
 
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-toggle" [class.open]="isMobileMenuOpen" (click)="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" [class.active]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+  <div class="mobile-menu" [class.active]="isMobileMenuOpen">
+    <div class="mobile-menu-inner">
+      <nav class="mobile-nav">
+        <a routerLink="/" class="mobile-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Accueil</a>
+        <a routerLink="/about" class="mobile-link" routerLinkActive="active" (click)="closeMobileMenu()">À propos</a>
+        <a routerLink="/services" class="mobile-link" routerLinkActive="active" (click)="closeMobileMenu()">Nos Actions</a>
+        <a routerLink="/stories" class="mobile-link" routerLinkActive="active" (click)="closeMobileMenu()">Impact</a>
+        <a routerLink="/contact" class="mobile-link" routerLinkActive="active" (click)="closeMobileMenu()">Contact</a>
+      </nav>
+      
+      <div class="mobile-actions">
+        <button class="btn-primary" routerLink="/login" (click)="closeMobileMenu()">Faire un don</button>
+        <a href="mailto:contact@actforgood.org" class="btn-outline-mobile" (click)="closeMobileMenu()">Parlons ensemble</a>
+      </div>
+    </div>
   </div>
 </header>

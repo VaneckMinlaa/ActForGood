@@ -10,7 +10,8 @@ interface FilterOption {
 @Component({
   selector: 'app-campaign-list',
   templateUrl: './campaign-list.component.html',
-  styleUrls: ['./campaign-list.component.scss']
+  styleUrls: ['./campaign-list.component.scss'],
+  standalone: false
 })
 export class CampaignListComponent implements OnInit {
   campaigns: Campaign[] = [];

@@ -7,12 +7,14 @@ import { Subscription, filter } from 'rxjs';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  standalone: false
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   isScrolled = false;
   isHomePage = false;
+  isMobileMenuOpen = false;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -56,6 +58,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   checkAuthStatus(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    if (this.isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  closeMobileMenu(): void {
+    if (this.isMobileMenuOpen) {
+      this.isMobileMenuOpen = false;
+      document.body.style.overflow = '';
+    }
   }
 
   logout(): void {

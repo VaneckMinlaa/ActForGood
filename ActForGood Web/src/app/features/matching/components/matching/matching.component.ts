@@ -34,7 +34,8 @@ import { MatchScore } from '../../../../core/models/match-score';
       gap: 20px;
       margin-top: 20px;
     }
-  `]
+  `],
+  standalone: false
 })
 export class MatchingComponent implements OnInit {
   recommendations: MatchScore[] = [];
